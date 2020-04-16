@@ -87,3 +87,14 @@ ciu$barplot.CI.CU(inputs=iris_test, ind.output=3)
 ```
 When doing a barplot for all Iris classes with Random Forest model, it looks like below. 
 ![Random Forest barplots for Iris](/Figures/rf_ciu_barplot.png)
+
+The code for producing that plot is the following: 
+``` r
+# Do barplot for all three classes in same Figure
+def.par <- par(no.readonly = TRUE); par(mfrow=c(1,3))
+for ( iris.ind in 1:length(out.names) ) {
+  ciu$barplot.CI.CU(inputs=iris_test, ind.output=iris.ind)
+}
+par(def.par)
+```
+
