@@ -72,8 +72,17 @@ CIU can be calculated for any number of inputs (even all inputs). We will now ca
 ``` r
 CI.CU <- ciu$explain(iris_test, ind.inputs.to.explain=c(3,4))
 CI.CU
+# Displays something like:
+#             CI           CU
+# setosa      1 1.206792e-37
+# versicolor  1 1.399856e-03
+# virginica   1 9.986001e-01
 ciu$plot.CI.CU.3D(iris_test, ind.inputs=c(3,4), ind.output=3)
 ```
+The following figure shows how the outputs of all three Iris classes change as a function of "Petal Size". 
+
+![Iris class outputs as a function of Petal Size](/Figures/lda_3D_PetalSize.png)
+
 CIU values are just the "raw material" for producing actual explanations, which can be visual, textual, sounds or whatever means of presentation is the most appropriate to the user and the context. A bar plot of the same kind as what is often used for LIME and SHAP, for instance, is produced by the following method call. 
 ``` r
 ciu$barplot.CI.CU(inputs=iris_test, ind.output=3)
@@ -123,6 +132,11 @@ for ( iris.ind in 1:length(out.names) ) {
 }
 par(def.par)
 ```
+Finally, the following figure shows how the outputs of all three Iris classes change as a function of "Petal Size" with Random Forest classifier. 
+
+![Iris class outputs as a function of Petal Size](/Figures/rf_3D_PetalSize.png)
+
+
 # Author
 
 [Kary Främling](http://github.com/KaryFramling)
