@@ -85,3 +85,5 @@ ciu$plot.CI.CU.3D(iris_test, ind.inputs=c(3,4), ind.output=3)
 ciu$barplot.CI.CU(inputs=iris_test, ind.output=3)
 
 ```
+When doing a barplot for all Iris classes with Random Forest model, it looks like below. 
+![Random Forest barplots for Iris](/Figures/rf_ciu_barplot.png)
