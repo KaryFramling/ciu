@@ -37,9 +37,9 @@ ciu <- ciu.new(model, in.min.max.limits=c.minmax, abs.min.max=abs.min.max, outpu
 CI.CU <- ciu$explain(iris_test, ind.inputs.to.explain=c(1))
 CI.CU
 # CI    CU
-# setosa     0.026 0 
-# versicolor 0.194 0 
-# virginica  0.218 1 
+# setosa     0.026 0
+# versicolor 0.194 0
+# virginica  0.218 1
 ciu$plot.CI.CU(iris_test, ind.input=3, ind.output=3)
 ciu$plot.CI.CU.3D(iris_test, ind.inputs=c(3,4), ind.output=3)
 ciu$barplot.CI.CU(inputs=iris_test, ind.output=3)
