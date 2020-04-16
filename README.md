@@ -3,12 +3,24 @@ R implementation of Contextual Importance and Utility for Explainable AI
 
 # Background
 
-This is an R implementation of the Contextual Importance and Utility (CIU) concepts for Explainable AI (XAI). CIU was developed by Kary Främling in his PhD thesis *Learning and Explaining Preferences with Neural Networks for Multiple Criteria Decision Making*, (written in French, title *Modélisation et apprentissage des préférences par réseaux de neurones pour l'aide à la décision multicritère*), available online for instance here: https://tel.archives-ouvertes.fr/tel-00825854/document. 
+This is an R implementation of the Contextual Importance and Utility (CIU) concepts for Explainable AI (XAI). CIU was developed by Kary Främling in his PhD thesis *Learning and Explaining Preferences with Neural Networks for Multiple Criteria Decision Making*, (written in French, title *Modélisation et apprentissage des préférences par réseaux de neurones pour l'aide à la décision multicritère*), available online for instance here: https://tel.archives-ouvertes.fr/tel-00825854/document. It was originally implemented in Matlab. A new Matlab implementation can be found at https://github.com/shulemsi/CIU. A Python implementation can be found at https://github.com/TimKam/py-ciu. However, these three implementations have been developed quite independently from each other so their functionality and features may differ (and probably do differ). 
 
 # What is CIU?
 
 According to current (2020) XAI vocabulary, CIU is a model-agnostic method for producing post-hoc explanations of results of any "black-box" model that takes a set of input variable values, does some processing and produces a set of output variable values. 
-*There will be formulas or similar here!*
+
+**Contextual Importance (CI)** is a measure of how much an output can change as a function of changes of one (or several) inputs.
+**Contextual Utility (CU)** indicates how favorable the current value of one (or several) inputs is for a high output value. 
+
+The following figure illustrates the principle: 
+
+![Illustration of CIU](/Figures/CIU_illustration.png)
+
+``CI = (Cmax - Cmin)/(absmax - absmin)``
+
+``CU = (out - Cmin)/(Cmax - Cmin)``
+
+For the illustration in the figure, CI = 0.5 for both inputs, whereas CU = 0.32 for ``x`` and CU = 0.04 for ``y``. More formal and detailed descriptions can be found in articles on CIU. 
 
 # Running
 
