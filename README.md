@@ -14,7 +14,7 @@ According to current (2020) XAI vocabulary, CIU is a model-agnostic method for p
 
 The example code shown here is also found in the file ciu_scripts.R and can be ran directly. However, the libraries MASS and caret need to be installed for the *lda* and *Random Forest* models. 
 
-After pulling/cloning the files to a directory, start R (I usually do it by double-clicking the file *StartR.RData*. 
+After pulling/cloning the files to a directory, start R (I usually do it by double-clicking the file *StartR.RData*). 
 
 To begin with, we will start by training an lda model on the Iris data set. 
 
@@ -27,10 +27,10 @@ model <- lda(iris_train, iris_lab)
 ```
 
 Then we test with a particular Iris flower instance and set up the CIU explainer. This Iris will clearly be a Virginica if the model learns correctly. What we want to know is why it is a Virginica. For that, we need 
-* in.min.max.limits: range of possible input values, as a 4x2 matrix that has minimal input value in first column and maximal input value in second column, for all the four Iris inputs.
-* abs.min.max: range of possible output values, as a 3x2 matrix that has minimal input value in first column and maximal input value in second column, for the three Iris classes. Since this is a classification task, the range is [0,1] for all three outputs. 
-* output.names: names of the outputs, in this case the names of the three Iris classes.
-* input.names: this is not necessary here because ciu$explain takes it automatically from the column names of iris_test if it hasn't been specified before (this would not work if iris_test would be a vector, though). 
+* *in.min.max.limits*: range of possible input values, as a 4x2 matrix that has minimal input value in first column and maximal input value in second column, for all the four Iris inputs.
+* *abs.min.max*: range of possible output values, as a 3x2 matrix that has minimal input value in first column and maximal input value in second column, for the three Iris classes. Since this is a classification task, the range is [0,1] for all three outputs. 
+* *output.names*: names of the outputs, in this case the names of the three Iris classes.
+* *input.names*: this is not necessary here because ciu$explain takes it automatically from the column names of iris_test if it hasn't been specified before (this would not work if iris_test would be a vector, though). 
 
 ``` r
 # The hypothetical Iris that we have been using in CIU tests.
