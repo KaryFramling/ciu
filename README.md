@@ -68,6 +68,10 @@ To understand better what these values correspond to, we can for instance plot h
 ``` r
 ciu$plot.CI.CU(iris_test, ind.input=3, ind.output=3)
 ```
+The following figure shows how the outputs for Virginica changes as a function of the four different inputs. 
+
+![Virginica output as a function of one input at a time](/Figures/lda_2D_virginica.png)
+
 CIU can be calculated for any number of inputs (even all inputs). We will now calculate the joint CIU values for "Petal Size", which includes both Petal Length and Petal Width. We also produce a 3D-plot that plot that shows the joint effect on the value of Virginica.
 ``` r
 CI.CU <- ciu$explain(iris_test, ind.inputs.to.explain=c(3,4))
@@ -132,9 +136,13 @@ for ( iris.ind in 1:length(out.names) ) {
 }
 par(def.par)
 ```
-Finally, the following figure shows how the outputs of all three Iris classes change as a function of "Petal Size" with Random Forest classifier. 
+The following figure shows how the outputs of all three Iris classes change as a function of "Petal Size" with Random Forest classifier. 
 
 ![Iris class outputs as a function of Petal Size](/Figures/rf_3D_PetalSize.png)
+
+The following figure shows how the outputs for Virginica changes as a function of the four different inputs with Random Forest classifier. 
+
+![Virginica output as a function of one input at a time with Random Forest](/Figures/rf_2D_virginica.png)
 
 
 # Author
