@@ -139,8 +139,6 @@ ciu.new <- function(bb, train.inputs=NULL, train.targets=NULL, in.min.max.limits
       stop("No minimum/maximum limits provided to 'new' nor 'plot.CI.CU'")
     in.min <- in.min.max.limits[1]
     in.max <- in.min.max.limits[2]
-    print(in.min)
-    print(in.max)
     interv <- (in.max - in.min)/n.points
     xp <- seq(in.min,in.max,interv)
     if ( is.null(dim(inputs)) )
