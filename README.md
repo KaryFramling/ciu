@@ -12,7 +12,11 @@ According to current (2020) XAI vocabulary, CIU is a model-agnostic method for p
 
 <h1>Running</h1>
 
-After pulling the files to a directory, start R (I usually do it by double-clicking the file *StartR.RData*. Then execute the code below.
+The example code shown here is also found in the file ciu_scripts.R and can be ran directly. However, the libraries MASS and caret need to be installed for the *lda* and *Random Forest* models. 
+
+After pulling/cloning the files to a directory, start R (I usually do it by double-clicking the file *StartR.RData*. 
+
+To begin with, we will start by training an lda model on the Iris data set. 
 
 ``` r
 library(MASS)
@@ -20,6 +24,15 @@ source("ContextualImportanceUtility.R")
 iris_train <- iris[, 1:4]
 iris_lab <- iris[[5]][]
 model <- lda(iris_train, iris_lab)
+```
+
+Then we test with a particular Iris flower instance and set up the CIU explainer. This Iris will clearly be a Virginica if the model learns correctly. What we want to know is why it is a Virginica. For that, we need 
+* in.min.max.limits: range of possible input values, as a 4x2 matrix that has minimal input value in first column and maximal input value in second column, for all the four Iris inputs.
+* abs.min.max: range of possible output values, as a 3x2 matrix that has minimal input value in first column and maximal input value in second column, for the three Iris classes. Since this is a classification task, the range is [0,1] for all three outputs. 
+* output.names: names of the outputs, in this case the names of the three Iris classes.
+* input.names: this is not necessary here because ciu$explain takes it automatically from the column names of iris_test if it hasn't been specified before (this would not work if iris_test would be a vector, though). 
+
+``` r
 # The hypothetical Iris that we have been using in CIU tests.
 iris_test <- iris_train[1,] # Just to initialize
 iris_test[1,]<-c(7, 3.2, 6, 1.8)
@@ -31,15 +44,32 @@ abs.min.max <- matrix(c(0,1,0,1,0,1), ncol = 2, byrow = T)
 ciu <- ciu.new(model, in.min.max.limits=c.minmax, abs.min.max=abs.min.max, output.names=out.names)
 CI.CU <- ciu$explain(iris_test, ind.inputs.to.explain=c(1))
 CI.CU
-# Displays
-# CI           CU
+# Displays something like:
+#            CI           CU
 # setosa     3.301310e-33 6.419101e-05
 # versicolor 2.436947e-02 5.974838e-02
 # virginica  2.436947e-02 9.402516e-01
-ciu$plot.CI.CU(iris_test, ind.input=3, ind.output=3)
-ciu$plot.CI.CU.3D(iris_test, ind.inputs=c(3,4), ind.output=3)
-ciu$barplot.CI.CU(inputs=iris_test, ind.output=3)
+```
 
+To understand better what these values correspond to, we can for instance plot how the output 3 (Virginica) changes as a function of input 3 (Petal Length).
+
+``` r
+ciu$plot.CI.CU(iris_test, ind.input=3, ind.output=3)
+```
+CIU can be calculated for any number of inputs (even all inputs). We will now calculate the joint CIU values for "Petal Size", which includes both Petal Length and Petal Width. We also produce a 3D-plot that plot that shows the joint effect on the value of Virginica.
+``` r
+CI.CU <- ciu$explain(iris_test, ind.inputs.to.explain=c(3,4))
+CI.CU
+ciu$plot.CI.CU.3D(iris_test, ind.inputs=c(3,4), ind.output=3)
+```
+CIU values are just the "raw material" for producing actual explanations, which can be visual, textual, sounds or whatever means of presentation is the most appropriate to the user and the context. A bar plot of the same kind as what is often used for LIME and SHAP, for instance, is produced by the following method call. 
+``` r
+ciu$barplot.CI.CU(inputs=iris_test, ind.output=3)
+```
+A major difference in the plot above compared to those that are usually used with LIME, for instance, is that CIU has two dimensions (**importance** and **utility**) rather than only speaking about *importance* as most (all?) other methods. The length of the bar corresponds to the Contextual Importance (CI) value, while the color changes depending on the Contextual Utility (CU). A "low" CU (<0.5 by default) signifies that the value is defavorable for the output and gives a red bar. A "high" CU (>=0.5 by default) signifies that the value is favorable for the output and gives a green bar. The more (de/)favorable the value, the darker the colour. *lda* tends to produce very sharp class limits, so the color nuances are not well visible in this case. 
+
+Next, we will do the same using a Random Forest model. 
+``` r
 # Then same with Random Forest
 library(caret)
 model <- train(iris_train, iris_lab, method = 'rf')
