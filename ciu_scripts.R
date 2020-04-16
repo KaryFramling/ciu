@@ -22,6 +22,12 @@ CI.CU
 ciu$plot.CI.CU(iris_test, ind.input=3, ind.output=3)
 ciu$plot.CI.CU.3D(iris_test, ind.inputs=c(3,4), ind.output=3)
 ciu$barplot.CI.CU(inputs=iris_test, ind.output=3)
+# Do barplot for all three classes in same Figure
+def.par <- par(no.readonly = TRUE); par(mfrow=c(1,3))
+for ( iris.ind in 1:length(out.names) ) {
+  ciu$barplot.CI.CU(inputs=iris_test, ind.output=iris.ind)
+}
+par(def.par)
 
 # Then same with Random Forest
 library(caret)
@@ -35,5 +41,9 @@ CI.CU
 # virginica  0.218 1 
 ciu$plot.CI.CU(iris_test, ind.input=3, ind.output=3)
 ciu$plot.CI.CU.3D(iris_test, ind.inputs=c(3,4), ind.output=3)
-ciu$barplot.CI.CU(inputs=iris_test, ind.output=3)
-
+# Do barplot for all three classes in same Figure
+def.par <- par(no.readonly = TRUE); par(mfrow=c(1,3))
+for ( iris.ind in 1:length(out.names) ) {
+  ciu$barplot.CI.CU(inputs=iris_test, ind.output=iris.ind)
+}
+par(def.par)
