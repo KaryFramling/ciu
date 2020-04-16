@@ -123,4 +123,7 @@ for ( iris.ind in 1:length(out.names) ) {
 }
 par(def.par)
 ```
+# Author
+
+[Kary Främling](http://github.com/KaryFramling)
 
