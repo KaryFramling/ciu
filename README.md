@@ -90,7 +90,7 @@ model <- train(iris_train, iris_lab, method = 'rf')
 ciu <- ciu.new(model, in.min.max.limits=c.minmax, abs.min.max=abs.min.max, output.names=out.names)
 CI.CU <- ciu$explain(iris_test, ind.inputs.to.explain=c(1))
 CI.CU
-# CI    CU
+#            CI    CU
 # setosa     0.026 0 
 # versicolor 0.194 0 
 # virginica  0.218 1 
