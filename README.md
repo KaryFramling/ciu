@@ -66,6 +66,20 @@ CIU values are just the "raw material" for producing actual explanations, which 
 ``` r
 ciu$barplot.CI.CU(inputs=iris_test, ind.output=3)
 ```
+
+When doing a barplot for all Iris classes with lda model, it looks like below. 
+![Random Forest barplots for Iris](/Figures/lda_ciu_barplot.png)
+
+The code for producing that plot is the following: 
+``` r
+# Do barplot for all three classes in same Figure
+def.par <- par(no.readonly = TRUE); par(mfrow=c(1,3))
+for ( iris.ind in 1:length(out.names) ) {
+  ciu$barplot.CI.CU(inputs=iris_test, ind.output=iris.ind)
+}
+par(def.par)
+```
+
 A major difference in the plot above compared to those that are usually used with LIME, for instance, is that CIU has two dimensions (**importance** and **utility**) rather than only speaking about *importance* as most (all?) other methods. The length of the bar corresponds to the Contextual Importance (CI) value, while the color changes depending on the Contextual Utility (CU). A "low" CU (<0.5 by default) signifies that the value is defavorable for the output and gives a red bar. A "high" CU (>=0.5 by default) signifies that the value is favorable for the output and gives a green bar. The more (de/)favorable the value, the darker the colour. *lda* tends to produce very sharp class limits, so the color nuances are not well visible in this case. 
 
 Next, we will do the same using a Random Forest model. 
