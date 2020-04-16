@@ -20,7 +20,7 @@ The following figure illustrates the principle:
 
 ``CU = (out - Cmin)/(Cmax - Cmin)``
 
-For the illustration in the figure, CI = 0.5 for both inputs, whereas CU = 0.32 for ``x`` and CU = 0.04 for ``y``. More formal and detailed descriptions can be found in articles on CIU. 
+For the illustration in the figure, ``CI = 0.5`` for both inputs, whereas ``CU = 0.32`` for ``x`` and ``CU = 0.04 for ``y``. More formal and detailed descriptions can be found in articles on CIU. 
 
 # Running
 
