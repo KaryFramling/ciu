@@ -1,16 +1,16 @@
 # ciu
 R implementation of Contextual Importance and Utility for Explainable AI
 
-<h1>Background</h1>
+#Background
 
-This is an R implementation of the Contextual Importance and Utility (CIU) concepts for Explainable AI (XAI). CIU was developed by Kary Främling in his PhD thesis *Learning and Explaining Preferences with Neural Networks for Multiple Criteria Decision Making*, (written in French, title *Modélisation et apprentissage des préférences par réseaux de neurones pour l'aide à la décision multicritère*. 
+This is an R implementation of the Contextual Importance and Utility (CIU) concepts for Explainable AI (XAI). CIU was developed by Kary Främling in his PhD thesis *Learning and Explaining Preferences with Neural Networks for Multiple Criteria Decision Making*, (written in French, title *Modélisation et apprentissage des préférences par réseaux de neurones pour l'aide à la décision multicritère*), available online for instance here: https://tel.archives-ouvertes.fr/tel-00825854/document. 
 
-<h1>What is CIU?</h1>
+#What is CIU?
 
 According to current (2020) XAI vocabulary, CIU is a model-agnostic method for producing post-hoc explanations of results of any "black-box" model that takes a set of input variable values, does some processing and produces a set of output variable values. 
 *There will be formulas or similar here!*
 
-<h1>Running</h1>
+#Running
 
 The example code shown here is also found in the file ciu_scripts.R and can be ran directly. However, the libraries MASS and caret need to be installed for the *lda* and *Random Forest* models. 
 
