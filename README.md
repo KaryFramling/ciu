@@ -9,8 +9,8 @@ This is an R implementation of the Contextual Importance and Utility (CIU) conce
 
 According to current (2020) XAI vocabulary, CIU is a model-agnostic method for producing post-hoc explanations of results of any "black-box" model that takes a set of input variable values, does some processing and produces a set of output variable values. 
 
-**Contextual Importance (CI)** is a measure of how much an output can change as a function of changes of one (or several) inputs.
-**Contextual Utility (CU)** indicates how favorable the current value of one (or several) inputs is for a high output value. 
+* **Contextual Importance (CI)** is a measure of how much an output can change as a function of changes of one (or several) inputs.
+* **Contextual Utility (CU)** indicates how favorable the current value of one (or several) inputs is for a high output value. 
 
 The following figure illustrates the principle: 
 
