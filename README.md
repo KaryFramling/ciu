@@ -68,7 +68,7 @@ To understand better what these values correspond to, we can for instance plot h
 ``` r
 ciu$plot.CI.CU(iris_test, ind.input=3, ind.output=3)
 ```
-The following figure shows how the outputs for Virginica changes as a function of the four different inputs. 
+The following figure shows how the output for Virginica changes as a function of the four different inputs. 
 
 ![Virginica output as a function of one input at a time](/Figures/lda_2D_virginica.png)
 
