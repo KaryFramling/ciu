@@ -150,7 +150,7 @@ The following figure shows how the outputs of all three Iris classes change as a
 
 ![Iris class outputs as a function of Petal Size](/Figures/rf_3D_PetalSize.png)
 
-The following figure shows how the outputs for Virginica changes as a function of the four different inputs with Random Forest classifier. 
+The following figure shows how the output for Virginica changes as a function of the four different inputs with Random Forest classifier. 
 
 ![Virginica output as a function of one input at a time with Random Forest](/Figures/rf_2D_virginica.png)
 
