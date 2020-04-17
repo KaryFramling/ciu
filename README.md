@@ -5,9 +5,19 @@ R implementation of Contextual Importance and Utility for Explainable AI
 
 This is an R implementation of the Contextual Importance and Utility (CIU) concepts for Explainable AI (XAI). CIU was developed by Kary Främling in his PhD thesis *Learning and Explaining Preferences with Neural Networks for Multiple Criteria Decision Making*, (written in French, title *Modélisation et apprentissage des préférences par réseaux de neurones pour l'aide à la décision multicritère*), available online for instance here: https://tel.archives-ouvertes.fr/tel-00825854/document. It was originally implemented in Matlab. A new Matlab implementation can be found at https://github.com/shulemsi/CIU. A Python implementation can be found at https://github.com/TimKam/py-ciu. However, these three implementations have been developed quite independently from each other so their functionality and features may differ (and probably do differ). 
 
+The first publication on CIU was in the ICANN conference in Paris in 1995: *FRÄMLING, Kary, GRAILLOT, Didier. Extracting Explanations from Neural Networks. ICANN'95 proceedings, Vol. 1, Paris, France, 9-13 October, 1995. Paris: EC2 & Cie, 1995. pp. 163-168.*, accessible at http://www.cs.hut.fi/u/framling/Publications/FramlingIcann95.pdf.
+
+The second publication, and last before "hibernation" of CIU research, is *FRÄMLING, Kary. Explaining Results of Neural Networks by Contextual Importance and Utility. Proceedings of the AISB'96 conference, 1-2 April 1996. Brighton, UK, 1996.*, accessible at http://www.cs.hut.fi/u/framling/Publications/FramlingAisb96.pdf.
+
+The first publication after "hibernation" is *ANJOMSHOAE, Sule, FRÄMLING, Kary, NAJJAR, Amro. Explanations of black-box model predictions by contextual importance and utility. In: Lecture Notes in Computer Science, Vol. 11763 LNAI; Revised Selected Papers of Explainable, Transparent Autonomous Agents and Multi-Agent Systems - 1st International Workshop, EXTRAAMAS 2019, Montreal, Canada, May 13-14, 2019. pp. 95-109.* https://www.researchgate.net/publication/333310978_Explanations_of_Black-Box_Model_Predictions_by_Contextual_Importance_and_Utility.
+
+Several new publications are on the way. It is quite interesting that this model-agnostic, post-hoc XAI principle from 25 years back has passed quite un-noticed despite the rise of the XAI community. 
+
 # What is CIU?
 
 According to current (2020) XAI vocabulary, CIU is a model-agnostic method for producing post-hoc explanations of results of any "black-box" model that takes a set of input variable values, does some processing and produces a set of output variable values. 
+
+CIU does not create any "interpretable" copy of the black box, not even a locally linear approximation or similar. It is based on directly estimating two elements of explanation by observing the behaviour of the black-box model:  
 
 * **Contextual Importance (CI)** is a measure of how much an output can change as a function of changes of one (or several) inputs.
 * **Contextual Utility (CU)** indicates how favorable the current value of one (or several) inputs is for a high output value. 
@@ -20,7 +30,7 @@ The following figure illustrates the principle:
 
 ``CU = (out - Cmin)/(Cmax - Cmin)``
 
-For the illustration in the figure, ``CI = 0.5`` for both inputs, whereas ``CU = 0.32`` for ``x`` and ``CU = 0.04 for ``y``. More formal and detailed descriptions can be found in articles on CIU. 
+For the illustration in the figure, ``CI = 0.5`` for both inputs, whereas ``CU = 0.32`` for ``x`` and ``CU = 0.04`` for ``y``. More formal and detailed descriptions can be found in articles on CIU. 
 
 # Running
 
