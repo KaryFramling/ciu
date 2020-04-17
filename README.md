@@ -22,7 +22,7 @@ CIU does not create any "interpretable" copy of the black box, not even a locall
 * **Contextual Importance (CI)** is a measure of how much an output can change as a function of changes of one (or several) inputs.
 * **Contextual Utility (CU)** indicates how favorable the current value of one (or several) inputs is for a high output value. 
 
-The following figure illustrates the principle, when we want to explain why ``z=0.178`` (i.e. not so good) for ``(x,y)=(0.1,0.2)``: 
+The following figure illustrates the principle, when we want to explain why the output value ``z=0.178`` (i.e. not so good) for the input values ``(x,y)=(0.1,0.2)``. The non-linear "black-box" function is ``z = (x^0.5 + y^2)/2``. 
 
 ![Illustration of CIU](/Figures/CIU_illustration.png)
 
