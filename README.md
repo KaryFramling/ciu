@@ -78,7 +78,7 @@ To understand better what these values correspond to, we can for instance plot h
 ``` r
 ciu$plot.CI.CU(iris_test, ind.input=3, ind.output=3)
 ```
-The following figure shows how the output for Virginica changes as a function of the four different inputs. 
+The following figure shows how the output for Virginica changes as a function of the four different inputs when using ``lda`` model. 
 
 ![Virginica output as a function of one input at a time](/Figures/lda_2D_virginica.png)
 
@@ -93,7 +93,7 @@ CI.CU
 # virginica   1 9.986001e-01
 ciu$plot.CI.CU.3D(iris_test, ind.inputs=c(3,4), ind.output=3)
 ```
-The following figure shows how the outputs of all three Iris classes change as a function of "Petal Size". 
+The following figure shows how the outputs of all three Iris classes change as a function of "Petal Size" when using ``lda`` model. 
 
 ![Iris class outputs as a function of Petal Size](/Figures/lda_3D_PetalSize.png)
 
@@ -154,6 +154,11 @@ The following figure shows how the output for Virginica changes as a function of
 
 ![Virginica output as a function of one input at a time with Random Forest](/Figures/rf_2D_virginica.png)
 
+# Support for different AI/ML models
+
+For the moment, ``lda`` model from MASS library and ``rf`` from caret library have been tested. It might be that all models of caret library work directly, as well as those models that use a similar "predict" function as ``lda``. For any other models, the prediction function to be use can be given as value of the "predict.function" argument of ciu.new method. 
+
+Additionally, any object that implements the "FunctionApproximator" interface with an "eval" function is automatically supported.
 
 # Author
 
