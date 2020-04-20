@@ -8,16 +8,29 @@ source("Functions.R")
 
 # Create CIU object
 # Calculate Contextual Importance (CI) and Contextual Utility (CU) for the "black-box" bb.
-# "bb" must be an object that supports "eval" method and that only takes a vector/matrix as input
-# Inputs: "black-box" object, input vector, vector of input indices, 
+# Arguments: 
+# bb: "black-box" object. Must be an object that inherits "FunctioApproximator" (implements "eval" method) 
+#   or some other supported model. At least "rf" model of caret-library and "lda" model 
+#  from MASS are supported. It might be that just about all caret models work directly 
+#  also, as well as all models that have a similar "predict" method as lda.
+#  Otherwise, a the prediction function to be used can be gives as value of "predict.function" 
+#  argument. 
 # in.min.max.limits: a matrix with one row per output and two columns, where the first column indicates 
 #   the minimal value and the second column the maximal value for that output. 
 # mx2 matrix of min-max values of outputs
+# predict.function: can be supplied if a model that is not supported by ciu should be used.
+#   As an example, this is the function for lda: 
+#   o.predict.function <- function(model, inputs) { 
+#     pred <- predict(model,inputs) 
+#     return(pred$posterior)
+#   }
 # "montecarlo.samples" is the number of random values to use for estimating CI and CU.
 # Returns: mx2 matrix with CI, CU for all outputs
 # Might be useful also to return the estimated minimal and maximal values found. Would then be mx2 matrix again
-ciu.new <- function(bb, train.inputs=NULL, train.targets=NULL, in.min.max.limits=NULL, abs.min.max=NULL, input.names=NULL, output.names=NULL) {
-  model <- bb
+ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL, 
+                    input.names=NULL, output.names=NULL, predict.function=NULL, 
+                    train.inputs=NULL, train.targets=NULL) {
+  o.model <- bb
   t.in <- train.inputs
   t.target <- train.targets
   o.absminmax <- abs.min.max
@@ -25,6 +38,25 @@ ciu.new <- function(bb, train.inputs=NULL, train.targets=NULL, in.min.max.limits
   o.outputnames <- output.names
   n.mc.samples <- NULL 
   o.in.minmax <- in.min.max.limits # Would be better to name all instance variable "o." or similar. Next time again!
+
+  # Set prediction function according to parameter or to model type. 
+  o.predict.function <- predict.function
+  if ( is.null(o.predict.function) ) {
+    if ( inherits(o.model, "FunctionApproximator") ) {
+      o.predict.function <- function(model, inputs) { model$eval(inputs) }
+    }
+    else if ( inherits(o.model, "train") ) { # caret
+      o.predict.function <- function(model, inputs) { predict(model, inputs, type="prob") }
+    }
+    else {
+      # This works at least with "lda" model, don't know with which other ones.
+      o.predict.function <- function(model, inputs) { 
+        pred <- predict(model,inputs) 
+        return(pred$posterior)
+      }
+    }
+  }
+  
   ciu <- NULL
   
   # If no absmin/max matrix is given, then get it from train.targets, if provided.
@@ -41,22 +73,6 @@ ciu.new <- function(bb, train.inputs=NULL, train.targets=NULL, in.min.max.limits
     o.in.minmax <- matrix(c(in.mins, in.maxs), ncol=2)
   }
 
-  # Different models, libraries, ... use different functions for doing "forward pass". 
-  model.eval <- function(model, inputs) {
-    if ( inherits(model, "FunctionApproximator") ) {
-      res <- model$eval(inputs)
-    }
-    else if ( inherits(model, "train") ) { # caret
-      res <- predict(model, inputs, type="prob")
-    }
-    else {
-      # This works at least with "lda" model, don't know with which other ones.
-      pred <- predict(model,inputs) 
-      res <- pred$posterior
-    }
-    return(res)
-  }
-    
   # Calculate Contextual Importance (CI) and Contextual Utility (CU) for the "black-box" model.
   # Arguments:
   # inputs: the current input values for the instance to explain.
@@ -108,8 +124,8 @@ ciu.new <- function(bb, train.inputs=NULL, train.targets=NULL, in.min.max.limits
     mcm[,ind.inputs.to.explain] <- rvals
     
     # Evaluate output for all random values, as well as current output. 
-    mcout <- model.eval(model, mcm)
-    cu.val <- model.eval(model, inputs)
+    mcout <- o.predict.function(o.model, mcm)
+    cu.val <- o.predict.function(o.model, inputs)
     minvals <- apply(mcout,2,min)
     range <- apply(mcout,2,max) - minvals
     output_ranges <- matrix(o.absminmax[,2] - o.absminmax[,1], ncol=1)
@@ -153,8 +169,8 @@ ciu.new <- function(bb, train.inputs=NULL, train.targets=NULL, in.min.max.limits
       m <- matrix(inputs, ncol=n.col, nrow=length(xp), byrow=T)
     }
     m[,ind.input] <- xp
-    yp <- model.eval(model, m)
-    cu.val <- model.eval(model, inputs)
+    yp <- o.predict.function(o.model, m)
+    cu.val <- o.predict.function(o.model, inputs)
 
     # Set up plot parameters
     if ( is.null(ylim) ) ylim <- o.absminmax[ind.output,]
@@ -215,8 +231,8 @@ ciu.new <- function(bb, train.inputs=NULL, train.targets=NULL, in.min.max.limits
     }
     m[,ind.inputs[1]] <- pm[,1]
     m[,ind.inputs[2]] <- pm[,2]
-    z <- model.eval(model, m)
-    cu.val <- model.eval(model, inputs)
+    z <- o.predict.function(o.model, m)
+    cu.val <- o.predict.function(o.model, inputs)
     zm <- matrix(z[,ind.output], nrow = length(xp), byrow = TRUE)
 
     # Set up plot labels, limits, ...
@@ -351,7 +367,7 @@ adaline.three.inputs.test <- function(inp=c(0.1,0.2,0.3), indices=c(1), n.sample
   inp <- c(0.1,0.2,0.3)
   w <- c(0.20,0.30,0.50)
   a$set.weights(matrix(w, nrow=1, byrow=T))
-  ciu <- ciu.new(a, abs.min.max=matrix(c(0, 1), nrow=1, byrow=T))
+  ciu <- ciu.new(a, in.min.max.limits=matrix(c(0,1,0,1),nrow=2,byrow=T), abs.min.max=matrix(c(0, 1), nrow=1, byrow=T))
   CI.CU <- ciu$explain(inp, ind.inputs.to.explain=indices)
   CI.CU
 }
@@ -364,7 +380,7 @@ adaline.two.outputs.test <- function(inp=c(0.1,0.2,0.3), indices=c(1), n.samples
   w <- matrix(c(0.20,0.30,0.50,0.25,0.35,0.40), nrow=2, byrow=TRUE)
   a$set.weights(w)
   #out2 <- a2$eval(inp2)
-  ciu <- ciu.new(a, abs.min.max=matrix(c(0,1,0,1), nrow=2, byrow=T))
+  ciu <- ciu.new(a, in.min.max.limits=matrix(c(0,1,0,1,0,1),nrow=3,byrow=T), abs.min.max=matrix(c(0,1,0,1), nrow=2, byrow=T))
   CI.CU <- ciu$explain(inp, ind.inputs.to.explain=indices)
   CI.CU
 }
