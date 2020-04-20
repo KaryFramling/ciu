@@ -156,9 +156,9 @@ The following figure shows how the output for Virginica changes as a function of
 
 # Support for different AI/ML models
 
-For the moment, ``lda`` model from MASS library and ``rf`` from caret library have been tested. It might be that all models of caret library work directly, as well as those models that use a similar "predict" function as ``lda``. For any other models, the prediction function to be use can be given as value of the "predict.function" argument of ciu.new method. 
+For the moment, ``lda`` model from MASS library and ``rf`` from caret library have been tested. It might be that all models of caret library work directly, as well as those models that use a similar "predict" function as ``lda``. For any other models, the prediction function to be use can be given as value of the ``predict.function`` argument of ``ciu.new`` method. 
 
-Additionally, any object that implements the "FunctionApproximator" interface with an "eval" function is automatically supported.
+Additionally, any object that implements the ``FunctionApproximator`` interface with an ``eval`` function is automatically supported.
 
 # Author
 
