@@ -1,6 +1,6 @@
 # CIU with Boston Housing Dataset
 
-The Boston Housing Dataset is a classical benchmark set used in Data Analysis and Machine learning. It is also available in R by default (or happened to be so in my R installation, alternatively in the MASS library. 
+The Boston Housing Dataset is a classical benchmark set used in Data Analysis and Machine learning, available in the MASS library. 
 
 A gradient boosting model will be used here for learning the mapping from the 13 input variables to the Median value of owner-occupied homes in $1000's. This is a regression task (not a classification task), which means that the best explanation approach might be different. However, for CIU it doesn't really matter whether it is a classification or a regression task.
 
