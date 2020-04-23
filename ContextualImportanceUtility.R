@@ -7,26 +7,30 @@ source("Interfaces.R")
 source("Functions.R")
 
 # Create CIU object
-# Calculate Contextual Importance (CI) and Contextual Utility (CU) for the "black-box" bb.
 # Arguments: 
 # bb: "black-box" object. Must be an object that inherits "FunctioApproximator" (implements "eval" method) 
 #   or some other supported model. At least "rf" model of caret-library and "lda" model 
 #  from MASS are supported. It might be that just about all caret models work directly 
 #  also, as well as all models that have a similar "predict" method as lda.
 #  Otherwise, the prediction function to be used can be gives as value of "predict.function" 
-#  argument. 
+#  argument. A more powerful way is to inherit from FunctionApproximator class and 
+#  implement an "eval" method.
 # in.min.max.limits: a matrix with one row per output and two columns, where the first column indicates 
 #   the minimal value and the second column the maximal value for that output. 
-# mx2 matrix of min-max values of outputs
+# abs.min.max: matrix of min-max values of outputs, one row per output, two columns (min, max).
+# input.names: labels of inputs. 
+# output.names: labels of outputs.
 # predict.function: can be supplied if a model that is not supported by ciu should be used.
 #   As an example, this is the function for lda: 
 #   o.predict.function <- function(model, inputs) { 
 #     pred <- predict(model,inputs) 
 #     return(pred$posterior)
 #   }
-# "montecarlo.samples" is the number of random values to use for estimating CI and CU.
-# Returns: mx2 matrix with CI, CU for all outputs
-# Might be useful also to return the estimated minimal and maximal values found. Would then be mx2 matrix again
+# train.inputs: if some other arguments are missing, then some information might be 
+#   extracted from this, such as "in.min.max.limits" and "input.names".
+# train.targets: if some other arguments are missing, then some information might be 
+#   extracted from this, such as "abs.min.max" and "output.names".
+# 
 ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL, 
                     input.names=NULL, output.names=NULL, predict.function=NULL, 
                     train.inputs=NULL, train.targets=NULL) {
@@ -66,13 +70,22 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
     o.absminmax <- matrix(c(target.mins, target.maxs), ncol=2)
   }
   
-  # If no min-max limits given as parameter, then we get them from train.inputs parameter, if available. 
+  # If no min-max limits given as parameter, then we get them from train.inputs parameter, 
+  # if available. 
   if ( is.null(o.in.minmax) && !is.null(train.inputs) ) {
     in.mins <- apply(t.in, 2, min)
     in.maxs <- apply(t.in, 2, max)
     o.in.minmax <- matrix(c(in.mins, in.maxs), ncol=2)
   }
+  
+  # If no input.names names given, then attempt to get them from train.inputs
+  if ( is.null(o.input.names) && !is.null(t.in) )
+    o.input.names <- names(t.in) # Shouldn't give worse result than NULL
 
+  # If no output.names given, then attempt to get them from train.inputs
+  if ( is.null(o.outputnames) && !is.null(t.target) )
+    o.outputnames <- names(t.target) # Shouldn't give worse result than NULL
+  
   # Calculate Contextual Importance (CI) and Contextual Utility (CU) for the "black-box" model.
   # Arguments:
   # inputs: the current input values for the instance to explain.
@@ -134,7 +147,7 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
     # Calculate CU.
     CU <- (cu.val - minvals)/range
     CU[is.na(CU)] <- 0 # If absmax-absmin was zero
-    CU[is.infinite(CU)] <- 0 # If range was zero
+    CU[range==0] <- 0 # If range was zero
     
     # Finalize the return matrix (maybe data.frame in future?)
     #ciu <- data.frame(CI=CI, CU=CU)
@@ -147,7 +160,12 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
   
   # Function for plotting out the effect of changing values of one input on one output
   # Arguments:
-  # etc:
+  # inputs: the current input values for the instance to explain.
+  # ind.input: index of input to plot (X-axis).
+  # ind.output: index of input to plot (Y-axis).
+  # in.min.max.limits: same as for "explain" method.
+  # n.points: how many x,y pairs will be calculated, equally spaced over in.min.max.limits. 
+  # remaining: plot parameters.
   plot.CI.CU <- function(inputs, ind.input, ind.output, in.min.max.limits=NULL, n.points=40, main=NULL, xlab="x", ylab="y", ylim=NULL, ...) {
     # Check and set up minimum/maximum limits for inputs
     if ( is.null(in.min.max.limits) ) 
@@ -203,9 +221,13 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
   
   # Function for 3D plotting the effect of changing values of two inputs on one output
   # Arguments:
-  # ...
+  # inputs: the current input values for the instance to explain.
+  # ind.inputs: indices of inputs to plot (X- and Y-axis).
+  # ind.output: index of input to plot (Z-axis).
+  # in.min.max.limits: same as for "explain" method.
   # n.points: How many x/y values for the plot between in.mins and in.maxs.
-  # etc:
+  # remaining: plot parameters.
+  #
   plot.CI.CU.3D <- function(inputs, ind.inputs, ind.output, in.min.max.limits=NULL, n.points=40, 
                             main=NULL, xlab=NULL, ylab=NULL, zlab=NULL, zlim=NULL, ...) {
     if ( is.null(in.min.max.limits) ) 
