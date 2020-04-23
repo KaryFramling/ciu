@@ -64,5 +64,18 @@ inst.ind <- 1
 CI.CU <- ciu.gbm.fa$explain(Boston[inst.ind,], ind.inputs.to.explain=c(1), montecarlo.samples = 100)
 ciu.gbm.fa$barplot.CI.CU(Boston[inst.ind,1:n.in])
 ```
+# Example barplots by CIU
+
+The following figure shows the barplot of three instances: #406 (medv=5, lowest), #6 (medv=28.7, average), #370 (medv=50, highest). 
+
+![CIU barplots for three instances of Boston Housing](/Figures/BostonHousingCIU_barplots.png)
+
+The code for producing this image is the following: 
+```r
+par(mfrow=c(1,3))
+ciu.gbm.fa$barplot.CI.CU(Boston[406,1:n.in])
+ciu.gbm.fa$barplot.CI.CU(Boston[6,1:n.in])
+ciu.gbm.fa$barplot.CI.CU(Boston[370,1:n.in])
+```
 
 
