@@ -34,6 +34,8 @@ For the illustration in the figure, ``CI = 0.5`` for both inputs, whereas ``CU =
 
 # Running
 
+We use the Iris data set here for simplicity. Iris is a classification task. The use of CIU for a regression task is shown with the Boston Housing Dataset and Gradient Boosting (gbm) model here: https://github.com/KaryFramling/ciu/blob/master/BostonCIU.md. 
+
 The example code shown here is also found in the file ciu_scripts.R and can be ran directly. However, the libraries MASS and caret need to be installed for the *lda* and *Random Forest* models. 
 
 After pulling/cloning the files to a directory, start R (I usually do it by double-clicking the file *StartR.RData*). 
