@@ -13,7 +13,7 @@ source("Functions.R")
 #   or some other supported model. At least "rf" model of caret-library and "lda" model 
 #  from MASS are supported. It might be that just about all caret models work directly 
 #  also, as well as all models that have a similar "predict" method as lda.
-#  Otherwise, a the prediction function to be used can be gives as value of "predict.function" 
+#  Otherwise, the prediction function to be used can be gives as value of "predict.function" 
 #  argument. 
 # in.min.max.limits: a matrix with one row per output and two columns, where the first column indicates 
 #   the minimal value and the second column the maximal value for that output. 
@@ -124,7 +124,7 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
     mcm[,ind.inputs.to.explain] <- rvals
     
     # Evaluate output for all random values, as well as current output. 
-    mcout <- o.predict.function(o.model, mcm)
+    mcout <- as.matrix(o.predict.function(o.model, mcm)) # as.matrix for dealing with case of only one output.
     cu.val <- o.predict.function(o.model, inputs)
     minvals <- apply(mcout,2,min)
     range <- apply(mcout,2,max) - minvals
@@ -134,6 +134,7 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
     # Calculate CU.
     CU <- (cu.val - minvals)/range
     CU[is.na(CU)] <- 0 # If absmax-absmin was zero
+    CU[is.infinite(CU)] <- 0 # If range was zero
     
     # Finalize the return matrix (maybe data.frame in future?)
     #ciu <- data.frame(CI=CI, CU=CU)
@@ -304,6 +305,10 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
                       in.min.max.limits=in.min.max.limits, montecarlo.samples=montecarlo.samples)
       ci.cu[inp,] <- as.numeric(cius[ind.output,])
     }
+    
+    # Limit everything to [0,1]
+    ci.cu[ci.cu > 1] <- 1
+    ci.cu[ci.cu < 0] <- 0
     
     # We get error otherwise...
     CIs <- as.numeric(ci.cu[,1])
