@@ -89,10 +89,10 @@ CIU can be calculated for any number of inputs (even all inputs). We will now ca
 CI.CU <- ciu$explain(iris_test, ind.inputs.to.explain=c(3,4))
 CI.CU
 # Displays something like:
-#             CI           CU
-# setosa      1 1.206792e-37
-# versicolor  1 1.399856e-03
-# virginica   1 9.986001e-01
+#                  CI           CU         Cmin      Cmax
+#setosa     1.0000000 1.206792e-37 6.978531e-49 1.0000000
+#versicolor 1.0000000 1.399856e-03 8.693700e-25 1.0000000
+#virginica  0.9999999 9.986003e-01 6.247392e-46 0.9999999
 ciu$plot.CI.CU.3D(iris_test, ind.inputs=c(3,4), ind.output=3)
 ```
 The following figure shows how the outputs of all three Iris classes change as a function of "Petal Size" when using ``lda`` model. 
