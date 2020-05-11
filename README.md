@@ -69,10 +69,10 @@ ciu <- ciu.new(model, in.min.max.limits=c.minmax, abs.min.max=abs.min.max, outpu
 CI.CU <- ciu$explain(iris_test, ind.inputs.to.explain=c(1))
 CI.CU
 # Displays something like:
-#            CI           CU
-# setosa     3.301310e-33 6.419101e-05
-# versicolor 2.436947e-02 5.974838e-02
-# virginica  2.436947e-02 9.402516e-01
+#                     CI           CU         Cmin         Cmax
+#setosa     1.833523e-33 6.581821e-05 1.180608e-50 1.833523e-33
+#versicolor 2.316049e-02 6.043223e-02 2.158111e-07 2.316071e-02
+#virginica  2.316049e-02 9.395678e-01 9.768393e-01 9.999998e-01
 ```
 
 To understand better what these values correspond to, we can for instance plot how the output 3 (Virginica) changes as a function of input 3 (Petal Length).
