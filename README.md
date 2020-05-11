@@ -127,10 +127,10 @@ model <- train(iris_train, iris_lab, method = 'rf')
 ciu <- ciu.new(model, in.min.max.limits=c.minmax, abs.min.max=abs.min.max, output.names=out.names)
 CI.CU <- ciu$explain(iris_test, ind.inputs.to.explain=c(1))
 CI.CU
-#            CI    CU
-# setosa     0.026 0 
-# versicolor 0.194 0 
-# virginica  0.218 1 
+#           CI    CU Cmin  Cmax 
+#setosa     0     0  0     0    
+#versicolor 0.034 0  0.002 0.036
+#virginica  0.034 1  0.964 0.998
 ciu$plot.CI.CU(iris_test, ind.input=3, ind.output=3)
 ciu$plot.CI.CU.3D(iris_test, ind.inputs=c(3,4), ind.output=3)
 ciu$barplot.CI.CU(inputs=iris_test, ind.output=3)
@@ -148,6 +148,10 @@ for ( iris.ind in 1:length(out.names) ) {
 }
 par(def.par)
 ```
+
+There is also a method called pie.CI.CU that visualizes CIU using a pie chart, that looks like the following, produced just by replacing ``ciu@barplot.CI.CU`` with ``ciu@pie.CI.CU``. 
+![Random Forest pie charts for Iris](/Figures/rf_ciu_iris_pieplot.png)
+
 The following figure shows how the outputs of all three Iris classes change as a function of "Petal Size" with Random Forest classifier. 
 
 ![Iris class outputs as a function of Petal Size](/Figures/rf_3D_PetalSize.png)
