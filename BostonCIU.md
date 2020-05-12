@@ -34,8 +34,8 @@ inst.ind <- 370
 CI.CU <- ciu$explain(Boston[inst.ind,], ind.inputs.to.explain=c(1), montecarlo.samples = 100)
 CI.CU # Display result
 # Gives CI and CU for the first input variable (crim) and looks something like this: 
-#            CI        CU
-#medv 0.1597509 0.7998012
+#            CI       CU    Cmin     Cmax
+#medv 0.1562961 0.845962 44.7032 51.73652
 ```
 Then we display the coloured bar plot for the same instance (looks nicer in RStudio than in plain R).
 
@@ -77,6 +77,13 @@ ciu.gbm.fa$barplot.CI.CU(Boston[406,1:n.in])
 ciu.gbm.fa$barplot.CI.CU(Boston[6,1:n.in])
 ciu.gbm.fa$barplot.CI.CU(Boston[370,1:n.in])
 ```
+
+Same as pie charts (using pie.CI.CU instead of barplot.CI.CU): 
+![CIU pie chart for Boston Housing house 406](/Figures/ciu_gbm_Boston_pie_inst406.png)
+![CIU pie chart for Boston Housing house 6](/Figures/ciu_gbm_Boston_pie_inst6.png)
+![CIU pie chart for Boston Housing house 370](/Figures/ciu_gbm_Boston_pie_inst370.png)
+
+
 # Author
 
 [Kary Främling](http://github.com/KaryFramling)
