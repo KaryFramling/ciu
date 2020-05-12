@@ -77,5 +77,8 @@ ciu.gbm.fa$barplot.CI.CU(Boston[406,1:n.in])
 ciu.gbm.fa$barplot.CI.CU(Boston[6,1:n.in])
 ciu.gbm.fa$barplot.CI.CU(Boston[370,1:n.in])
 ```
+# Author
+
+[Kary Främling](http://github.com/KaryFramling)
 
 
