@@ -60,6 +60,11 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
   if ( is.null(o.predict.function) ) {
     if ( inherits(o.model, "FunctionApproximator") ) {
       o.predict.function <- function(model, inputs) { model$eval(inputs) }
+      # We have to do extra check here for RBF since support for formula was introduced
+      if ( inherits(o.model, "RBF") ) {
+        if ( !is.null(o.model$get.formula()) )
+          o.predict.function <- function(model, inputs) { predict.rbf(model, inputs) }
+      }
     }
     else if ( inherits(o.model, "train") ) { # caret
       o.predict.function <- function(model, inputs) { predict(model, inputs, type="prob") }
@@ -141,7 +146,7 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
       }
       absminmax[,1:2] <- target.CI.CU[,3:4]
     }
-
+    
     # Create matrix of inputs using the provided values, replacing the indicated columns with random values.
     nbr.mc.cols <- length(ind.inputs.to.explain)
     
@@ -157,6 +162,10 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
       rvals <- matrix(mins, nrow=n.mc.samples, ncol=nbr.mc.cols, byrow=T) + 
         matrix(runif(n.mc.samples*nbr.mc.cols), nrow=n.mc.samples)*matrix(diffs, nrow=n.mc.samples, ncol=nbr.mc.cols, byrow=T)
     }
+    
+    # Strange, in some case it's necessary to convert into vector.
+    if ( ncol(rvals) == 1 )
+      rvals <- as.vector(rvals)
     
     # Many/most Machine Learning packages seem to use/require data.frame rather than matrix. 
     if ( is.data.frame(inputs)) { 
@@ -190,7 +199,7 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
       rownames(ciu) <- o.outputnames
     return(ciu)
   }
-
+  
   # explain.vocabulary
   # CI.CU for "named concepts" that can be combinations of several inputs. 
   # Returns: a list with one element per named concept. Each element contains the CI.CU 
@@ -215,7 +224,7 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
     }
     return(res)
   }
-
+  
   # Function for plotting out the effect of changing values of one input on one output
   # Returns: "void", or whatever happens to be result of last instruction. 
   # Arguments:
@@ -247,7 +256,7 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
       m <- matrix(inputs, ncol=n.col, nrow=length(xp), byrow=T)
     }
     m[,ind.input] <- xp
-    yp <- o.predict.function(o.model, m)
+    yp <- as.matrix(o.predict.function(o.model, m)) # as.matrix to deal with case of only one output
     cu.val <- o.predict.function(o.model, inputs)
     
     # Set up plot parameters
@@ -361,6 +370,7 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
   # montecarlo.samples: how many random instances to use for estimating CI and CU.
   # neutral.CU: indicates when the Contextual Utility is considered 
   #   to be "negative". The default value of 0.5 seems quite logical for most cases.
+  # show.input.values: include input values after input labels or not. Default is TRUE. 
   # concepts.to.explain: list of concepts to use in the plot, as defined by vocabulary provided
   #   as argument to ciu.new. if "ind.inputs=NULL", then use "concepts.to.explain" instead. If both
   #   are NULL, then use all inputs. 
@@ -374,10 +384,11 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
   # main, xlab, xlim etc: usual plot parameters, possible to override the default ones provided
   #   here if needed.
   barplot.CI.CU <- function(inputs, ind.inputs=NULL, ind.output=1, in.min.max.limits=NULL, 
-                            montecarlo.samples=100, neutral.CU=0.5, concepts.to.explain=NULL, 
+                            montecarlo.samples=100, neutral.CU=0.5, 
+                            show.input.values=TRUE, concepts.to.explain=NULL, 
                             target.concept=NULL, target.CI.CU=NULL,
                             color.ramp.below.neutral=NULL, color.ramp.above.neutral=NULL,
-                            sort=NULL, decreasing=FALSE,
+                            sort=NULL, decreasing=FALSE, 
                             main=NULL, xlab=NULL, xlim=NULL, ...) {
     # If no input indices are given, then use all inputs
     explain.concepts <- FALSE
@@ -404,7 +415,7 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
     # Set colorRamps to use.
     cols.below <- ifelse ( is.null(color.ramp.below.neutral), colorRamp(c("red3", "yellow")), color.ramp.below.neutral)
     cols.above <- ifelse ( is.null(color.ramp.above.neutral), colorRamp(c("yellow","darkgreen")), color.ramp.above.neutral)
-
+    
     # We have to get CI/CU one input at a time, so have to do it as a loop. 
     n.inps.included <- ifelse(explain.concepts, length(concepts.to.explain), length(ind.inputs))
     ci.cu <- matrix(0, nrow=n.inps.included, ncol=2) # Initialize CI/CU matrix
@@ -422,7 +433,7 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
         ci.cu[inp,] <- as.numeric(cius[ind.output,1:2])
       }
     }
-
+    
     # Limit everything to [0,1]
     ci.cu[ci.cu > 1] <- 1
     ci.cu[ci.cu < 0] <- 0
@@ -458,19 +469,26 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
     bar.col[above] <- cols2
     
     # Labels for the bars. Haven't tested what happens if this is NULL, maybe still fine. 
-    if ( explain.concepts ) {
+    if ( explain.concepts ) { # Explain using Intermediate concepts
       inp.names <- concepts.to.explain
     }
-    else {
-    inp.names <- o.input.names[ind.inputs]
-    if ( is.null(inp.names) ) 
-      inp.names <- colnames(inputs)
+    else { # Explain using inputs directly
+      inp.names <- o.input.names[ind.inputs]
+      if ( is.null(inp.names) ) 
+        inp.names <- colnames(inputs)
+      # Add input values to input labels
+      if ( show.input.values ) {
+        for ( i in 1:length(inp.names) ) {
+          inp.names[i] <- paste(inp.names[i], " (", format(inputs[ind.inputs[i]], digits=2), ")", sep="")
+        }
+      }
     }
-
+    
     # Plot title
     main.title <- main
     if ( is.null(main.title) ) {
       main.title <- o.outputnames[ind.output]
+      main.title <- paste(main.title, " (", format(o.model$eval(inputs)[ind.output], digits=2), ")", sep="")
       if ( !is.null(target.concept) ) {
         main.title <- paste(target.concept, "(", main.title, ")")
       }
@@ -498,6 +516,7 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
   # montecarlo.samples: how many random instances to use for estimating CI and CU.
   # neutral.CU: indicates when the Contextual Utility is considered 
   #   to be "negative". The default value of 0.5 seems quite logical for most cases.
+  # show.input.values: include input values after input labels or not. Default is TRUE. 
   # concepts.to.explain: list of concepts to use in the plot, as defined by vocabulary provided
   #   as argument to ciu.new. if "ind.inputs=NULL", then use "concepts.to.explain" instead. If both
   #   are NULL, then use all inputs. 
@@ -511,11 +530,12 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
   # main, xlab, xlim etc: usual plot parameters, possible to override the default ones provided
   #   here if needed.
   pie.CI.CU <- function(inputs, ind.inputs=NULL, ind.output=1, in.min.max.limits=NULL, 
-                            montecarlo.samples=100, neutral.CU=0.5, concepts.to.explain=NULL, 
-                            target.concept=NULL, target.CI.CU=NULL,
-                            color.ramp.below.neutral=NULL, color.ramp.above.neutral=NULL,
-                            sort=NULL, decreasing=FALSE,
-                            main=NULL, ...) {
+                        montecarlo.samples=100, neutral.CU=0.5, 
+                        show.input.values=TRUE, concepts.to.explain=NULL, 
+                        target.concept=NULL, target.CI.CU=NULL,
+                        color.ramp.below.neutral=NULL, color.ramp.above.neutral=NULL,
+                        sort=NULL, decreasing=FALSE,
+                        main=NULL, ...) {
     # If no input indices are given, then use all inputs
     explain.concepts <- FALSE
     if ( is.null(ind.inputs) ) {
@@ -583,9 +603,8 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
       CUs <- CUs[s$ix]
     }
     
-    # Get plotting values. Bar length corresponds to CI. 
-    # Green bar for "positive CU", red for "negative CU". 
-    # Darker color the higher the abs(CU) value is. Should still fine-tune this.
+    # Get plotting values. Pie size corresponds to CI. 
+    # Green color for "positive CU", red for "negative CU". 
     bar.heights <- CIs # Simple for bar heights. More work for CU<->colors
     below <- CUs < neutral.CU; above <- CUs >= neutral.CU
     cols1 <- rgb(cols.below((CUs[below])*(1/neutral.CU))/255)
@@ -602,21 +621,27 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
       inp.names <- o.input.names[ind.inputs]
       if ( is.null(inp.names) ) 
         inp.names <- colnames(inputs)
+      if ( show.input.values ) {
+        for ( i in 1:length(inp.names) ) {
+          inp.names[i] <- paste(inp.names[i], " (", inputs[ind.inputs[i]], ")", sep="")
+        }
+      }
     }
     
     # Plot title
     main.title <- main
     if ( is.null(main.title) ) {
       main.title <- o.outputnames[ind.output]
+      main.title <- paste(main.title, " (", format(o.model$eval(inputs)[ind.output], digits=2), ")", sep="")
       if ( !is.null(target.concept) ) {
         main.title <- paste(target.concept, "(", main.title, ")")
       }
     }
     
-    # Do bar plot. Limit X axis to 1 because that's normally the maximal CI value. 
+    # Draw pie chart plot.  
     old.mai <- par(mai=c(0.8,1.2,0.4,0.2))
     pie(bar.heights,col=bar.col,labels=inp.names,
-            main=main.title, ...)
+        main=main.title, ...)
     par(mai=old.mai)
   }
   
@@ -639,21 +664,22 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
       plot.CI.CU.3D(inputs, ind.inputs, ind.output, in.min.max.limits, n.points, main, xlab, ylab, zlab, zlim, ...)
     },
     barplot.CI.CU = function(inputs, ind.inputs=NULL, ind.output=1, in.min.max.limits=NULL, montecarlo.samples=100, 
-                             neutral.CU=0.5, concepts.to.explain=NULL, target.concept=NULL, target.CI.CU=NULL,
+                             neutral.CU=0.5, show.input.values=TRUE, concepts.to.explain=NULL, target.concept=NULL, target.CI.CU=NULL,
                              color.ramp.below.neutral=NULL, color.ramp.above.neutral=NULL, 
-                             sort=NULL, decreasing=FALSE,
+                             sort=NULL, decreasing=FALSE, 
                              main= NULL, xlab=NULL, xlim=NULL, ...) {
-      barplot.CI.CU(inputs, ind.inputs, ind.output, in.min.max.limits, montecarlo.samples, neutral.CU, 
+      barplot.CI.CU(inputs, ind.inputs, ind.output, in.min.max.limits, montecarlo.samples, neutral.CU, show.input.values,
                     concepts.to.explain, target.concept, target.CI.CU, color.ramp.below.neutral, color.ramp.above.neutral, 
                     sort, decreasing, main, xlab, xlim, ...)
     },
     pie.CI.CU = function(inputs, ind.inputs=NULL, ind.output=1, in.min.max.limits=NULL, montecarlo.samples=100, 
-                         neutral.CU=0.5, concepts.to.explain=NULL, target.concept=NULL, target.CI.CU=NULL,
+                         neutral.CU=0.5, show.input.values=TRUE, concepts.to.explain=NULL, target.concept=NULL, target.CI.CU=NULL,
                          color.ramp.below.neutral=NULL, color.ramp.above.neutral=NULL, 
                          sort=NULL, decreasing=FALSE,
                          main= NULL, ...) {
       pie.CI.CU(inputs, ind.inputs, ind.output, in.min.max.limits, montecarlo.samples, neutral.CU, 
-                concepts.to.explain, target.concept, target.CI.CU, color.ramp.below.neutral, color.ramp.above.neutral, 
+                show.input.values, concepts.to.explain, target.concept, target.CI.CU, 
+                color.ramp.below.neutral, color.ramp.above.neutral, 
                 sort, decreasing, main, ...)
     }
   )
