@@ -488,7 +488,7 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
     main.title <- main
     if ( is.null(main.title) ) {
       main.title <- o.outputnames[ind.output]
-      main.title <- paste(main.title, " (", format(o.model$eval(inputs)[ind.output], digits=2), ")", sep="")
+      main.title <- paste(main.title, " (", format(o.predict.function(o.model, inputs)[ind.output], digits=2), ")", sep="")
       if ( !is.null(target.concept) ) {
         main.title <- paste(target.concept, "(", main.title, ")")
       }
@@ -632,7 +632,7 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
     main.title <- main
     if ( is.null(main.title) ) {
       main.title <- o.outputnames[ind.output]
-      main.title <- paste(main.title, " (", format(o.model$eval(inputs)[ind.output], digits=2), ")", sep="")
+      main.title <- paste(main.title, " (", format(o.predict.function(o.model, inputs)[ind.output], digits=2), ")", sep="")
       if ( !is.null(target.concept) ) {
         main.title <- paste(target.concept, "(", main.title, ")")
       }
