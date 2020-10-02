@@ -280,6 +280,7 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
     }
     if ( is.null(main) ) {
       main <- outname
+      main <- paste(main, " (", format(o.predict.function(o.model, inputs)[ind.output], digits=2), ")", sep="")
     }
     
     # Create plot, show current value
@@ -343,7 +344,10 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
       outname <- o.outputnames[ind.output]
     else
       outname <- paste("Output ", ind.output)
-    if ( is.null(main) ) main <- outname
+    if ( is.null(main) ) {
+      main <- outname
+      main <- paste(main, " (", format(o.predict.function(o.model, inputs)[ind.output], digits=2), ")", sep="")
+    }
     if ( is.null(xlab) ) xlab <- x.name
     if ( is.null(ylab) ) ylab <- y.name
     if ( is.null(zlab) ) zlab <- "Output value"
@@ -442,32 +446,6 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
     CIs <- as.numeric(ci.cu[,1])
     CUs <- as.numeric(ci.cu[,2])
     
-    # Sort results?
-    if ( !is.null(sort) ) {
-      if ( sort=="CI") {
-        s <- sort(CIs, decreasing=decreasing, index.return=TRUE)
-      }
-      else if ( sort=="CU" )  {
-        s <- sort(CUs, decreasing=decreasing, index.return=TRUE)
-      }
-      else {
-        stop("Argument 'sort' must be NULL, 'CI' or 'CU'.")
-      }
-      CIs <- CIs[s$ix]
-      CUs <- CUs[s$ix]
-    }
-    
-    # Get plotting values. Bar length corresponds to CI. 
-    # Green bar for "positive CU", red for "negative CU". 
-    # Darker color the higher the abs(CU) value is. Should still fine-tune this.
-    bar.heights <- CIs # Simple for bar heights. More work for CU<->colors
-    below <- CUs < neutral.CU; above <- CUs >= neutral.CU
-    cols1 <- rgb(cols.below((CUs[below])*(1/neutral.CU))/255)
-    cols2<-rgb(cols.above((CUs[above]-neutral.CU)*(1/(1-neutral.CU)))/255)
-    bar.col <- c(cols1, cols2) # Not right, just initialize. Not most elegant in the world...
-    bar.col[below] <- cols1
-    bar.col[above] <- cols2
-    
     # Labels for the bars. Haven't tested what happens if this is NULL, maybe still fine. 
     if ( explain.concepts ) { # Explain using Intermediate concepts
       inp.names <- concepts.to.explain
@@ -483,6 +461,33 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
         }
       }
     }
+    
+    # Sort results?
+    if ( !is.null(sort) ) {
+      if ( sort=="CI") {
+        s <- sort(CIs, decreasing=decreasing, index.return=TRUE)
+      }
+      else if ( sort=="CU" )  {
+        s <- sort(CUs, decreasing=decreasing, index.return=TRUE)
+      }
+      else {
+        stop("Argument 'sort' must be NULL, 'CI' or 'CU'.")
+      }
+      CIs <- CIs[s$ix]
+      CUs <- CUs[s$ix]
+      inp.names <- inp.names[s$ix]
+    }
+    
+    # Get plotting values. Bar length corresponds to CI. 
+    # Green bar for "positive CU", red for "negative CU". 
+    # Darker color the higher the abs(CU) value is. Should still fine-tune this.
+    bar.heights <- CIs # Simple for bar heights. More work for CU<->colors
+    below <- CUs < neutral.CU; above <- CUs >= neutral.CU
+    cols1 <- rgb(cols.below((CUs[below])*(1/neutral.CU))/255)
+    cols2<-rgb(cols.above((CUs[above]-neutral.CU)*(1/(1-neutral.CU)))/255)
+    bar.col <- c(cols1, cols2) # Not right, just initialize. Not most elegant in the world...
+    bar.col[below] <- cols1
+    bar.col[above] <- cols2
     
     # Plot title
     main.title <- main
@@ -587,32 +592,7 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
     # We get error otherwise...
     CIs <- as.numeric(ci.cu[,1])
     CUs <- as.numeric(ci.cu[,2])
-    
-    # Sort results?
-    if ( !is.null(sort) ) {
-      if ( sort=="CI") {
-        s <- sort(CIs, decreasing=decreasing, index.return=TRUE)
-      }
-      else if ( sort=="CU" )  {
-        s <- sort(CUs, decreasing=decreasing, index.return=TRUE)
-      }
-      else {
-        stop("Argument 'sort' must be NULL, 'CI' or 'CU'.")
-      }
-      CIs <- CIs[s$ix]
-      CUs <- CUs[s$ix]
-    }
-    
-    # Get plotting values. Pie size corresponds to CI. 
-    # Green color for "positive CU", red for "negative CU". 
-    bar.heights <- CIs # Simple for bar heights. More work for CU<->colors
-    below <- CUs < neutral.CU; above <- CUs >= neutral.CU
-    cols1 <- rgb(cols.below((CUs[below])*(1/neutral.CU))/255)
-    cols2<-rgb(cols.above((CUs[above]-neutral.CU)*(1/(1-neutral.CU)))/255)
-    bar.col <- c(cols1, cols2) # Not right, just initialize. Not most elegant in the world...
-    bar.col[below] <- cols1
-    bar.col[above] <- cols2
-    
+
     # Labels for the bars. Haven't tested what happens if this is NULL, maybe still fine. 
     if ( explain.concepts ) {
       inp.names <- concepts.to.explain
@@ -627,6 +607,32 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
         }
       }
     }
+    
+    # Sort results?
+    if ( !is.null(sort) ) {
+      if ( sort=="CI") {
+        s <- sort(CIs, decreasing=decreasing, index.return=TRUE)
+      }
+      else if ( sort=="CU" )  {
+        s <- sort(CUs, decreasing=decreasing, index.return=TRUE)
+      }
+      else {
+        stop("Argument 'sort' must be NULL, 'CI' or 'CU'.")
+      }
+      CIs <- CIs[s$ix]
+      CUs <- CUs[s$ix]
+      inp.names <- inp.names[s$ix]
+    }
+    
+    # Get plotting values. Pie size corresponds to CI. 
+    # Green color for "positive CU", red for "negative CU". 
+    bar.heights <- CIs # Simple for bar heights. More work for CU<->colors
+    below <- CUs < neutral.CU; above <- CUs >= neutral.CU
+    cols1 <- rgb(cols.below((CUs[below])*(1/neutral.CU))/255)
+    cols2<-rgb(cols.above((CUs[above]-neutral.CU)*(1/(1-neutral.CU)))/255)
+    bar.col <- c(cols1, cols2) # Not right, just initialize. Not most elegant in the world...
+    bar.col[below] <- cols1
+    bar.col[above] <- cols2
     
     # Plot title
     main.title <- main
