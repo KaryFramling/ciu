@@ -67,7 +67,10 @@ ciu.new <- function(bb, in.min.max.limits=NULL, abs.min.max=NULL,
       }
     }
     else if ( inherits(o.model, "train") ) { # caret
-      o.predict.function <- function(model, inputs) { predict(model, inputs, type="prob") }
+      if ( o.model$modelType == "Regression" ) # Have to use different version of predict here.
+        o.predict.function <- function(model, inputs) { predict(model, inputs) }
+      else
+        o.predict.function <- function(model, inputs) { predict(model, inputs, type="prob") }
     }
     else {
       # This works at least with "lda" model, don't know with which other ones.
