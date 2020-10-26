@@ -1,0 +1,22 @@
+Package: ciu
+Type: Package
+Title: Contextual Importance and Utility
+Version: 0.1.0
+Author: Kary Främling
+Maintainer: Kary Främling <Kary.Framling@umu.se>
+Description: R implementation of the Contextual Importance and Utility 
+    (CIU) concepts for Explainable AI (XAI). A recent description of CIU
+    can be found in e.g. Framling (2020) <arXiv:2009.13996>.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports: graphics, 
+    stats,
+    Rcpp,
+    grDevices, 
+    ggplot2
+Suggests: MASS, 
+    caret, 
+    gbm
+RoxygenNote: 7.1.1
+Roxygen: list(markdown = TRUE)

@@ -1,0 +1,679 @@
+Hmm ... looks like a package
+
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+LaTeX2e <2020-02-02> patch level 5
+L3 programming layer <2020-03-06>
+(./Rd2.tex
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/book.cls
+Document Class: book 2019/12/20 v1.4l Standard LaTeX document class
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/bk10.clo))
+(/Library/Frameworks/R.framework/Resources/share/texmf/tex/latex/Rd.sty
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/ifthen.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/tools/longtable.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/tools/bm.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/alltt.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/tools/verbatim.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/url/url.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/textcomp.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/fontenc.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/psnfss/times.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/inconsolata/zi4.sty
+`inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+(/usr/local/texlive/2020/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/local/texlive/2020/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+(/usr/local/texlive/2020/texmf-dist/tex/generic/xkeyval/keyval.tex)))))
+(/usr/local/texlive/2020/texmf-dist/tex/latex/graphics/color.sty
+(/usr/local/texlive/2020/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/graphics-def/pdftex.def))
+(/usr/local/texlive/2020/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/local/texlive/2020/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/pdftexcmds/pdftexcmds.sty
+(/usr/local/texlive/2020/texmf-dist/tex/generic/infwarerr/infwarerr.sty))
+(/usr/local/texlive/2020/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/pdfescape/pdfescape.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/kvoptions/kvoptions.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/etexcmds/etexcmds.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/local/texlive/2020/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/local/texlive/2020/texmf-dist/tex/generic/atbegshi/atbegshi.sty))
+(/usr/local/texlive/2020/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/local/texlive/2020/texmf-dist/tex/latex/atveryend/atveryend.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+
+(/usr/local/texlive/2020/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+)))
+
+Package hyperref Warning: Option `hyperindex' has already been used,
+(hyperref)                setting the option has no effect on input line 377.
+
+
+Package hyperref Warning: Option `pagebackref' has already been used,
+(hyperref)                setting the option has no effect on input line 377.
+
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/base/makeidx.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/inputenc.sty)
+Writing index file Rd2.idx
+(/usr/local/texlive/2020/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def)
+No file Rd2.aux.
+(/usr/local/texlive/2020/texmf-dist/tex/latex/psnfss/t1ptm.fd)
+(/usr/local/texlive/2020/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/local/texlive/2020/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/gettitlestring/gettitlestring.s
+ty)) (/usr/local/texlive/2020/texmf-dist/tex/latex/inconsolata/t1zi4.fd)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/psnfss/t1phv.fd
+
+LaTeX Warning: Font shape declaration has incorrect series value `mc'.
+               It should not contain an `m'! Please correct it.
+               Found on input line 20.
+
+
+LaTeX Warning: Font shape declaration has incorrect series value `mc'.
+               It should not contain an `m'! Please correct it.
+               Found on input line 23.
+
+
+LaTeX Warning: Font shape declaration has incorrect series value `mc'.
+               It should not contain an `m'! Please correct it.
+               Found on input line 26.
+
+
+LaTeX Warning: Font shape declaration has incorrect series value `mc'.
+               It should not contain an `m'! Please correct it.
+               Found on input line 46.
+
+) [1{/usr/local/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+[2] [3]
+Overfull \hbox (1.19055pt too wide) in paragraph at lines 162--169
+\T1/ptm/m/n/10 from \T1/zi4/m/n/10 data \T1/ptm/m/n/10 and \T1/zi4/m/n/10 formu
+la\T1/ptm/m/n/10 . i.e. \T1/zi4/m/n/10 in.min.max.limits\T1/ptm/m/n/10 , \T1/zi
+4/m/n/10 abs.min.max\T1/ptm/m/n/10 , \T1/zi4/m/n/10 input.names
+
+Overfull \hbox (325.71936pt too wide) in paragraph at lines 189--193
+\T1/ptm/m/n/10 higher-level one that com-bines them: \T1/zi4/m/n/10 list(interm
+ediate.concept1=c(1,2,3),intermediate.concept2=c(4,5),higher.level.concept=c(1,
+2,3,4,5)) 
+[4] (/usr/local/texlive/2020/texmf-dist/tex/latex/inconsolata/ts1zi4.fd)
+Overfull \hbox (6.75635pt too wide) in paragraph at lines 249--249
+ []\T1/zi4/m/n/9 gbm <- train(medv ~ ., Boston, method="gbm", trControl=trainCo
+ntrol(method="cv", number=10))[] 
+[5] (/usr/local/texlive/2020/texmf-dist/tex/latex/psnfss/ts1ptm.fd)
+Overfull \hbox (2.49805pt too wide) in paragraph at lines 330--334
+\T1/ptm/m/n/10 the given "black-box" model. First get a \T1/zi4/m/n/10 CIU \T1/
+ptm/m/n/10 ob-ject by call-ing \T1/zi4/m/n/10 ciu.new \T1/ptm/m/n/10 as e.g. \T
+1/zi4/m/n/10 ciu <-ciu.new(...)\T1/ptm/m/n/10 ,
+[6]
+Overfull \hbox (24.80856pt too wide) in paragraph at lines 354--362
+\T1/ptm/m/n/10 the given con-cept rather than rel-a-tive to the ac-tual out-put
+(s). \T1/zi4/m/n/10 ind.inputs.to.explain
+
+Overfull \hbox (8.7803pt too wide) in paragraph at lines 362--370
+\T1/ptm/m/n/10 NULL. If a \T1/zi4/m/n/10 target.concept \T1/ptm/m/n/10 is pro-v
+ided but \T1/zi4/m/n/10 target.ciu=NULL\T1/ptm/m/n/10 , then \T1/zi4/m/n/10 tar
+get.ciu
+[7]
+No file Rd2.ind.
+[8]
+(/private/var/folders/bg/krz6520x5zzglv0847xhdwc40000gn/T/RtmpRU9imY/Rd2pdffb1b
+75cec4f3/Rd2.aux)
+
+Package rerunfilecheck Warning: File `Rd2.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+ )
+(see the transcript file for additional information)pdfTeX warning (dest): name
+{Rfn.factor} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{Rfn.vector} has been referenced but does not exist,
+ replaced by a fixed one
+
+pdfTeX warning (dest): name{Rfn.matrix} has been referenced but does not exist,
+ replaced by a fixed one
+
+pdfTeX warning (dest): name{Rfn.data.frame} has been referenced but does not ex
+ist, replaced by a fixed one
+
+pdfTeX warning (dest): name{Rfn.list} has been referenced but does not exist, r
+eplaced by a fixed one
+
+{/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/inconsolata/i4-ts1.enc}{/us
+r/local/texlive/2020/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/local/texlive
+/2020/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-0.enc}</usr/local/texlive/20
+20/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></usr/local/t
+exlive/2020/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/
+2020/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2020/texmf
+-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2020/texmf-dist/font
+s/type1/urw/times/utmr8a.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/ur
+w/times/utmri8a.pfb>
+Output written on Rd2.pdf (8 pages, 93462 bytes).
+Transcript written on Rd2.log.
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+LaTeX2e <2020-02-02> patch level 5
+L3 programming layer <2020-03-06>
+(./Rd2.tex
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/book.cls
+Document Class: book 2019/12/20 v1.4l Standard LaTeX document class
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/bk10.clo))
+(/Library/Frameworks/R.framework/Resources/share/texmf/tex/latex/Rd.sty
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/ifthen.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/tools/longtable.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/tools/bm.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/alltt.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/tools/verbatim.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/url/url.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/textcomp.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/fontenc.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/psnfss/times.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/inconsolata/zi4.sty
+`inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+(/usr/local/texlive/2020/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/local/texlive/2020/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+(/usr/local/texlive/2020/texmf-dist/tex/generic/xkeyval/keyval.tex)))))
+(/usr/local/texlive/2020/texmf-dist/tex/latex/graphics/color.sty
+(/usr/local/texlive/2020/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/graphics-def/pdftex.def))
+(/usr/local/texlive/2020/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/local/texlive/2020/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/pdftexcmds/pdftexcmds.sty
+(/usr/local/texlive/2020/texmf-dist/tex/generic/infwarerr/infwarerr.sty))
+(/usr/local/texlive/2020/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/pdfescape/pdfescape.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/kvoptions/kvoptions.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/etexcmds/etexcmds.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/local/texlive/2020/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/local/texlive/2020/texmf-dist/tex/generic/atbegshi/atbegshi.sty))
+(/usr/local/texlive/2020/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/local/texlive/2020/texmf-dist/tex/latex/atveryend/atveryend.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+
+(/usr/local/texlive/2020/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+)))
+
+Package hyperref Warning: Option `hyperindex' has already been used,
+(hyperref)                setting the option has no effect on input line 377.
+
+
+Package hyperref Warning: Option `pagebackref' has already been used,
+(hyperref)                setting the option has no effect on input line 377.
+
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/base/makeidx.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/inputenc.sty)
+Writing index file Rd2.idx
+(/usr/local/texlive/2020/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def)
+(/private/var/folders/bg/krz6520x5zzglv0847xhdwc40000gn/T/RtmpRU9imY/Rd2pdffb1b
+75cec4f3/Rd2.aux) (/usr/local/texlive/2020/texmf-dist/tex/latex/psnfss/t1ptm.fd
+) (/usr/local/texlive/2020/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/local/texlive/2020/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/gettitlestring/gettitlestring.s
+ty))
+(/private/var/folders/bg/krz6520x5zzglv0847xhdwc40000gn/T/RtmpRU9imY/Rd2pdffb1b
+75cec4f3/Rd2.out)
+(/private/var/folders/bg/krz6520x5zzglv0847xhdwc40000gn/T/RtmpRU9imY/Rd2pdffb1b
+75cec4f3/Rd2.out)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/inconsolata/t1zi4.fd)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/psnfss/t1phv.fd
+
+LaTeX Warning: Font shape declaration has incorrect series value `mc'.
+               It should not contain an `m'! Please correct it.
+               Found on input line 20.
+
+
+LaTeX Warning: Font shape declaration has incorrect series value `mc'.
+               It should not contain an `m'! Please correct it.
+               Found on input line 23.
+
+
+LaTeX Warning: Font shape declaration has incorrect series value `mc'.
+               It should not contain an `m'! Please correct it.
+               Found on input line 26.
+
+
+LaTeX Warning: Font shape declaration has incorrect series value `mc'.
+               It should not contain an `m'! Please correct it.
+               Found on input line 46.
+
+)
+(/private/var/folders/bg/krz6520x5zzglv0847xhdwc40000gn/T/RtmpRU9imY/Rd2pdffb1b
+75cec4f3/Rd2.toc) [1{/usr/local/texlive/2020/texmf-var/fonts/map/pdftex/updmap/
+pdftex.map}] [2] [3]
+Overfull \hbox (1.19055pt too wide) in paragraph at lines 162--169
+\T1/ptm/m/n/10 from \T1/zi4/m/n/10 data \T1/ptm/m/n/10 and \T1/zi4/m/n/10 formu
+la\T1/ptm/m/n/10 . i.e. \T1/zi4/m/n/10 in.min.max.limits\T1/ptm/m/n/10 , \T1/zi
+4/m/n/10 abs.min.max\T1/ptm/m/n/10 , \T1/zi4/m/n/10 input.names
+[4]
+Overfull \hbox (325.71936pt too wide) in paragraph at lines 189--193
+\T1/ptm/m/n/10 higher-level one that com-bines them: \T1/zi4/m/n/10 list(interm
+ediate.concept1=c(1,2,3),intermediate.concept2=c(4,5),higher.level.concept=c(1,
+2,3,4,5)) 
+(/usr/local/texlive/2020/texmf-dist/tex/latex/inconsolata/ts1zi4.fd) [5]
+Overfull \hbox (6.75635pt too wide) in paragraph at lines 249--249
+ []\T1/zi4/m/n/9 gbm <- train(medv ~ ., Boston, method="gbm", trControl=trainCo
+ntrol(method="cv", number=10))[] 
+[6] (/usr/local/texlive/2020/texmf-dist/tex/latex/psnfss/ts1ptm.fd)
+Overfull \hbox (2.49805pt too wide) in paragraph at lines 330--334
+\T1/ptm/m/n/10 the given "black-box" model. First get a \T1/zi4/m/n/10 CIU \T1/
+ptm/m/n/10 ob-ject by call-ing \T1/zi4/m/n/10 ciu.new \T1/ptm/m/n/10 as e.g. \T
+1/zi4/m/n/10 ciu <-ciu.new(...)\T1/ptm/m/n/10 ,
+
+Overfull \hbox (24.80856pt too wide) in paragraph at lines 354--362
+\T1/ptm/m/n/10 the given con-cept rather than rel-a-tive to the ac-tual out-put
+(s). \T1/zi4/m/n/10 ind.inputs.to.explain
+
+Overfull \hbox (8.7803pt too wide) in paragraph at lines 362--370
+\T1/ptm/m/n/10 NULL. If a \T1/zi4/m/n/10 target.concept \T1/ptm/m/n/10 is pro-v
+ided but \T1/zi4/m/n/10 target.ciu=NULL\T1/ptm/m/n/10 , then \T1/zi4/m/n/10 tar
+get.ciu
+[7]
+No file Rd2.ind.
+[8]
+(/private/var/folders/bg/krz6520x5zzglv0847xhdwc40000gn/T/RtmpRU9imY/Rd2pdffb1b
+75cec4f3/Rd2.aux) )
+(see the transcript file for additional information)pdfTeX warning (dest): name
+{Rfn.factor} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{Rfn.vector} has been referenced but does not exist,
+ replaced by a fixed one
+
+pdfTeX warning (dest): name{Rfn.matrix} has been referenced but does not exist,
+ replaced by a fixed one
+
+pdfTeX warning (dest): name{Rfn.data.frame} has been referenced but does not ex
+ist, replaced by a fixed one
+
+pdfTeX warning (dest): name{Rfn.list} has been referenced but does not exist, r
+eplaced by a fixed one
+
+{/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/inconsolata/i4-ts1.enc}{/us
+r/local/texlive/2020/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/local/texlive
+/2020/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-0.enc}</usr/local/texlive/20
+20/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></usr/local/t
+exlive/2020/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/
+2020/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2020/texmf
+-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2020/texmf-dist/font
+s/type1/urw/times/utmr8a.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/ur
+w/times/utmri8a.pfb>
+Output written on Rd2.pdf (8 pages, 93911 bytes).
+Transcript written on Rd2.log.
+This is makeindex, version 2.15 [TeX Live 2020] (kpathsea + Thai support).
+Scanning input file Rd2.idx....done (24 entries accepted, 0 rejected).
+Sorting entries....done (109 comparisons).
+Generating output file Rd2.ind....done (52 lines written, 0 warnings).
+Output written in Rd2.ind.
+Transcript written in Rd2.ilg.
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+LaTeX2e <2020-02-02> patch level 5
+L3 programming layer <2020-03-06>
+(./Rd2.tex
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/book.cls
+Document Class: book 2019/12/20 v1.4l Standard LaTeX document class
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/bk10.clo))
+(/Library/Frameworks/R.framework/Resources/share/texmf/tex/latex/Rd.sty
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/ifthen.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/tools/longtable.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/tools/bm.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/alltt.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/tools/verbatim.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/url/url.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/textcomp.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/fontenc.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/psnfss/times.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/inconsolata/zi4.sty
+`inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+(/usr/local/texlive/2020/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/local/texlive/2020/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+(/usr/local/texlive/2020/texmf-dist/tex/generic/xkeyval/keyval.tex)))))
+(/usr/local/texlive/2020/texmf-dist/tex/latex/graphics/color.sty
+(/usr/local/texlive/2020/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/graphics-def/pdftex.def))
+(/usr/local/texlive/2020/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/local/texlive/2020/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/pdftexcmds/pdftexcmds.sty
+(/usr/local/texlive/2020/texmf-dist/tex/generic/infwarerr/infwarerr.sty))
+(/usr/local/texlive/2020/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/pdfescape/pdfescape.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/kvoptions/kvoptions.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/etexcmds/etexcmds.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/local/texlive/2020/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/local/texlive/2020/texmf-dist/tex/generic/atbegshi/atbegshi.sty))
+(/usr/local/texlive/2020/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/local/texlive/2020/texmf-dist/tex/latex/atveryend/atveryend.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+
+(/usr/local/texlive/2020/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+)))
+
+Package hyperref Warning: Option `hyperindex' has already been used,
+(hyperref)                setting the option has no effect on input line 377.
+
+
+Package hyperref Warning: Option `pagebackref' has already been used,
+(hyperref)                setting the option has no effect on input line 377.
+
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/base/makeidx.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/inputenc.sty)
+Writing index file Rd2.idx
+(/usr/local/texlive/2020/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def)
+(/private/var/folders/bg/krz6520x5zzglv0847xhdwc40000gn/T/RtmpRU9imY/Rd2pdffb1b
+75cec4f3/Rd2.aux) (/usr/local/texlive/2020/texmf-dist/tex/latex/psnfss/t1ptm.fd
+) (/usr/local/texlive/2020/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/local/texlive/2020/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/gettitlestring/gettitlestring.s
+ty))
+(/private/var/folders/bg/krz6520x5zzglv0847xhdwc40000gn/T/RtmpRU9imY/Rd2pdffb1b
+75cec4f3/Rd2.out)
+(/private/var/folders/bg/krz6520x5zzglv0847xhdwc40000gn/T/RtmpRU9imY/Rd2pdffb1b
+75cec4f3/Rd2.out)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/inconsolata/t1zi4.fd)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/psnfss/t1phv.fd
+
+LaTeX Warning: Font shape declaration has incorrect series value `mc'.
+               It should not contain an `m'! Please correct it.
+               Found on input line 20.
+
+
+LaTeX Warning: Font shape declaration has incorrect series value `mc'.
+               It should not contain an `m'! Please correct it.
+               Found on input line 23.
+
+
+LaTeX Warning: Font shape declaration has incorrect series value `mc'.
+               It should not contain an `m'! Please correct it.
+               Found on input line 26.
+
+
+LaTeX Warning: Font shape declaration has incorrect series value `mc'.
+               It should not contain an `m'! Please correct it.
+               Found on input line 46.
+
+)
+(/private/var/folders/bg/krz6520x5zzglv0847xhdwc40000gn/T/RtmpRU9imY/Rd2pdffb1b
+75cec4f3/Rd2.toc) [1{/usr/local/texlive/2020/texmf-var/fonts/map/pdftex/updmap/
+pdftex.map}] [2] [3]
+Overfull \hbox (1.19055pt too wide) in paragraph at lines 162--169
+\T1/ptm/m/n/10 from \T1/zi4/m/n/10 data \T1/ptm/m/n/10 and \T1/zi4/m/n/10 formu
+la\T1/ptm/m/n/10 . i.e. \T1/zi4/m/n/10 in.min.max.limits\T1/ptm/m/n/10 , \T1/zi
+4/m/n/10 abs.min.max\T1/ptm/m/n/10 , \T1/zi4/m/n/10 input.names
+[4]
+Overfull \hbox (325.71936pt too wide) in paragraph at lines 189--193
+\T1/ptm/m/n/10 higher-level one that com-bines them: \T1/zi4/m/n/10 list(interm
+ediate.concept1=c(1,2,3),intermediate.concept2=c(4,5),higher.level.concept=c(1,
+2,3,4,5)) 
+(/usr/local/texlive/2020/texmf-dist/tex/latex/inconsolata/ts1zi4.fd) [5]
+Overfull \hbox (6.75635pt too wide) in paragraph at lines 249--249
+ []\T1/zi4/m/n/9 gbm <- train(medv ~ ., Boston, method="gbm", trControl=trainCo
+ntrol(method="cv", number=10))[] 
+[6] (/usr/local/texlive/2020/texmf-dist/tex/latex/psnfss/ts1ptm.fd)
+Overfull \hbox (2.49805pt too wide) in paragraph at lines 330--334
+\T1/ptm/m/n/10 the given "black-box" model. First get a \T1/zi4/m/n/10 CIU \T1/
+ptm/m/n/10 ob-ject by call-ing \T1/zi4/m/n/10 ciu.new \T1/ptm/m/n/10 as e.g. \T
+1/zi4/m/n/10 ciu <-ciu.new(...)\T1/ptm/m/n/10 ,
+
+Overfull \hbox (24.80856pt too wide) in paragraph at lines 354--362
+\T1/ptm/m/n/10 the given con-cept rather than rel-a-tive to the ac-tual out-put
+(s). \T1/zi4/m/n/10 ind.inputs.to.explain
+
+Overfull \hbox (8.7803pt too wide) in paragraph at lines 362--370
+\T1/ptm/m/n/10 NULL. If a \T1/zi4/m/n/10 target.concept \T1/ptm/m/n/10 is pro-v
+ided but \T1/zi4/m/n/10 target.ciu=NULL\T1/ptm/m/n/10 , then \T1/zi4/m/n/10 tar
+get.ciu
+[7]
+(/private/var/folders/bg/krz6520x5zzglv0847xhdwc40000gn/T/RtmpRU9imY/Rd2pdffb1b
+75cec4f3/Rd2.ind [8]
+
+LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
+(Font)              using `T1/zi4/m/n' instead on input line 3.
+
+[9])
+(/private/var/folders/bg/krz6520x5zzglv0847xhdwc40000gn/T/RtmpRU9imY/Rd2pdffb1b
+75cec4f3/Rd2.aux)
+
+Package rerunfilecheck Warning: File `Rd2.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+ )
+(see the transcript file for additional information)pdfTeX warning (dest): name
+{Rfn.factor} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{Rfn.vector} has been referenced but does not exist,
+ replaced by a fixed one
+
+pdfTeX warning (dest): name{Rfn.matrix} has been referenced but does not exist,
+ replaced by a fixed one
+
+pdfTeX warning (dest): name{Rfn.data.frame} has been referenced but does not ex
+ist, replaced by a fixed one
+
+pdfTeX warning (dest): name{Rfn.list} has been referenced but does not exist, r
+eplaced by a fixed one
+
+{/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/inconsolata/i4-ts1.enc}{/us
+r/local/texlive/2020/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/local/texlive
+/2020/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-0.enc}</usr/local/texlive/20
+20/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></usr/local/t
+exlive/2020/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/
+2020/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2020/texmf
+-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2020/texmf-dist/font
+s/type1/urw/times/utmr8a.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/ur
+w/times/utmri8a.pfb>
+Output written on Rd2.pdf (9 pages, 96272 bytes).
+Transcript written on Rd2.log.
+This is makeindex, version 2.15 [TeX Live 2020] (kpathsea + Thai support).
+Scanning input file Rd2.idx....done (24 entries accepted, 0 rejected).
+Sorting entries....done (109 comparisons).
+Generating output file Rd2.ind....done (52 lines written, 0 warnings).
+Output written in Rd2.ind.
+Transcript written in Rd2.ilg.
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+LaTeX2e <2020-02-02> patch level 5
+L3 programming layer <2020-03-06>
+(./Rd2.tex
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/book.cls
+Document Class: book 2019/12/20 v1.4l Standard LaTeX document class
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/bk10.clo))
+(/Library/Frameworks/R.framework/Resources/share/texmf/tex/latex/Rd.sty
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/ifthen.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/tools/longtable.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/tools/bm.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/alltt.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/tools/verbatim.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/url/url.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/textcomp.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/fontenc.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/psnfss/times.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/inconsolata/zi4.sty
+`inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+(/usr/local/texlive/2020/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/local/texlive/2020/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+(/usr/local/texlive/2020/texmf-dist/tex/generic/xkeyval/keyval.tex)))))
+(/usr/local/texlive/2020/texmf-dist/tex/latex/graphics/color.sty
+(/usr/local/texlive/2020/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/graphics-def/pdftex.def))
+(/usr/local/texlive/2020/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/local/texlive/2020/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/pdftexcmds/pdftexcmds.sty
+(/usr/local/texlive/2020/texmf-dist/tex/generic/infwarerr/infwarerr.sty))
+(/usr/local/texlive/2020/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/pdfescape/pdfescape.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/kvoptions/kvoptions.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/etexcmds/etexcmds.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/local/texlive/2020/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/local/texlive/2020/texmf-dist/tex/generic/atbegshi/atbegshi.sty))
+(/usr/local/texlive/2020/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/local/texlive/2020/texmf-dist/tex/latex/atveryend/atveryend.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+
+(/usr/local/texlive/2020/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+)))
+
+Package hyperref Warning: Option `hyperindex' has already been used,
+(hyperref)                setting the option has no effect on input line 377.
+
+
+Package hyperref Warning: Option `pagebackref' has already been used,
+(hyperref)                setting the option has no effect on input line 377.
+
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/base/makeidx.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/base/inputenc.sty)
+Writing index file Rd2.idx
+(/usr/local/texlive/2020/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def)
+(/private/var/folders/bg/krz6520x5zzglv0847xhdwc40000gn/T/RtmpRU9imY/Rd2pdffb1b
+75cec4f3/Rd2.aux) (/usr/local/texlive/2020/texmf-dist/tex/latex/psnfss/t1ptm.fd
+) (/usr/local/texlive/2020/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/local/texlive/2020/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/gettitlestring/gettitlestring.s
+ty))
+(/private/var/folders/bg/krz6520x5zzglv0847xhdwc40000gn/T/RtmpRU9imY/Rd2pdffb1b
+75cec4f3/Rd2.out)
+(/private/var/folders/bg/krz6520x5zzglv0847xhdwc40000gn/T/RtmpRU9imY/Rd2pdffb1b
+75cec4f3/Rd2.out)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/inconsolata/t1zi4.fd)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/psnfss/t1phv.fd
+
+LaTeX Warning: Font shape declaration has incorrect series value `mc'.
+               It should not contain an `m'! Please correct it.
+               Found on input line 20.
+
+
+LaTeX Warning: Font shape declaration has incorrect series value `mc'.
+               It should not contain an `m'! Please correct it.
+               Found on input line 23.
+
+
+LaTeX Warning: Font shape declaration has incorrect series value `mc'.
+               It should not contain an `m'! Please correct it.
+               Found on input line 26.
+
+
+LaTeX Warning: Font shape declaration has incorrect series value `mc'.
+               It should not contain an `m'! Please correct it.
+               Found on input line 46.
+
+)
+(/private/var/folders/bg/krz6520x5zzglv0847xhdwc40000gn/T/RtmpRU9imY/Rd2pdffb1b
+75cec4f3/Rd2.toc) [1{/usr/local/texlive/2020/texmf-var/fonts/map/pdftex/updmap/
+pdftex.map}] [2] [3]
+Overfull \hbox (1.19055pt too wide) in paragraph at lines 162--169
+\T1/ptm/m/n/10 from \T1/zi4/m/n/10 data \T1/ptm/m/n/10 and \T1/zi4/m/n/10 formu
+la\T1/ptm/m/n/10 . i.e. \T1/zi4/m/n/10 in.min.max.limits\T1/ptm/m/n/10 , \T1/zi
+4/m/n/10 abs.min.max\T1/ptm/m/n/10 , \T1/zi4/m/n/10 input.names
+[4]
+Overfull \hbox (325.71936pt too wide) in paragraph at lines 189--193
+\T1/ptm/m/n/10 higher-level one that com-bines them: \T1/zi4/m/n/10 list(interm
+ediate.concept1=c(1,2,3),intermediate.concept2=c(4,5),higher.level.concept=c(1,
+2,3,4,5)) 
+(/usr/local/texlive/2020/texmf-dist/tex/latex/inconsolata/ts1zi4.fd) [5]
+Overfull \hbox (6.75635pt too wide) in paragraph at lines 249--249
+ []\T1/zi4/m/n/9 gbm <- train(medv ~ ., Boston, method="gbm", trControl=trainCo
+ntrol(method="cv", number=10))[] 
+[6] (/usr/local/texlive/2020/texmf-dist/tex/latex/psnfss/ts1ptm.fd)
+Overfull \hbox (2.49805pt too wide) in paragraph at lines 330--334
+\T1/ptm/m/n/10 the given "black-box" model. First get a \T1/zi4/m/n/10 CIU \T1/
+ptm/m/n/10 ob-ject by call-ing \T1/zi4/m/n/10 ciu.new \T1/ptm/m/n/10 as e.g. \T
+1/zi4/m/n/10 ciu <-ciu.new(...)\T1/ptm/m/n/10 ,
+
+Overfull \hbox (24.80856pt too wide) in paragraph at lines 354--362
+\T1/ptm/m/n/10 the given con-cept rather than rel-a-tive to the ac-tual out-put
+(s). \T1/zi4/m/n/10 ind.inputs.to.explain
+
+Overfull \hbox (8.7803pt too wide) in paragraph at lines 362--370
+\T1/ptm/m/n/10 NULL. If a \T1/zi4/m/n/10 target.concept \T1/ptm/m/n/10 is pro-v
+ided but \T1/zi4/m/n/10 target.ciu=NULL\T1/ptm/m/n/10 , then \T1/zi4/m/n/10 tar
+get.ciu
+[7]
+(/private/var/folders/bg/krz6520x5zzglv0847xhdwc40000gn/T/RtmpRU9imY/Rd2pdffb1b
+75cec4f3/Rd2.ind [8]
+
+LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
+(Font)              using `T1/zi4/m/n' instead on input line 3.
+
+[9])
+(/private/var/folders/bg/krz6520x5zzglv0847xhdwc40000gn/T/RtmpRU9imY/Rd2pdffb1b
+75cec4f3/Rd2.aux)
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+ )
+(see the transcript file for additional information)pdfTeX warning (dest): name
+{Rfn.factor} has been referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{Rfn.vector} has been referenced but does not exist,
+ replaced by a fixed one
+
+pdfTeX warning (dest): name{Rfn.matrix} has been referenced but does not exist,
+ replaced by a fixed one
+
+pdfTeX warning (dest): name{Rfn.data.frame} has been referenced but does not ex
+ist, replaced by a fixed one
+
+pdfTeX warning (dest): name{Rfn.list} has been referenced but does not exist, r
+eplaced by a fixed one
+
+{/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/inconsolata/i4-ts1.enc}{/us
+r/local/texlive/2020/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/local/texlive
+/2020/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-0.enc}</usr/local/texlive/20
+20/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></usr/local/t
+exlive/2020/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/
+2020/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2020/texmf
+-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2020/texmf-dist/font
+s/type1/urw/times/utmr8a.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/ur
+w/times/utmri8a.pfb>
+Output written on Rd2.pdf (9 pages, 96529 bytes).
+Transcript written on Rd2.log.
+Saving output to ‘ciu-manual.pdf’ ...
+Done
+You may want to clean up by 'rm -Rf /var/folders/bg/krz6520x5zzglv0847xhdwc40000gn/T//RtmpRU9imY/Rd2pdffb1b75cec4f3'

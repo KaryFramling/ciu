@@ -1,0 +1,9 @@
+barplot.ciu             Barplot CIU explanation for specific instance
+ciu-package             ciu: Contextual Importance and Utility
+ciu.new                 Create CIU object
+ciu.relative            Calculate relative CIU of a sub-concept/input
+                        relative to an intermediate concept (or
+                        output).
+ciu.result.new          CIU result object
+explain                 Calculate CIU for specific instance
+ggplot.col.ciu          CIU explanation as ggplot col.

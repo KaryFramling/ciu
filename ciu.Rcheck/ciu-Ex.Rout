@@ -1,0 +1,746 @@
+
+R version 4.0.2 (2020-06-22) -- "Taking Off Again"
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin17.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "ciu"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "ciu-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('ciu')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> base::assign(".old_wd", base::getwd(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("ciu.new")
+> ### * ciu.new
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: ciu.new
+> ### Title: Create CIU object
+> ### Aliases: ciu.new
+> 
+> ### ** Examples
+> 
+> # Explaining the classification of an Iris instance with lda model.
+> # We use a versicolor (instance 100).
+> library(MASS)
+> test.ind <- 100
+> iris_test <- iris[test.ind, 1:4]
+> iris_train <- iris[-test.ind, 1:4]
+> iris_lab <- iris[[5]][-test.ind]
+> model <- lda(iris_train, iris_lab)
+> 
+> # Create CIU object
+> ciu <- ciu.new(model, Species~., iris)
+> 
+> # This can be used with explain method for getting CIU values
+> # of one or several inputs. Here we get CIU for all three outputs
+> # with input feature "Petal.Length" that happens to be the most important.
+> ciu$explain(iris_test, 1)
+                     CI           CU         cmin         cmax       outval
+setosa     1.559656e-11 4.034933e-08 1.231112e-23 1.559656e-11 6.293232e-19
+versicolor 7.481698e-03 9.893524e-01 9.925182e-01 9.999999e-01 9.999203e-01
+virginica  7.481698e-03 1.064761e-02 6.266952e-08 7.481760e-03 7.972488e-05
+> 
+> # It is, however, more convenient to use one of the graphical visualisations.
+> # Here's one using ggplot.
+> ciu$ggplot.col.ciu(iris_test)
+> 
+> # LDA creates very sharp class limits, which can also be seen in the CIU
+> # explanation. We can study what the underlying model looks like using
+> # plot.ciu and plot.ciu.3D methods. Here is a 3D plot for all three classes
+> # as a function of Petal Length&Width. Iris #100 (shown as the red dot)
+> # is on the ridge of the "versicolor" class, which is quite narrow for
+> # Petal Length&Width.
+> par(mfrow=c(1,3))
+> ciu$plot.ciu.3D(iris_test,c(3,4),1,main=levels(iris$Species)[1],)
+> ciu$plot.ciu.3D(iris_test,c(3,4),2,main=levels(iris$Species)[2])
+> ciu$plot.ciu.3D(iris_test,c(3,4),3,main=levels(iris$Species)[3])
+> par(mfrow=c(1,1))
+> 
+> # Same thing with a regression task, the Boston Housing data set. Instance
+> # #370 has the highest valuation (50k$). Model is gbm, which performs
+> # decently here. Plotting with "standard" bar plot this time.
+> library(caret)
+Loading required package: lattice
+Loading required package: ggplot2
+> gbm <- train(medv ~ ., Boston, method="gbm", trControl=trainControl(method="cv", number=10))
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       73.5369             nan     0.1000    6.5754
+     2       67.8954             nan     0.1000    3.8895
+     3       61.9758             nan     0.1000    4.3780
+     4       57.0713             nan     0.1000    4.7495
+     5       52.8844             nan     0.1000    3.7700
+     6       48.8339             nan     0.1000    3.5586
+     7       45.7613             nan     0.1000    2.7779
+     8       42.9075             nan     0.1000    2.9870
+     9       40.5842             nan     0.1000    2.3357
+    10       38.0751             nan     0.1000    2.4044
+    20       23.6275             nan     0.1000    0.6477
+    40       15.1636             nan     0.1000    0.0710
+    60       13.0237             nan     0.1000    0.0318
+    80       11.7767             nan     0.1000    0.0161
+   100       10.9371             nan     0.1000   -0.0223
+   120       10.3981             nan     0.1000   -0.0346
+   140        9.9912             nan     0.1000   -0.0080
+   150        9.7629             nan     0.1000   -0.0187
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       70.8014             nan     0.1000    8.5477
+     2       62.9698             nan     0.1000    7.8753
+     3       55.9108             nan     0.1000    7.6265
+     4       49.8489             nan     0.1000    5.2597
+     5       45.2626             nan     0.1000    4.3024
+     6       40.5510             nan     0.1000    3.7046
+     7       36.8037             nan     0.1000    3.3036
+     8       33.4294             nan     0.1000    2.2147
+     9       30.8561             nan     0.1000    1.9959
+    10       28.5358             nan     0.1000    2.3817
+    20       16.0013             nan     0.1000    0.6693
+    40       10.4044             nan     0.1000   -0.0031
+    60        8.7972             nan     0.1000   -0.0435
+    80        7.8066             nan     0.1000   -0.0024
+   100        7.1019             nan     0.1000   -0.0113
+   120        6.5652             nan     0.1000   -0.0547
+   140        5.9906             nan     0.1000   -0.0117
+   150        5.7639             nan     0.1000   -0.0435
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       69.4005             nan     0.1000   10.7471
+     2       61.2975             nan     0.1000    6.4290
+     3       53.3262             nan     0.1000    7.0050
+     4       47.2918             nan     0.1000    5.0764
+     5       42.1794             nan     0.1000    3.5113
+     6       37.2418             nan     0.1000    4.0060
+     7       33.9202             nan     0.1000    2.9809
+     8       30.5642             nan     0.1000    3.0529
+     9       28.0403             nan     0.1000    2.1351
+    10       25.5677             nan     0.1000    2.2507
+    20       14.2409             nan     0.1000    0.4995
+    40        9.5197             nan     0.1000   -0.0415
+    60        7.5826             nan     0.1000   -0.0407
+    80        6.6466             nan     0.1000   -0.0613
+   100        5.8299             nan     0.1000   -0.0648
+   120        5.3447             nan     0.1000   -0.0289
+   140        4.8530             nan     0.1000   -0.0152
+   150        4.6204             nan     0.1000   -0.0497
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       80.6197             nan     0.1000    7.6790
+     2       73.7227             nan     0.1000    5.7548
+     3       67.4731             nan     0.1000    5.4480
+     4       61.7159             nan     0.1000    5.2335
+     5       57.1724             nan     0.1000    4.5948
+     6       52.7353             nan     0.1000    3.9284
+     7       49.1318             nan     0.1000    3.6145
+     8       45.6929             nan     0.1000    3.3951
+     9       42.7831             nan     0.1000    3.1802
+    10       40.3798             nan     0.1000    2.5096
+    20       25.8812             nan     0.1000    0.5513
+    40       16.5917             nan     0.1000    0.1541
+    60       13.8585             nan     0.1000   -0.0533
+    80       12.3338             nan     0.1000   -0.0218
+   100       11.5198             nan     0.1000   -0.0136
+   120       10.8396             nan     0.1000    0.0118
+   140       10.4473             nan     0.1000   -0.0209
+   150       10.2574             nan     0.1000   -0.0229
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       77.4851             nan     0.1000   11.4058
+     2       68.4079             nan     0.1000    8.5171
+     3       60.9124             nan     0.1000    6.3469
+     4       53.5345             nan     0.1000    7.1386
+     5       48.6788             nan     0.1000    4.8637
+     6       43.9582             nan     0.1000    5.0452
+     7       40.2357             nan     0.1000    3.7496
+     8       36.5681             nan     0.1000    2.3985
+     9       33.6959             nan     0.1000    3.0420
+    10       31.0643             nan     0.1000    1.9487
+    20       18.2727             nan     0.1000    0.5951
+    40       11.7603             nan     0.1000    0.1103
+    60        9.6939             nan     0.1000    0.0045
+    80        8.7005             nan     0.1000    0.0147
+   100        7.6616             nan     0.1000   -0.0336
+   120        7.0870             nan     0.1000   -0.0563
+   140        6.5360             nan     0.1000   -0.0657
+   150        6.2881             nan     0.1000   -0.0500
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       76.3798             nan     0.1000   10.7461
+     2       66.9472             nan     0.1000    9.5503
+     3       58.5032             nan     0.1000    6.8084
+     4       51.5805             nan     0.1000    7.1937
+     5       45.7253             nan     0.1000    6.0650
+     6       40.9118             nan     0.1000    4.3663
+     7       37.0283             nan     0.1000    4.4560
+     8       33.1990             nan     0.1000    3.1291
+     9       30.0147             nan     0.1000    2.0982
+    10       27.3005             nan     0.1000    2.0356
+    20       15.0661             nan     0.1000    0.8291
+    40        9.9877             nan     0.1000    0.0061
+    60        7.6076             nan     0.1000    0.0146
+    80        6.5329             nan     0.1000   -0.0829
+   100        5.7840             nan     0.1000   -0.0389
+   120        5.2093             nan     0.1000   -0.0289
+   140        4.7663             nan     0.1000   -0.0088
+   150        4.5814             nan     0.1000   -0.0264
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       77.8988             nan     0.1000    7.3401
+     2       70.9014             nan     0.1000    6.6728
+     3       65.1515             nan     0.1000    5.7078
+     4       60.3682             nan     0.1000    4.3766
+     5       56.1493             nan     0.1000    4.2019
+     6       52.3765             nan     0.1000    3.7513
+     7       49.1071             nan     0.1000    3.0593
+     8       46.2358             nan     0.1000    2.8102
+     9       43.3115             nan     0.1000    2.5709
+    10       40.9111             nan     0.1000    2.4304
+    20       25.9043             nan     0.1000    0.7904
+    40       16.7134             nan     0.1000    0.1857
+    60       13.8209             nan     0.1000   -0.1238
+    80       12.2993             nan     0.1000    0.0205
+   100       11.5012             nan     0.1000   -0.0384
+   120       10.8930             nan     0.1000   -0.0185
+   140       10.4856             nan     0.1000    0.0039
+   150       10.3304             nan     0.1000   -0.0546
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       75.6851             nan     0.1000    9.9234
+     2       68.1131             nan     0.1000    8.5924
+     3       60.4491             nan     0.1000    7.2877
+     4       54.3149             nan     0.1000    5.3341
+     5       48.9374             nan     0.1000    5.0667
+     6       44.1017             nan     0.1000    3.9545
+     7       40.0521             nan     0.1000    3.2514
+     8       36.9114             nan     0.1000    2.6177
+     9       33.7949             nan     0.1000    2.9730
+    10       31.2775             nan     0.1000    1.9848
+    20       18.1421             nan     0.1000    0.3912
+    40       11.9427             nan     0.1000    0.1179
+    60        9.6477             nan     0.1000    0.0229
+    80        8.4336             nan     0.1000    0.0395
+   100        7.5590             nan     0.1000   -0.0438
+   120        7.1473             nan     0.1000   -0.0534
+   140        6.6870             nan     0.1000   -0.0192
+   150        6.4912             nan     0.1000   -0.0281
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       74.9203             nan     0.1000   12.4574
+     2       65.5494             nan     0.1000    8.5313
+     3       57.2543             nan     0.1000    6.3757
+     4       50.6157             nan     0.1000    5.9251
+     5       44.6792             nan     0.1000    5.7653
+     6       39.7504             nan     0.1000    4.5821
+     7       35.1977             nan     0.1000    3.8456
+     8       32.0174             nan     0.1000    3.1970
+     9       29.3280             nan     0.1000    2.5290
+    10       26.8950             nan     0.1000    2.3012
+    20       14.8850             nan     0.1000    0.6828
+    40        9.4445             nan     0.1000    0.1068
+    60        7.8812             nan     0.1000    0.0166
+    80        6.5094             nan     0.1000   -0.0219
+   100        5.7870             nan     0.1000   -0.0595
+   120        5.2887             nan     0.1000   -0.0287
+   140        4.8483             nan     0.1000   -0.0344
+   150        4.6140             nan     0.1000   -0.0252
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       75.9692             nan     0.1000    7.0392
+     2       70.3911             nan     0.1000    5.8151
+     3       64.7856             nan     0.1000    5.2019
+     4       59.6247             nan     0.1000    3.0048
+     5       54.8118             nan     0.1000    4.0755
+     6       51.2006             nan     0.1000    3.5131
+     7       47.6019             nan     0.1000    4.0810
+     8       44.1400             nan     0.1000    3.4492
+     9       41.1353             nan     0.1000    2.1603
+    10       38.8579             nan     0.1000    2.2072
+    20       24.0305             nan     0.1000    0.4883
+    40       15.2532             nan     0.1000    0.1279
+    60       12.8962             nan     0.1000   -0.1093
+    80       11.5306             nan     0.1000   -0.0059
+   100       10.6585             nan     0.1000   -0.0483
+   120       10.2410             nan     0.1000   -0.0971
+   140        9.7045             nan     0.1000   -0.1078
+   150        9.5085             nan     0.1000    0.0017
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       73.1055             nan     0.1000    9.5787
+     2       63.9448             nan     0.1000    8.3213
+     3       56.7590             nan     0.1000    5.4160
+     4       50.9764             nan     0.1000    5.1742
+     5       45.7374             nan     0.1000    4.5312
+     6       41.3997             nan     0.1000    4.1817
+     7       37.8377             nan     0.1000    3.6303
+     8       34.1524             nan     0.1000    3.1926
+     9       31.0956             nan     0.1000    2.5498
+    10       28.7001             nan     0.1000    2.2900
+    20       16.6564             nan     0.1000    0.3049
+    40       11.1913             nan     0.1000   -0.0062
+    60        9.4436             nan     0.1000   -0.0474
+    80        8.2462             nan     0.1000   -0.0326
+   100        7.4540             nan     0.1000   -0.0422
+   120        6.9350             nan     0.1000   -0.0547
+   140        6.4056             nan     0.1000   -0.0822
+   150        6.2254             nan     0.1000   -0.0215
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       72.1010             nan     0.1000   11.3766
+     2       62.4005             nan     0.1000    9.9238
+     3       54.4324             nan     0.1000    7.3609
+     4       48.1648             nan     0.1000    5.9017
+     5       43.3833             nan     0.1000    4.8613
+     6       39.2009             nan     0.1000    4.4731
+     7       35.3404             nan     0.1000    3.6435
+     8       31.7693             nan     0.1000    2.3457
+     9       29.0087             nan     0.1000    2.1327
+    10       26.5389             nan     0.1000    1.9983
+    20       14.6593             nan     0.1000    0.1570
+    40        9.5366             nan     0.1000    0.0047
+    60        7.5419             nan     0.1000   -0.0342
+    80        6.4820             nan     0.1000   -0.0244
+   100        5.7281             nan     0.1000   -0.0362
+   120        5.0733             nan     0.1000   -0.0715
+   140        4.5684             nan     0.1000   -0.0196
+   150        4.3604             nan     0.1000   -0.0293
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       76.2335             nan     0.1000    7.6121
+     2       69.3735             nan     0.1000    6.6334
+     3       64.2161             nan     0.1000    4.7821
+     4       59.7024             nan     0.1000    4.6371
+     5       55.5873             nan     0.1000    3.2659
+     6       52.0249             nan     0.1000    3.8535
+     7       48.3204             nan     0.1000    3.5440
+     8       45.2991             nan     0.1000    2.5385
+     9       42.7086             nan     0.1000    2.5998
+    10       39.9440             nan     0.1000    2.6372
+    20       24.3637             nan     0.1000    1.1226
+    40       15.5157             nan     0.1000    0.1941
+    60       12.7935             nan     0.1000   -0.1010
+    80       11.4005             nan     0.1000   -0.0002
+   100       10.5259             nan     0.1000   -0.0408
+   120        9.9185             nan     0.1000   -0.0142
+   140        9.5033             nan     0.1000   -0.0071
+   150        9.3819             nan     0.1000   -0.1633
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       73.9672             nan     0.1000    9.3097
+     2       64.7960             nan     0.1000    8.2857
+     3       57.9120             nan     0.1000    6.0593
+     4       51.9396             nan     0.1000    5.2578
+     5       46.5540             nan     0.1000    5.0234
+     6       41.9823             nan     0.1000    4.3334
+     7       37.9844             nan     0.1000    4.6968
+     8       34.7955             nan     0.1000    2.5294
+     9       31.9408             nan     0.1000    2.9199
+    10       29.3655             nan     0.1000    2.1454
+    20       16.2800             nan     0.1000    0.3637
+    40       10.5877             nan     0.1000    0.0568
+    60        8.9048             nan     0.1000   -0.2604
+    80        7.8037             nan     0.1000   -0.0133
+   100        6.8898             nan     0.1000   -0.0335
+   120        6.3531             nan     0.1000   -0.0349
+   140        6.0037             nan     0.1000   -0.0480
+   150        5.7443             nan     0.1000   -0.1048
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       72.8534             nan     0.1000    9.8863
+     2       63.0722             nan     0.1000    9.3222
+     3       55.0517             nan     0.1000    7.2547
+     4       48.9824             nan     0.1000    6.0817
+     5       43.5666             nan     0.1000    4.5451
+     6       38.6016             nan     0.1000    3.7918
+     7       34.8540             nan     0.1000    3.3145
+     8       31.4362             nan     0.1000    2.9008
+     9       28.7593             nan     0.1000    2.4599
+    10       26.1071             nan     0.1000    2.7631
+    20       13.9298             nan     0.1000    0.5396
+    40        8.8386             nan     0.1000    0.0291
+    60        7.0873             nan     0.1000    0.0148
+    80        6.0082             nan     0.1000   -0.0515
+   100        5.3097             nan     0.1000   -0.0162
+   120        4.7923             nan     0.1000   -0.0256
+   140        4.2541             nan     0.1000   -0.0007
+   150        4.1099             nan     0.1000   -0.0438
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       78.7879             nan     0.1000    3.8742
+     2       71.7231             nan     0.1000    6.6405
+     3       65.4255             nan     0.1000    4.9903
+     4       60.2672             nan     0.1000    4.1070
+     5       56.1874             nan     0.1000    3.5517
+     6       52.1571             nan     0.1000    3.7714
+     7       48.5644             nan     0.1000    3.7292
+     8       45.4661             nan     0.1000    2.0383
+     9       42.3635             nan     0.1000    2.7394
+    10       39.7972             nan     0.1000    2.1027
+    20       25.4099             nan     0.1000    0.7540
+    40       16.8551             nan     0.1000    0.0187
+    60       14.1682             nan     0.1000   -0.1108
+    80       12.6406             nan     0.1000    0.0323
+   100       11.9452             nan     0.1000   -0.0894
+   120       11.2243             nan     0.1000    0.0314
+   140       10.8852             nan     0.1000   -0.0127
+   150       10.6661             nan     0.1000   -0.0258
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       75.5614             nan     0.1000    9.8879
+     2       66.5205             nan     0.1000    7.3581
+     3       59.7841             nan     0.1000    6.4830
+     4       53.3777             nan     0.1000    5.8773
+     5       48.3453             nan     0.1000    4.6437
+     6       43.7273             nan     0.1000    3.9848
+     7       39.4950             nan     0.1000    3.8035
+     8       35.8548             nan     0.1000    2.6169
+     9       32.9318             nan     0.1000    2.7360
+    10       30.3243             nan     0.1000    1.4459
+    20       18.0180             nan     0.1000    0.1740
+    40       11.8993             nan     0.1000    0.0734
+    60        9.7310             nan     0.1000    0.0483
+    80        8.6690             nan     0.1000   -0.1139
+   100        7.9405             nan     0.1000   -0.0694
+   120        7.3204             nan     0.1000   -0.0017
+   140        6.7982             nan     0.1000   -0.0658
+   150        6.5141             nan     0.1000   -0.0123
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       74.3654             nan     0.1000   10.8058
+     2       65.3413             nan     0.1000    9.0897
+     3       57.5278             nan     0.1000    7.4892
+     4       51.2838             nan     0.1000    5.4931
+     5       45.7829             nan     0.1000    5.0887
+     6       40.6299             nan     0.1000    4.2087
+     7       36.5355             nan     0.1000    3.6156
+     8       33.0062             nan     0.1000    2.5846
+     9       30.2276             nan     0.1000    2.2681
+    10       28.2888             nan     0.1000    2.2430
+    20       15.4589             nan     0.1000    0.6017
+    40        9.8019             nan     0.1000   -0.0395
+    60        8.0876             nan     0.1000   -0.0201
+    80        6.6794             nan     0.1000    0.0143
+   100        5.9718             nan     0.1000   -0.0308
+   120        5.3195             nan     0.1000   -0.0159
+   140        4.9083             nan     0.1000   -0.0212
+   150        4.7386             nan     0.1000   -0.0294
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       78.5368             nan     0.1000    7.4275
+     2       72.7108             nan     0.1000    5.3123
+     3       66.7223             nan     0.1000    6.1762
+     4       61.7682             nan     0.1000    4.3236
+     5       57.2919             nan     0.1000    3.4707
+     6       53.5730             nan     0.1000    3.3244
+     7       49.5814             nan     0.1000    3.6054
+     8       45.9611             nan     0.1000    2.7154
+     9       42.9603             nan     0.1000    2.6361
+    10       40.5533             nan     0.1000    1.8730
+    20       25.3421             nan     0.1000    0.6818
+    40       16.2806             nan     0.1000    0.2073
+    60       13.5231             nan     0.1000    0.0400
+    80       12.1988             nan     0.1000    0.0494
+   100       11.5522             nan     0.1000   -0.0360
+   120       11.0024             nan     0.1000    0.0079
+   140       10.6371             nan     0.1000   -0.0151
+   150       10.4450             nan     0.1000   -0.0907
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       76.3527             nan     0.1000    9.8676
+     2       67.4827             nan     0.1000    8.7669
+     3       59.9248             nan     0.1000    7.1149
+     4       53.9247             nan     0.1000    5.5858
+     5       48.7672             nan     0.1000    4.2682
+     6       44.2643             nan     0.1000    4.2026
+     7       40.5817             nan     0.1000    3.4924
+     8       37.3550             nan     0.1000    3.3614
+     9       34.4672             nan     0.1000    2.4681
+    10       31.7067             nan     0.1000    2.8153
+    20       18.3908             nan     0.1000    0.0341
+    40       12.1587             nan     0.1000    0.0689
+    60       10.0327             nan     0.1000   -0.0591
+    80        8.7655             nan     0.1000   -0.0645
+   100        8.0126             nan     0.1000   -0.0199
+   120        7.4280             nan     0.1000    0.0065
+   140        6.9234             nan     0.1000   -0.0146
+   150        6.6563             nan     0.1000   -0.0567
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       74.7947             nan     0.1000   11.2799
+     2       65.0603             nan     0.1000    9.3346
+     3       57.1800             nan     0.1000    5.5609
+     4       51.4204             nan     0.1000    5.4425
+     5       45.4697             nan     0.1000    5.0849
+     6       40.7619             nan     0.1000    4.7037
+     7       36.4681             nan     0.1000    4.1556
+     8       32.9326             nan     0.1000    3.0827
+     9       29.9091             nan     0.1000    2.4184
+    10       27.3187             nan     0.1000    2.4058
+    20       14.8177             nan     0.1000    0.3326
+    40        9.6469             nan     0.1000    0.0530
+    60        7.7685             nan     0.1000    0.0331
+    80        6.7039             nan     0.1000    0.0182
+   100        5.8276             nan     0.1000   -0.0123
+   120        5.1613             nan     0.1000   -0.0071
+   140        4.6773             nan     0.1000   -0.0428
+   150        4.4777             nan     0.1000   -0.0397
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       75.7877             nan     0.1000    6.9789
+     2       69.2665             nan     0.1000    6.6757
+     3       63.7772             nan     0.1000    4.8173
+     4       59.3861             nan     0.1000    4.3366
+     5       55.6847             nan     0.1000    3.7909
+     6       51.8367             nan     0.1000    2.6365
+     7       48.2910             nan     0.1000    3.5741
+     8       44.6754             nan     0.1000    2.9652
+     9       42.0409             nan     0.1000    2.6772
+    10       39.8965             nan     0.1000    2.1774
+    20       25.2156             nan     0.1000    0.3764
+    40       16.0524             nan     0.1000    0.0383
+    60       13.5148             nan     0.1000   -0.0440
+    80       12.2376             nan     0.1000   -0.0125
+   100       11.4431             nan     0.1000   -0.0150
+   120       10.8959             nan     0.1000   -0.0197
+   140       10.4079             nan     0.1000   -0.0140
+   150       10.2369             nan     0.1000   -0.1837
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       73.4685             nan     0.1000    9.1179
+     2       65.7033             nan     0.1000    9.1551
+     3       58.9040             nan     0.1000    4.4497
+     4       53.1171             nan     0.1000    5.6902
+     5       47.4803             nan     0.1000    4.5606
+     6       42.9325             nan     0.1000    4.3106
+     7       38.8688             nan     0.1000    3.5722
+     8       35.2824             nan     0.1000    3.4340
+     9       32.8036             nan     0.1000    2.1016
+    10       30.1281             nan     0.1000    2.0456
+    20       18.2900             nan     0.1000    0.6749
+    40       11.9027             nan     0.1000    0.0062
+    60       10.0487             nan     0.1000   -0.0894
+    80        8.7875             nan     0.1000   -0.0276
+   100        7.9571             nan     0.1000   -0.0168
+   120        7.2546             nan     0.1000   -0.0070
+   140        6.7127             nan     0.1000   -0.0360
+   150        6.5417             nan     0.1000   -0.0909
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       71.2224             nan     0.1000   10.9905
+     2       62.8032             nan     0.1000    8.7425
+     3       55.3822             nan     0.1000    6.0187
+     4       48.9606             nan     0.1000    6.4932
+     5       43.6514             nan     0.1000    6.1945
+     6       39.1826             nan     0.1000    4.2727
+     7       35.7680             nan     0.1000    3.7139
+     8       32.5334             nan     0.1000    3.1646
+     9       29.6981             nan     0.1000    2.1552
+    10       27.3659             nan     0.1000    1.8625
+    20       15.2561             nan     0.1000    0.3882
+    40        9.8104             nan     0.1000    0.0208
+    60        7.8337             nan     0.1000    0.0091
+    80        6.8374             nan     0.1000   -0.0333
+   100        5.9947             nan     0.1000   -0.0224
+   120        5.5118             nan     0.1000   -0.0832
+   140        4.9456             nan     0.1000   -0.0221
+   150        4.6802             nan     0.1000   -0.0557
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       77.5492             nan     0.1000    7.8528
+     2       70.6515             nan     0.1000    6.3334
+     3       65.1274             nan     0.1000    5.4922
+     4       59.8386             nan     0.1000    4.9578
+     5       55.5802             nan     0.1000    4.1050
+     6       52.0316             nan     0.1000    3.3455
+     7       48.5405             nan     0.1000    2.8735
+     8       45.3556             nan     0.1000    3.2957
+     9       42.3811             nan     0.1000    2.2748
+    10       39.8087             nan     0.1000    2.4935
+    20       24.8830             nan     0.1000    0.8207
+    40       16.3148             nan     0.1000    0.1291
+    60       13.8747             nan     0.1000    0.0470
+    80       12.4686             nan     0.1000   -0.0955
+   100       11.6730             nan     0.1000   -0.0828
+   120       11.3015             nan     0.1000   -0.0591
+   140       10.7586             nan     0.1000   -0.0177
+   150       10.5767             nan     0.1000   -0.0275
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       74.3989             nan     0.1000   10.3346
+     2       66.2005             nan     0.1000    8.8621
+     3       58.4851             nan     0.1000    7.9873
+     4       52.3646             nan     0.1000    6.0047
+     5       47.3902             nan     0.1000    5.2340
+     6       42.6089             nan     0.1000    4.2336
+     7       38.6742             nan     0.1000    3.3082
+     8       34.8794             nan     0.1000    3.2567
+     9       31.9562             nan     0.1000    2.6744
+    10       29.4883             nan     0.1000    2.1188
+    20       17.5910             nan     0.1000    0.4361
+    40       11.9895             nan     0.1000    0.0646
+    60       10.2262             nan     0.1000   -0.0665
+    80        9.3450             nan     0.1000   -0.0303
+   100        8.5589             nan     0.1000   -0.0728
+   120        7.8436             nan     0.1000   -0.0607
+   140        7.2164             nan     0.1000   -0.0376
+   150        6.9176             nan     0.1000    0.0143
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       73.2745             nan     0.1000   12.7152
+     2       64.0978             nan     0.1000    8.4613
+     3       56.4630             nan     0.1000    7.1155
+     4       50.0126             nan     0.1000    6.1085
+     5       44.4579             nan     0.1000    5.2306
+     6       40.2511             nan     0.1000    3.6964
+     7       36.5406             nan     0.1000    3.0743
+     8       32.6014             nan     0.1000    2.2333
+     9       29.8131             nan     0.1000    2.6220
+    10       27.3246             nan     0.1000    1.6786
+    20       15.0630             nan     0.1000    0.3211
+    40       10.1018             nan     0.1000    0.0723
+    60        8.0261             nan     0.1000    0.0807
+    80        6.9208             nan     0.1000    0.0110
+   100        6.2134             nan     0.1000   -0.0228
+   120        5.6681             nan     0.1000   -0.0686
+   140        5.1724             nan     0.1000   -0.0548
+   150        4.9000             nan     0.1000   -0.0593
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       77.2770             nan     0.1000    7.0947
+     2       72.4934             nan     0.1000    5.1385
+     3       66.2639             nan     0.1000    5.8470
+     4       60.5073             nan     0.1000    5.6600
+     5       56.3097             nan     0.1000    4.2676
+     6       52.2057             nan     0.1000    4.0468
+     7       48.7212             nan     0.1000    3.4850
+     8       45.2365             nan     0.1000    2.9362
+     9       42.0752             nan     0.1000    2.1912
+    10       40.0369             nan     0.1000    2.1672
+    20       24.9891             nan     0.1000    0.9009
+    40       16.2508             nan     0.1000    0.1015
+    60       13.3540             nan     0.1000   -0.0077
+    80       11.9690             nan     0.1000    0.0482
+   100       11.0099             nan     0.1000   -0.0248
+   120       10.5168             nan     0.1000   -0.0167
+   140       10.0728             nan     0.1000   -0.0159
+   150        9.8455             nan     0.1000   -0.0216
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       74.4482             nan     0.1000   10.9022
+     2       66.5849             nan     0.1000    7.2626
+     3       59.2912             nan     0.1000    7.4397
+     4       52.6225             nan     0.1000    6.7607
+     5       47.9268             nan     0.1000    3.8270
+     6       43.0143             nan     0.1000    4.4655
+     7       39.2833             nan     0.1000    2.7036
+     8       36.8156             nan     0.1000    2.8442
+     9       33.3198             nan     0.1000    2.9522
+    10       30.3243             nan     0.1000    2.5931
+    20       17.9356             nan     0.1000    0.4736
+    40       11.6337             nan     0.1000   -0.0656
+    60        9.5405             nan     0.1000   -0.1543
+    80        8.4159             nan     0.1000   -0.0400
+   100        7.8012             nan     0.1000   -0.0116
+   120        7.2729             nan     0.1000   -0.0255
+   140        6.8900             nan     0.1000   -0.1093
+   150        6.5392             nan     0.1000   -0.0174
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       73.7011             nan     0.1000   11.5924
+     2       64.8385             nan     0.1000    8.3434
+     3       56.8790             nan     0.1000    7.2725
+     4       49.8651             nan     0.1000    5.6667
+     5       44.2716             nan     0.1000    4.9379
+     6       39.9313             nan     0.1000    3.7971
+     7       36.1321             nan     0.1000    3.7711
+     8       32.7356             nan     0.1000    2.9057
+     9       29.9352             nan     0.1000    2.5402
+    10       27.4677             nan     0.1000    1.7353
+    20       14.3413             nan     0.1000    0.5139
+    40        9.5704             nan     0.1000   -0.0028
+    60        7.9552             nan     0.1000   -0.0778
+    80        6.6463             nan     0.1000   -0.0346
+   100        5.7990             nan     0.1000   -0.0670
+   120        5.2351             nan     0.1000   -0.0421
+   140        4.7177             nan     0.1000   -0.0655
+   150        4.5525             nan     0.1000   -0.0400
+
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1       73.2309             nan     0.1000   10.6230
+     2       63.4476             nan     0.1000    8.3811
+     3       55.6449             nan     0.1000    6.7754
+     4       49.3723             nan     0.1000    5.1741
+     5       43.9692             nan     0.1000    4.8707
+     6       39.3796             nan     0.1000    3.7342
+     7       35.9637             nan     0.1000    3.3145
+     8       32.5499             nan     0.1000    3.0548
+     9       29.6623             nan     0.1000    2.9412
+    10       27.1872             nan     0.1000    1.8546
+    20       14.9857             nan     0.1000    0.5390
+    40        9.5645             nan     0.1000    0.0116
+    60        7.9227             nan     0.1000    0.0274
+    80        6.7786             nan     0.1000   -0.0215
+   100        5.9169             nan     0.1000   -0.0383
+   120        5.3667             nan     0.1000    0.0004
+   140        4.8730             nan     0.1000   -0.0384
+   150        4.6301             nan     0.1000   -0.0171
+
+> ciu <- ciu.new(gbm, medv~., Boston)
+> ciu$barplot.ciu(Boston[370,1:13])
+> 
+> # Same but sort by CI.
+> ciu$barplot.ciu(Boston[370,1:13], sort = "CI")
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("ciu.new", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> ### * <FOOTER>
+> ###
+> cleanEx()
+
+detaching ‘package:caret’, ‘package:ggplot2’, ‘package:lattice’,
+  ‘package:MASS’
+
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  3.494 0.231 4.335 0.003 0.005 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

@@ -1,0 +1,7 @@
+^renv$
+^renv\.lock$
+^.*\.Rproj$
+^\.Rproj\.user$
+^docs
+^README.md
+^ciu_0.1.0.tgz
