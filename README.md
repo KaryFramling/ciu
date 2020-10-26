@@ -119,7 +119,7 @@ The ggplot version looks like below.
 ![Random Forest ggplot for Iris](docs/Figures/rf_ciu_ggplot.col.png)
 
 
-There is also a method called pie.ciu that visualizes CIU using a pie chart, that looks like the following, produced just by replacing ``ciu@barplot.CI.CU`` with ``ciu@pie.CI.CU``. 
+There is also a method called pie.ciu that visualizes CIU using a pie chart, that looks like the following, produced just by replacing ``ciu@barplot.ciu`` with ``ciu@pie.ciu``. 
 ![Random Forest pie charts for Iris](docs/Figures/rf_ciu_iris_pieplot.png)
 
 The following figure shows how the outputs of all three Iris classes change as a function of "Petal Size" with Random Forest classifier. This was produced by calling ``ciu$plot.ciu.3D(iris_test, c(3,4), ind.output=1)`` for all three `ind.output` values.
