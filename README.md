@@ -37,7 +37,7 @@ A binary package can also be downloaded from [here](ciu_0.1.0.tgz).
 
 # Running
 
-We use the Iris data set here for simplicity. Iris is a classification task. The use of CIU for a regression task is shown with the [Boston Housing Dataset and Gradient Boosting (gbm) model here](docs/BostonCIU.md). 
+We use the Iris data set here for simplicity. Iris is a classification task. The use of CIU for a regression task is shown with the [Boston Housing Dataset and Gradient Boosting (gbm) model here](manual_docs/BostonCIU.md). 
 
 To begin with, we will start by training an lda model on the Iris data set. 
 
