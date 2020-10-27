@@ -241,8 +241,12 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
     o.input.names <- names(o.data.inp) # Shouldn't give worse result than NULL
 
   # If no output.names given, then attempt to get them from train.inputs
-  if ( is.null(o.outputnames) && !is.null(o.data.outp) )
-    o.outputnames <- names(o.data.outp) # Shouldn't give worse result than NULL
+  if ( is.null(o.outputnames) && !is.null(o.data.outp) ) {
+    if ( is.factor(o.data.outp[,1]) )
+      o.outputnames <- levels(o.data.outp[,1])
+    else
+      o.outputnames <- names(o.data.outp) # Shouldn't give worse result than NULL
+  }
 
   # Calculate CIU for specific instance
   #
@@ -486,52 +490,6 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
     reps <- reps[rows,]
     return(reps)
   }
-
-  # CIU implementation for char/factor inputs. This is still a "draft method"
-  # that needs to be better integrated with the CIU class.
-  # Notably, dealing with discrete inputs alone/together with continuous-
-  # valued inputs should be integrated into "explain" method.
-  # explain.discrete.inputs <- function(data, instance, ind.inputs,
-  #                                     target.concept=NULL, target.ciu=NULL) {
-  #   reps <- create.discrete.ciu.input.set(instance, ind.inputs, data)
-  #   outp <- o.predict.function(o.model, reps)
-  #   inst.out <- o.predict.function(o.model, instance)
-  #   cmin <- apply(outp, 2, "min")
-  #   cmax <- apply(outp, 2, "max")
-  #   absmin <- 0; absmax <- 1 # Need to fix this... Also use o.absminmax
-  #   CI <- (cmax - cmin)/(absmax - absmin) # absmax - absmin = 1
-  #   CU <- (inst.out - cmin)/(cmax - cmin) # Here it could also be (instance - cmin)/CI
-  #   CU[is.na(CU)] <- 0 # Replace possible NaN with zero. Happens if cmax - cmin = 0
-  #   ret.ciu <- ciu.result.new(CI, CU, cmin, cmax, as.numeric(inst.out))
-  #   if ( !is.null(target.concept) ) {
-  #     if ( is.null(target.ciu) ) {
-  #       target.ciu <- explain.discrete.inputs(data, instance, o.vocabulary[target.concept][[1]])
-  #     }
-  #     ret.ciu <- ciu.relative(ret.ciu, target.ciu)
-  #   }
-  #   return(ret.ciu)
-  # }
-
-  # explain.vocabulary
-  # CI.CU for "named concepts" that can be combinations of several inputs.
-  # Returns: a list with one element per named concept. Each element contains the CI.CU
-  # result given by "explain" method for the named concept.
-  # Arguments:
-  # concepts.to.explain: list of strings with the names of the concepts to be explained.
-  # Other arguments are the same as for "explain" method.
-  # explain.vocabulary <- function(instance, concepts.to.explain, in.min.max.limits=NULL, n.samples=1000,
-  #                                target.concept=NULL, target.ciu=NULL) {
-  #   # Go through concepts.to.explain one by one
-  #   res <- vector("list", length(concepts.to.explain))
-  #   names(res) <- concepts.to.explain
-  #   for ( i in 1:length(concepts.to.explain) ) {
-  #     # Get ind.inputs.to.explain from o.vocabulary for concept
-  #     ind.inputs <- o.vocabulary[concepts.to.explain[i]][[1]]
-  #     res[[i]] <- explain(instance=instance, ind.inputs.to.explain=ind.inputs, in.min.max.limits=in.min.max.limits,
-  #                         n.samples=n.samples, target.concept=target.concept, target.ciu=target.ciu)
-  #   }
-  #   return(res)
-  # }
 
   # Function for plotting out the effect of changing values of one input on one output
   # Returns: "void", or whatever happens to be result of last instruction.
