@@ -34,8 +34,9 @@ In the future, ciu will presumably be available from CRAN. Meanwhile, it can be 
 # install.packages('devtools') # Uncomment if devtools wasn't installed already
 devtools::install_github('KaryFramling/ciu')
 ```
+**Remark**: Seems like "R" has to be restarted after this. The package works fine but the Help database doesn't work. This seems to be a universal behaviour, not related to `ciu`.
 
-A binary package can also be downloaded from [here](ciu_0.1.0.tgz).
+Another option to install the binary package that can be downloaded from [here](ciu_0.1.0.tgz).  
 
 # Running
 
