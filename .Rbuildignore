@@ -3,5 +3,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^docs
+^manual_docs
 ^README.md
 ^ciu_0.1.0.tgz
