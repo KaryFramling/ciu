@@ -135,7 +135,7 @@ ciu$barplot.ciu(Boston[370,1:13], sort = "CI")
 ciu$ggplot.col(Boston[370,1:13])
 ciu$pie.ciu(Boston[370,1:13])
 
-# Methods "plot" for studying the black-box behavior and CIU one input at a time.
+# Method "plot" for studying the black-box behavior and CIU one input at a time.
 ciu$plot.ciu(Boston[370,1:13],13)
 
 }
