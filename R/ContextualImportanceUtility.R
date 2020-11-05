@@ -228,11 +228,12 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
   }
 
   # If no min-max limits given as parameter, then we get them from train.inputs parameter,
-  # if available. Doesn't make sense for factor inputs but doesn't matter, they
-  # are dealt with in other way.
+  # if available. Have to convert everything to numeric first to also deal with
+  # factor inputs, as well as avoiding minmax values to become "character" type.
   if ( is.null(o.in.minmax) && !is.null(o.data.inp) ) {
-    in.mins <- apply(o.data.inp, 2, min)
-    in.maxs <- apply(o.data.inp, 2, max)
+    d <- sapply(o.data.inp, as.numeric)
+    in.mins <- apply(d, 2, min)
+    in.maxs <- apply(d, 2, max)
     o.in.minmax <- matrix(c(in.mins, in.maxs), ncol=2)
   }
 
@@ -348,19 +349,16 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
     continuous.ciu.input.set <- NULL
 
     # Get indices of discrete inputs to explain.
-    ind.discrete <- which(apply(instance, 2, is.character) | apply(instance, 2, is.factor))
-    ind.join <- which(ind.inputs.to.explain %in% ind.discrete)
-    if ( length(ind.join) > 0 ) {
-      ind.discrete.to.explain <- ind.inputs.to.explain[ind.join]
-      ind.continuous.to.explain <- ind.inputs.to.explain[-ind.join]
+    i.discrete <- sapply(instance, is.character) | sapply(instance, is.factor)
+    i.inputs <- rep(0,length(instance)); i.inputs[ind.inputs.to.explain] <- TRUE
+    ind.discrete.to.explain <- which(i.inputs & i.discrete)
+    ind.continuous.to.explain <- which(i.inputs & !i.discrete)
+    if ( length(ind.discrete.to.explain) > 0 ) {
       discrete.ciu.input.set <-
         create.discrete.ciu.input.set(instance, ind.discrete.to.explain)
       # Actual number of samples should be at least the size of the discrete
       # input sample set.
       n.samples <- max(n.samples, nrow(discrete.ciu.input.set))
-    }
-    else {
-      ind.continuous.to.explain <- ind.inputs.to.explain
     }
 
     # Deal with continuous-valued inputs.
@@ -478,8 +476,8 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
     exp.cmd <- "expand.grid("
     if ( n.in > 1 )
       for ( i in 1:(n.in-1) )
-        exp.cmd <- paste(exp.cmd, "levels(instance[,ind.inputs[", i, "]]),", sep="")
-    exp.cmd <- paste(exp.cmd, "levels(instance[,ind.inputs[", n.in, "]]))", sep="")
+        exp.cmd <- paste(exp.cmd, "levels(instance[[", ind.inputs[i], "]]),", sep="")
+    exp.cmd <- paste(exp.cmd, "levels(instance[[", ind.inputs[n.in], "]]))", sep="")
     rep.ciu <- eval(str2expression(exp.cmd))
     names(rep.ciu) <- names(instance)[ind.inputs]
     reps <- rbind(instance,instance[rep(1,nrow(rep.ciu)-1),])
@@ -564,7 +562,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
   # n.points: How many x/y values for the plot between in.mins and in.maxs.
   # remaining: plot parameters.
   #
-  plot.ciu.3D <- function(instance, ind.inputs, ind.output, in.min.max.limits=NULL, n.points=40,
+  plot.ciu.3D <- function(instance, ind.inputs, ind.output=1, in.min.max.limits=NULL, n.points=40,
                           main=NULL, xlab=NULL, ylab=NULL, zlab=NULL, zlim=NULL, ...) {
     if ( is.null(in.min.max.limits) )
       in.min.max.limits <- o.in.minmax
@@ -589,7 +587,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
     }
     m[,ind.inputs[1]] <- pm[,1]
     m[,ind.inputs[2]] <- pm[,2]
-    z <- o.predict.function(o.model, m)
+    z <- as.matrix(o.predict.function(o.model, m)) # as.matrix to deal with case of only one output
     cu.val <- o.predict.function(o.model, instance)
     zm <- matrix(z[,ind.output], nrow = length(xp), byrow = TRUE)
 
@@ -720,7 +718,12 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
       # Add input values to input labels
       if ( show.input.values ) {
         for ( i in 1:length(inp.names) ) {
-          inp.names[i] <- paste(inp.names[i], " (", format(instance[ind.inputs[i]], digits=2), ")", sep="")
+          value <- instance[ind.inputs[i]]
+          if ( is.data.frame(value) )
+            value <- value[[1]] # Crazy checks...
+          if ( is.numeric(value) )
+            value <- format(value, digits=2)
+          inp.names[i] <- paste(inp.names[i], " (", value, ")", sep="")
         }
       }
     }
@@ -864,7 +867,12 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
       # Add input values to input labels
       if ( show.input.values ) {
         for ( i in 1:length(inp.names) ) {
-          inp.names[i] <- paste(inp.names[i], " (", format(instance[ind.inputs[i]], digits=2), ")", sep="")
+          value <- instance[ind.inputs[i]]
+          if ( is.data.frame(value) )
+            value <- value[[1]] # Crazy checks...
+          if ( is.numeric(value) )
+            value <- format(value, digits=2)
+          inp.names[i] <- paste(inp.names[i], " (", value, ")", sep="")
         }
       }
     }

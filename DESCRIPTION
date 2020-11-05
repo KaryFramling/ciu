@@ -15,8 +15,9 @@ Imports: graphics,
     Rcpp,
     grDevices, 
     ggplot2
-Suggests: MASS, 
-    caret, 
+Suggests: 
+    MASS,
+    caret,
     gbm
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
