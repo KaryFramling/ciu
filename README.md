@@ -40,7 +40,7 @@ Another option to install the binary package that can be downloaded from [here](
 
 # Running
 
-The file ![``TestCases.R``](TestCases.R) contains functions for running and testing CIU with various data sets (Iris, Boston, Heart Disease, UCI Cars, Diamonds) and machine learning models (lda, Random Forest, GBM). What is shown in the rest of this README.md file is mainly for giving a quick introduction to CIU and the use of the `ciu`package without needing to install it first.
+The file [``TestCases.R``](TestCases.R) contains functions for running and testing CIU with various data sets (Iris, Boston, Heart Disease, UCI Cars, Diamonds) and machine learning models (lda, Random Forest, GBM). What is shown in the rest of this README.md file is mainly for giving a quick introduction to CIU and the use of the `ciu`package without needing to install it first.
 
 We use the Iris data set here for simplicity. Iris is a classification task. The use of CIU for a regression task is shown with the [Boston Housing Dataset and Gradient Boosting (gbm) model here](manual_docs/BostonCIU.md). 
 
