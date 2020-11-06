@@ -40,6 +40,8 @@ Another option to install the binary package that can be downloaded from [here](
 
 # Running
 
+The file ![``TestCases.R``](TestCases.R) contains functions for running and testing CIU with various data sets (Iris, Boston, Heart Disease, UCI Cars, Diamonds) and machine learning models (lda, Random Forest, GBM). What is shown in the rest of this README.md file is mainly for giving a quick introduction to CIU and the use of the `ciu`package without needing to install it first.
+
 We use the Iris data set here for simplicity. Iris is a classification task. The use of CIU for a regression task is shown with the [Boston Housing Dataset and Gradient Boosting (gbm) model here](manual_docs/BostonCIU.md). 
 
 To begin with, we will start by training an lda model on the Iris data set. 
@@ -78,7 +80,12 @@ When doing a barplot for all Iris classes with lda model, it looks like below.
 The code for producing that plot is the following: 
 
 ``` r
-# Do barplot for all three classes in same Figurepar(mfrow=c(1,3))for ( iris.ind in 1:length(levels(iris$Species)) ) {    ciu$barplot.ciu(iris_test, ind.output=iris.ind)}par(mfrow=c(1,1))
+# Do barplot for all three classes in same Figure
+par(mfrow=c(1,3))
+for ( iris.ind in 1:length(levels(iris$Species)) ) {
+    ciu$barplot.ciu(iris_test, ind.output=iris.ind)
+}
+par(mfrow=c(1,1))
 ```
 
 A major difference in the plot above compared to those that are usually used with LIME, for instance, is that CIU has two dimensions (**importance** and **utility**) rather than only speaking about *importance* as most (all?) other methods. The length of the bar corresponds to the Contextual Importance (CI) value, while the color changes depending on the Contextual Utility (CU). A "low" CU (<0.5 by default) signifies that the value is defavorable for the output and gives a red bar. A "high" CU (>=0.5 by default) signifies that the value is favorable for the output and gives a green bar. The more (de/)favorable the value, the darker the colour. *lda* tends to produce very sharp class limits, so the color nuances are not well visible in this case. 
