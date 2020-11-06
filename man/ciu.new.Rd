@@ -140,7 +140,7 @@ ciu$plot.ciu(Boston[370,1:13],13)
 
 }
 \references{
-Främling, K. \emph{Explainable AI without Interpretable Model}. 2020, \url{arXiv:2009.13996}.
+Främling, K. \emph{Explainable AI without Interpretable Model}. 2020, \url{https://arxiv.org/abs/2009.13996}.
 
 Främling, K. \emph{Decision Theory Meets Explainable AI}. 2020, \url{https://doi.org/10.1007/978-3-030-51924-7_4}.
 

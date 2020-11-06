@@ -48,6 +48,7 @@ then call \code{ciu.res <- ciu$ggplot.col.ciu(...)}.
 \emph{"Usage" section is here in
 "Details" section because Roxygen etc. don't support documentation of functions
 within functions.}
+
 \bold{Usage}
 \preformatted{
 ggplot.col.ciu(
@@ -69,7 +70,7 @@ ggplot.col.ciu(
   main=NULL)
 }
 }
-\value{"void", i.e. whatever happens to be result of last instruction.
+\value{Created ggplot object.
 }
 \seealso{
   \code{\link{barplot.ciu}}
