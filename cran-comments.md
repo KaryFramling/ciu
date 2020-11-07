@@ -1,7 +1,8 @@
 ## Test environments
 * local OS X install, R 4.0.2
-* win-builder (devel) (Windows Server 2008 R2 SP1, R-devel, 32/64 bit)
+* win-builder (devel) 
 * devtools::check_rhub()
+  - Windows Server 2008 R2 SP1, R-devel, 32/64 bit
   - Ubuntu Linux 16.04 LTS, R-release, GCC
   - Fedora Linux, R-devel, clang, gfortran
 
