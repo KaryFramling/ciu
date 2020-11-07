@@ -17,6 +17,9 @@ test.iris.lda <- function() {
   par(mfrow=c(1,3))
   for ( i in 1:length(levels(iris$Species)))
     ciu$barplot.ciu(instance, ind.output = i)
+  par(mfrow=c(1,2))
+  ciu$plot.ciu.3D(instance, ind.inputs = c(1,2), ind.output = 2)
+  ciu$plot.ciu.3D(instance, ind.inputs = c(3,4), ind.output = 2)
   par(mfrow=c(1,1))
   p <- ciu$ggplot.col.ciu(instance); print(p)
 }
