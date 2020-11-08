@@ -6,7 +6,7 @@ Author: Kary Främling
 Maintainer: Kary Främling <Kary.Framling@umu.se>
 Description: R implementation of the Contextual Importance and Utility 
     (CIU) concepts for Explainable AI (XAI). A recent description of CIU
-    can be found in e.g. Framling (2020) <arXiv:2009.13996>.
+    can be found in e.g. Främling (2020) <arXiv:2009.13996>.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
