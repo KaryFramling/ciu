@@ -114,15 +114,14 @@ ciu$ggplot.col.ciu(iris_test)
 # as a function of Petal Length&Width. Iris #100 (shown as the red dot)
 # is on the ridge of the "versicolor" class, which is quite narrow for
 # Petal Length&Width.
-par(mfrow=c(1,3))
 ciu$plot.ciu.3D(iris_test,c(3,4),1,main=levels(iris$Species)[1],)
 ciu$plot.ciu.3D(iris_test,c(3,4),2,main=levels(iris$Species)[2])
 ciu$plot.ciu.3D(iris_test,c(3,4),3,main=levels(iris$Species)[3])
-par(mfrow=c(1,1))
 
 # Same thing with a regression task, the Boston Housing data set. Instance
 # #370 has the highest valuation (50k$). Model is gbm, which performs
 # decently here. Plotting with "standard" bar plot this time.
+# Use something like "par(mai=c(0.8,1.2,0.4,0.2))" for seeing Y-axis labels.
 library(caret)
 gbm <- train(medv ~ ., Boston, method="gbm", trControl=trainControl(method="cv", number=10))
 ciu <- ciu.new(gbm, medv~., Boston)

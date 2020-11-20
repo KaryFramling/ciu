@@ -19,8 +19,7 @@ makes it easy to understand how CI and CU values have been calculated.
   override the default ones provided here if needed.}
 }
 \details{
-First get a
-\code{CIU} object by calling \link{ciu.new} as e.g. \code{ciu <- ciu.new(...)},
+First get a \code{CIU} object by calling \link{ciu.new} as e.g. \code{ciu <- ciu.new(...)},
 then call \code{ciu.res <- ciu$plot.ciu(...)}. \emph{"Usage" section is here in
 "Details" section because Roxygen etc. don't support documentation of functions
 within functions.}
@@ -40,11 +39,6 @@ plot.ciu(
 }
 }
 \value{"void", i.e. whatever happens to be result of last instruction.
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
 }
 \author{
   Kary Främling

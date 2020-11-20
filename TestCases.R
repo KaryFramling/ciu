@@ -14,13 +14,10 @@ test.iris.lda <- function() {
   iris.lda <- lda(iris_train, iris_lab)
   instance <- iris[100,1:4]
   ciu <- ciu.new(iris.lda, Species~., iris)
-  par(mfrow=c(1,3))
   for ( i in 1:length(levels(iris$Species)))
     ciu$barplot.ciu(instance, ind.output = i)
-  par(mfrow=c(1,2))
   ciu$plot.ciu.3D(instance, ind.inputs = c(1,2), ind.output = 2)
   ciu$plot.ciu.3D(instance, ind.inputs = c(3,4), ind.output = 2)
-  par(mfrow=c(1,1))
   p <- ciu$ggplot.col.ciu(instance); print(p)
 }
 
@@ -33,11 +30,12 @@ test.boston.gbm <- function() {
   p <- ciu$ggplot.col.ciu(instance); print(p)
   ciu$barplot.ciu(instance, sort="CI")
   # See how lstat,rm,crim affect output.
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   par(mfrow=c(1,3))
   ciu$plot.ciu(instance,13,main="BH: #370")
   ciu$plot.ciu(instance,6,main="BH: #370")
   ciu$plot.ciu(instance,1,main="BH: #370")
-  par(mfrow=c(1,1))
 }
 
 # Heart disease with RF
@@ -56,12 +54,10 @@ test.heart.disease.rf <- function() {
   instance <- heart.data[32,1:n.in]
   ciu <- ciu.new(rf.heartdisease, num~., heart.data, output.names=c("No Heart Disease","Heart Disease Present"))
   p <- ciu$ggplot.col.ciu(instance, c(1:n.in)); print(p)
-  par(mfrow=c(2,2))
   ciu$barplot.ciu(instance, ind.output=1, sort="CI")
   ciu$barplot.ciu(instance, ind.output=2, sort="CI")
   ciu$pie.ciu(instance, ind.output=1, sort="CI")
   ciu$pie.ciu(instance, ind.output=2, sort="CI")
-  par(mfrow=c(1,1))
   for ( i in 1:n.in ) {
     ciu$plot.ciu(instance, ind.input=i, ind.output=2)
   }
@@ -112,12 +108,16 @@ test.diamonds.gbm <- function() {
   inst.ind <- 27750 # An expensive one!
   instance <- diamonds[inst.ind,-7]
   ciu <- ciu.new(diamonds.gbm, price~., diamonds)
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   par(mfrow=c(1,1))
   ciu$barplot.ciu(instance, sort="CI")
   p <- ciu$ggplot.col.ciu(instance); print(p)
 }
 
 # Run only one at a time! Otherwise at least the ggplot figures do not show up.
+# par(mai=c(0.8,1.2,0.4,0.2))
+
 #test.iris.lda()
 #test.boston.gbm()
 #test.heart.disease.rf()

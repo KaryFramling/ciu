@@ -104,15 +104,14 @@
 #' # as a function of Petal Length&Width. Iris #100 (shown as the red dot)
 #' # is on the ridge of the "versicolor" class, which is quite narrow for
 #' # Petal Length&Width.
-#' par(mfrow=c(1,3))
 #' ciu$plot.ciu.3D(iris_test,c(3,4),1,main=levels(iris$Species)[1],)
 #' ciu$plot.ciu.3D(iris_test,c(3,4),2,main=levels(iris$Species)[2])
 #' ciu$plot.ciu.3D(iris_test,c(3,4),3,main=levels(iris$Species)[3])
-#' par(mfrow=c(1,1))
 #'
 #' # Same thing with a regression task, the Boston Housing data set. Instance
 #' # #370 has the highest valuation (50k$). Model is gbm, which performs
 #' # decently here. Plotting with "standard" bar plot this time.
+#' # Use something like "par(mai=c(0.8,1.2,0.4,0.2))" for seeing Y-axis labels.
 #' library(caret)
 #' gbm <- train(medv ~ ., Boston, method="gbm", trControl=trainControl(method="cv", number=10))
 #' ciu <- ciu.new(gbm, medv~., Boston)
@@ -129,12 +128,11 @@
 #' ciu$plot.ciu(Boston[370,1:13],13)
 #'
 #' @author Kary Främling
-# # # Remark: "lm" is a really bad model for Boston Housing data set! It gives
+# # Remark: "lm" is a really bad model for Boston Housing data set! It gives
 # # 32.6 as estimated price instead of 50. "gbm" or similar works much better
 # # but we want to keep these examples short and not load too many libraries.
 # ciu <- ciu.new(model, medv~., Boston)
 # ciu$barplot.ciu(Boston[370,1:13])
-
 ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min.max=NULL,
                     input.names=NULL, output.names=NULL, predict.function=NULL,
                     vocabulary=NULL) {
@@ -766,12 +764,10 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
     }
 
     # Do bar plot. Limit X axis to 1 because that's normally the maximal CI value.
-    old.mai <- par(mai=c(0.8,1.2,0.4,0.2))
     if ( is.null(xlab) ) xlab <- "Contextual Importance"
     if ( is.null(xlim) ) xlim <- c(0,1)
     barplot(bar.heights,col=bar.col,names=inp.names,horiz=T,las=1,
             main=main.title, xlab=xlab, xlim=xlim, ...)
-    par(mai=old.mai)
   }
 
   # Create a pie chart showing CI as the area of slice and CU on color scale from
@@ -914,10 +910,8 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
     }
 
     # Draw pie chart plot.
-    old.mai <- par(mai=c(0.8,1.2,0.4,0.2))
     pie(bar.heights,col=bar.col,labels=inp.names,
         main=main.title, ...)
-    par(mai=old.mai)
   }
 
   # CIU feature importance/utility plot using ggplot. All parameters are not
@@ -1081,24 +1075,6 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
 
   class(pub) <- c("CIU", class(pub))
   return(pub)
-}
-
-#' Calculate relative CIU of a sub-concept/input relative to an intermediate
-#' concept (or output).
-#'
-#' Calculate relative CIU of a sub-concept/input relative to an intermediate
-#' concept (or output). The parameters must be of class "ciu.result" or a
-#' data.frame with compatible columns.
-#' @param sub.ciu.result ciu.result object of sub-concept/input.
-#'
-#' @param sup.ciu.result ciu.result object of intermediate concept/output.
-#'
-#' @export ciu.relative
-ciu.relative <- function(sub.ciu.result, sup.ciu.result) {
-  ciu.rel <- sub.ciu.result # Only CI changes, rest remains the same.
-  ciu.rel$CI <- (sub.ciu.result$cmax - sub.ciu.result$cmin)/
-    (sup.ciu.result$cmax - sup.ciu.result$cmin)
-  return(ciu.rel)
 }
 
 
