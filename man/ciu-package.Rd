@@ -6,7 +6,7 @@
 \alias{_PACKAGE}
 \title{ciu: Contextual Importance and Utility}
 \description{
-R implementation of the Contextual Importance and Utility 
+Implementation of the Contextual Importance and Utility 
     (CIU) concepts for Explainable AI (XAI). A recent description of CIU
     can be found in e.g. Främling (2020) <arXiv:2009.13996>.
 }

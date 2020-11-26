@@ -14,13 +14,10 @@ test.iris.lda <- function() {
   iris.lda <- lda(iris_train, iris_lab)
   instance <- iris[100,1:4]
   ciu <- ciu.new(iris.lda, Species~., iris)
-  par(mfrow=c(1,3))
   for ( i in 1:length(levels(iris$Species)))
     ciu$barplot.ciu(instance, ind.output = i)
-  par(mfrow=c(1,2))
   ciu$plot.ciu.3D(instance, ind.inputs = c(1,2), ind.output = 2)
   ciu$plot.ciu.3D(instance, ind.inputs = c(3,4), ind.output = 2)
-  par(mfrow=c(1,1))
   p <- ciu$ggplot.col.ciu(instance); print(p)
 }
 
@@ -33,11 +30,12 @@ test.boston.gbm <- function() {
   p <- ciu$ggplot.col.ciu(instance); print(p)
   ciu$barplot.ciu(instance, sort="CI")
   # See how lstat,rm,crim affect output.
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   par(mfrow=c(1,3))
   ciu$plot.ciu(instance,13,main="BH: #370")
   ciu$plot.ciu(instance,6,main="BH: #370")
   ciu$plot.ciu(instance,1,main="BH: #370")
-  par(mfrow=c(1,1))
 }
 
 # Heart disease with RF
@@ -56,12 +54,10 @@ test.heart.disease.rf <- function() {
   instance <- heart.data[32,1:n.in]
   ciu <- ciu.new(rf.heartdisease, num~., heart.data, output.names=c("No Heart Disease","Heart Disease Present"))
   p <- ciu$ggplot.col.ciu(instance, c(1:n.in)); print(p)
-  par(mfrow=c(2,2))
   ciu$barplot.ciu(instance, ind.output=1, sort="CI")
   ciu$barplot.ciu(instance, ind.output=2, sort="CI")
   ciu$pie.ciu(instance, ind.output=1, sort="CI")
   ciu$pie.ciu(instance, ind.output=2, sort="CI")
-  par(mfrow=c(1,1))
   for ( i in 1:n.in ) {
     ciu$plot.ciu(instance, ind.input=i, ind.output=2)
   }
@@ -112,14 +108,51 @@ test.diamonds.gbm <- function() {
   inst.ind <- 27750 # An expensive one!
   instance <- diamonds[inst.ind,-7]
   ciu <- ciu.new(diamonds.gbm, price~., diamonds)
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   par(mfrow=c(1,1))
   ciu$barplot.ciu(instance, sort="CI")
   p <- ciu$ggplot.col.ciu(instance); print(p)
 }
 
+# Titanic data set. Mixed discrete/continuous input case.
+# Also tests plot.ciu with discrete inputs.
+test.titanic.rf <- function() {
+  require("DALEX")
+  titanic_train <- titanic[,c("survived", "class", "gender", "age", "sibsp", "parch", "fare", "embarked")]
+  titanic_train$survived <- factor(titanic_train$survived)
+  titanic_train$gender <- factor(titanic_train$gender)
+  titanic_train$embarked <- factor(titanic_train$embarked)
+  titanic_train <- na.omit(titanic_train)
+
+  # Using Random Forest here. Really bad results... Takes a while also (15 seconds?)
+  kfoldcv <- trainControl(method="cv", number=10)
+  model_rf <- train(survived ~ ., titanic_train, method="rf", trControl=kfoldcv)
+
+  # Example instance
+  new_passenger <- data.frame(
+    class = factor("1st", levels = c("1st", "2nd", "3rd", "deck crew", "engineering crew", "restaurant staff", "victualling crew")),
+    gender = factor("male", levels = c("female", "male")),
+    age = 8,
+    sibsp = 0,
+    parch = 0,
+    fare = 72,
+    embarked = factor("Cherbourg", levels = c("Belfast", "Cherbourg", "Queenstown", "Southampton"))
+  )
+  ciu <- ciu.new(model_rf, survived~., titanic_train)
+  p <- ciu$ggplot.col.ciu(new_passenger); print(p)
+  for ( i in 1:ncol(new_passenger) )
+    ciu$plot.ciu(new_passenger,i,1)
+  for ( i in 1:ncol(new_passenger) )
+    ciu$plot.ciu(new_passenger,i,2)
+}
+
 # Run only one at a time! Otherwise at least the ggplot figures do not show up.
+# par(mai=c(0.8,1.2,0.4,0.2)) # Good parameters for barplot so that labels fit in.
+
 #test.iris.lda()
 #test.boston.gbm()
 #test.heart.disease.rf()
 #test.cars.UCI.rf() # Takes about 15 seconds for RF to train
 #test.diamonds.gbm() # Takes something like 2-3 minutes to train but GBM seems to be best by far here.
+#test.titanic.rf() # Takes maybe half minute.

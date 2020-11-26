@@ -17,7 +17,7 @@
 #' - `cmax values`: one row per output of the black-box model
 #' - `outval values`: one row per output of the black-box model
 #'
-#' @export ciu.result.new
+#' @export
 #' @author Kary Främling
 ciu.result.new <- function(ci, cu, cmin, cmax, outval) {
   ciu.result <- data.frame(CI=ci, CU=as.numeric(cu),

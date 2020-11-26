@@ -40,7 +40,7 @@
 #'   class(pub) <- c("CIU.BlackBox",class(pub))
 #'   return(pub)
 #' }
-#' \dontrun{
+#' \donttest{
 #' # Train and explain. We don't care about training/test sets here.
 #' gbm.Boston <- gbm(medv ~ . ,data = Boston, distribution = "gaussian",
 #' n.trees=10000, shrinkage = 0.01, interaction.depth = 4)
@@ -48,7 +48,7 @@
 #' ciu <- ciu.new(gbm.ciu, medv~., Boston)
 #' ciu$barplot.ciu(Boston[370,1:13], sort = "CI")
 #'
-#' # Same but using `predict.function` parameter in `\link{ciu.new}`.
+#' # Same but using `predict.function` parameter in `ciu.new`.
 #' # Using `ggplot.col.ciu` here for a change.
 #' predict.function <- function(model, inputs) {predict(model,inputs,n.trees=10000)}
 #' ciu <- ciu.new(gbm.Boston, medv~., Boston, predict.function=predict.function)
