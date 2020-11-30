@@ -1,5 +1,8 @@
 # ciu 0.1.0.9000
 
+* Added parameter "use.influence" to "ggplot.col" function/method, which 
+  produces a LIME/SHAP/etc-like plot where "influence = ci*2*(cu-0.5)", bars 
+  go either right or left of zero and there are only two colours. 
 * Added support for factor-type inputs to method "$plot.ciu". 
 * Created new "class" called "ciu", which is just a list object with the 
 "instance variables" of a CIU object. This makes it possible to create 

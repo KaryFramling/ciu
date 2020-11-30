@@ -56,6 +56,7 @@ plot.ciu.3D() in:
 
 For `ciu.result.new`, it **is** exported. Unless there's something strange that I didn't see. You might mean the function `plot.ciu`?
 
+<<<<<<< HEAD
 The other functions (`barplot, explain, ...`) are "inner functions" of the `ciu.new` function. `ciu.new` returns a `list` object (that additionally is of class `CIU`. That CIU/list object's elements are a list of the "public methods" that can be called for that object (the ones that you mention above). This was the recommended way of doing "object-oriented programming" in R, as described in an R document from around 2005. The later arrived R6 classes use the same principle but they require importing the R6 library and doesn't offer any additional, useful functionality. 
 
 Unfortunately, Roxygen doesn't take "inner functions" into account in any way (and apparently doesn't really support R6 neither). So exporting those methods is not really possible (unless there's a solution that I am unaware of). 
@@ -67,6 +68,23 @@ This kind of object-oriented encapsulation gives advantages for avoiding name co
 One inconventient with this object-oriented approach in R is that all the "inner functions" seem to be copied into all CIU objects (which is not so smart). However, CIU objects are typically not created in great numbers, nor for long reuse so this should not be a problem. 
 
 **Conclusion**: It is not possible to export these functions just by adding `#' @export` because Roxygen and devtools will not handle it properly, at least for the moment. The other option is to remove the examples but that will reduce the quality of the documentation and usability of the `ciu` package. Still, if that is the only possibility, then I will of course remove those examples. Which would be a pity also in the sense that `R CMD check` runs all those examples and makes sure that everything runs successfully. 
+=======
+Actual reply: `ciu` uses the recommended way of doing "object-oriented programming" in R from around 2005, as described in an R document from back then. It is very similar to the newer "Reference Classes" or "R5" way of doing object-oriented programming. For instance, methods are called using <object>$<method> and assignment of values to instance variables is done using `<<-`. 
+
+This signifies that the functions `barplot, explain, ...` are "inner functions" of the `ciu.new` function. Expressed in another way, they are methods associated with `CIU` objects. `ciu.new` returns an object of class `CIU`, which is actually a `list` object. That CIU/list object's elements are the "public methods" that can be called for that object (the ones that you mention above). 
+
+Unfortunately, Roxygen doesn't take "inner functions" into account in any way. So exporting those functions is not really possible (unless there's a solution that I am unaware of). I do not have the impression that using Reference Classes would help there. 
+
+However, all those functions do have a corresponding .Rd file so their documentation is accessible through the standard R "help" functionality, e.g. `?barplot.ciu` will give the expected help text. `R CMD CHECK` checks these `.Rd` files too and the only problem is that there can't be a standard "Usage" section because `R CMD CHECK` doesn't know how to do the check for this kind of "inner functions". 
+
+This kind of object-oriented encapsulation gives advantages for avoiding name conflicts, as well as unintentional modification of variables between different functions.  
+
+One inconventient with this object-oriented approach in R is that all the "inner functions" seem to be copied into all CIU objects (which is not so smart). However, CIU objects are typically not created in great numbers, nor for long reuse so this should not be a problem. 
+
+Finally - it's mainly a design choice. S3 functions might be good also. But then for instance the `explain` function would clash with several `explain` functions in other packages, notably the `lime` package that implements another method but in the same domain as `ciu`. Difficult to know what is the best design choice. 
+
+**Conclusion**: It is not possible to export these functions just by adding `#' @export` because Roxygen and devtools will not handle them properly, at least for the moment. The other option is to remove the examples but that will reduce the quality of the documentation and usability of the `ciu` package. Still, if that is the only possibility, then I will of course remove those examples. However, that would be a pity also because `R CMD check` runs all those examples and makes sure that everything runs successfully. 
+>>>>>>> 090516da01ac245ccb64fd670afbd70c6305775b
 
 ### Remark 3 
 
@@ -75,7 +93,11 @@ Does not seem necessary.*
 
 *Please unwrap the examples if they are executable in < 5 sec, or replace \dontrun{} with \donttest{}.*
 
+<<<<<<< HEAD
 Thanks, I did this change. The only reason for this is that, for one example, the test sometimes takes some tenths of a second longer than 5 seconds to run (due to the machine learning algorithm), giving a "NOTE" when doing `R CMD check`. 
+=======
+Thanks, I did this change. The only reason for having \donttest{} is that, for one example, the test sometimes takes some tenths of a second longer than 5 seconds to run (due to the machine learning algorithm), giving a "NOTE" when doing `R CMD check`. 
+>>>>>>> 090516da01ac245ccb64fd670afbd70c6305775b
 
 ### Remark 4 
 
@@ -106,7 +128,11 @@ par(mfrow=c(2,2))            # somewhere after
 *e.g.: ContextualImportanceUtility.R*
 *If you're not familiar with the function, please check ?on.exit. This function makes it possible to restore options before exiting a function even if the function breaks. Therefore it needs to be called immediately after the option change within a function.*
 
+<<<<<<< HEAD
 Thanks, I didn't know about `on.exit`. Anyways, I removed all `par()` call everywhere, better not to have them there at all. 
+=======
+Thanks, I didn't know about `on.exit`. Anyways, I removed all `par()` calls everywhere, better not to have them there at all. 
+>>>>>>> 090516da01ac245ccb64fd670afbd70c6305775b
 
 ### Remark 6 
 
@@ -121,7 +147,11 @@ e.g. ciu.new.Rd
 ```
 Yes, that's what I try to do systematically. Usually exactly in the way you indicate. But with `par(mfrow())` I think I had some strange behaviour, that's the reason why I did it differently. 
 
+<<<<<<< HEAD
 Anyways, as mentioned, removed all `par()` calls everywhere. Should have thought about that before.  
+=======
+Anyways, as mentioned, I removed all `par()` calls everywhere. Should have thought about that before.  
+>>>>>>> 090516da01ac245ccb64fd670afbd70c6305775b
 
 ### Remark 7 
 

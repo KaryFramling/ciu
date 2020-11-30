@@ -18,7 +18,7 @@ test.iris.lda <- function() {
     ciu$barplot.ciu(instance, ind.output = i)
   ciu$plot.ciu.3D(instance, ind.inputs = c(1,2), ind.output = 2)
   ciu$plot.ciu.3D(instance, ind.inputs = c(3,4), ind.output = 2)
-  p <- ciu$ggplot.col.ciu(instance); print(p)
+  p <- ciu$ggplot.col.ciu(instance, use.influence=TRUE); print(p)
 }
 
 # Boston with GBM
@@ -27,7 +27,7 @@ test.boston.gbm <- function() {
   gbm <- train(medv ~ ., Boston, method="gbm", trControl=kfoldcv)
   instance <- Boston[370,1:13]
   ciu <- ciu.new(gbm, medv~., Boston)
-  p <- ciu$ggplot.col.ciu(instance); print(p)
+  p <- ciu$ggplot.col.ciu(instance, use.influence=TRUE); print(p)
   ciu$barplot.ciu(instance, sort="CI")
   # See how lstat,rm,crim affect output.
   oldpar <- par(no.readonly = TRUE)
@@ -149,6 +149,7 @@ test.titanic.rf <- function() {
 
 # Run only one at a time! Otherwise at least the ggplot figures do not show up.
 # par(mai=c(0.8,1.2,0.4,0.2)) # Good parameters for barplot so that labels fit in.
+# par(mai=c(0.8,1.2,0.4,0.2))
 
 #test.iris.lda()
 #test.boston.gbm()

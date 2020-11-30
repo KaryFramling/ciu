@@ -1007,13 +1007,14 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
                               target.concept=NULL, target.ciu=NULL,
                               low.color="red", mid.color="yellow",
                               high.color="darkgreen",
+                              use.influence=FALSE,
                               sort=NULL, decreasing=FALSE, # These are not used yet.
                               main=NULL) {
       ciu.ggplot.col(as.ciu(), instance, ind.inputs, output.names, in.min.max.limits,
                      n.samples, neutral.CU,
                      show.input.values, concepts.to.explain,
                      target.concept, target.ciu,
-                     low.color, mid.color, high.color,
+                     low.color, mid.color, high.color, use.influence,
                      sort, decreasing, main)
     }
   )
