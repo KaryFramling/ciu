@@ -673,6 +673,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
   #   ramp is from red3 to yellow.
   # color.ramp.above.neutral: color ramp function as returned by function colorRamp(). Default color
   #   ramp is from yellow to darkgreen.
+  # use.influence Plot using "influence" concept rather than CI&CU.
   # sort: NULL, "CI" or "CU". No sorting by default, other options are sorting by CI or CU.
   # decreasing=FALSE: set to TRUE for decreasing sort (see arguments of sort()).
   # Other arguments are the same as for "explain" method.
@@ -683,6 +684,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
                           show.input.values=TRUE, concepts.to.explain=NULL,
                           target.concept=NULL, target.ciu=NULL,
                           color.ramp.below.neutral=NULL, color.ramp.above.neutral=NULL,
+                          use.influence=FALSE,
                           sort=NULL, decreasing=FALSE,
                           main=NULL, xlab=NULL, xlim=NULL, ...) {
 
@@ -740,6 +742,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
     # We get error otherwise...
     CIs <- as.numeric(ci.cu[,1])
     CUs <- as.numeric(ci.cu[,2])
+    C.influence <- CIs*2*(CUs - neutral.CU)
 
     # Labels for the bars. Haven't tested what happens if this is NULL, maybe still fine.
     if ( !explain.concepts ) {
@@ -759,7 +762,10 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
     # Sort results?
     if ( !is.null(sort) ) {
       if ( sort=="CI") {
-        s <- sort(CIs, decreasing=decreasing, index.return=TRUE)
+        if ( use.influence )
+          s <- sort(C.influence, decreasing=decreasing, index.return=TRUE)
+        else
+          s <- sort(CIs, decreasing=decreasing, index.return=TRUE)
       }
       else if ( sort=="CU" )  {
         s <- sort(CUs, decreasing=decreasing, index.return=TRUE)
@@ -769,19 +775,31 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
       }
       CIs <- CIs[s$ix]
       CUs <- CUs[s$ix]
+      C.influence <- C.influence[s$ix]
       inp.names <- inp.names[s$ix]
     }
 
-    # Get plotting values. Bar length corresponds to CI.
-    # Green bar for "positive CU", red for "negative CU".
-    # Darker color the higher the abs(CU) value is. Should still fine-tune this.
-    bar.heights <- CIs # Simple for bar heights. More work for CU<->colors
-    below <- CUs < neutral.CU; above <- CUs >= neutral.CU
-    cols1 <- rgb(cols.below((CUs[below])*(1/neutral.CU))/255)
-    cols2<-rgb(cols.above((CUs[above]-neutral.CU)*(1/(1-neutral.CU)))/255)
-    bar.col <- c(cols1, cols2) # Not right, just initialize. Not most elegant in the world...
-    bar.col[below] <- cols1
-    bar.col[above] <- cols2
+    # Influence plot requires small manipulations.
+    if ( use.influence ) {
+      bar.heights <- C.influence
+      below <- bar.heights < 0; above <- bar.heights >= 0
+      pos_color <- rgb(cols.above(1)/255)
+      neg_color <- rgb(cols.below(0)/255)
+      bar.col <- rep(pos_color, length(CIs))
+      bar.col[below] <- neg_color
+    }
+    else{
+      # Get plotting values. Bar length corresponds to CI.
+      # Green bar for "positive CU", red for "negative CU".
+      # Darker color the higher the abs(CU) value is. Should still fine-tune this.
+      bar.heights <- CIs # Simple for bar heights. More work for CU<->colors
+      below <- CUs < neutral.CU; above <- CUs >= neutral.CU
+      cols1 <- rgb(cols.below((CUs[below])*(1/neutral.CU))/255)
+      cols2 <- rgb(cols.above((CUs[above]-neutral.CU)*(1/(1-neutral.CU)))/255)
+      bar.col <- c(cols1, cols2) # Not right, just initialize. Not most elegant in the world...
+      bar.col[below] <- cols1
+      bar.col[above] <- cols2
+    }
 
     # Plot title
     main.title <- main
@@ -795,7 +813,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
 
     # Do bar plot. Limit X axis to 1 because that's normally the maximal CI value.
     if ( is.null(xlab) ) xlab <- "Contextual Importance"
-    if ( is.null(xlim) ) xlim <- c(0,1)
+    if ( is.null(xlim) ) ifelse(use.influence, xlim <- c(min(bar.heights),max(bar.heights)), xlim <- c(0,1))
     barplot(bar.heights,col=bar.col,names=inp.names,horiz=T,las=1,
             main=main.title, xlab=xlab, xlim=xlim, ...)
   }
@@ -983,12 +1001,12 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
     },
     barplot.ciu = function(instance, ind.inputs=NULL, ind.output=1, in.min.max.limits=NULL, n.samples=100,
                            neutral.CU=0.5, show.input.values=TRUE, concepts.to.explain=NULL, target.concept=NULL, target.ciu=NULL,
-                           color.ramp.below.neutral=NULL, color.ramp.above.neutral=NULL,
+                           color.ramp.below.neutral=NULL, color.ramp.above.neutral=NULL, use.influence=FALSE,
                            sort=NULL, decreasing=FALSE,
                            main= NULL, xlab=NULL, xlim=NULL, ...) {
       barplot.ciu(instance, ind.inputs, ind.output, in.min.max.limits, n.samples, neutral.CU, show.input.values,
                   concepts.to.explain, target.concept, target.ciu, color.ramp.below.neutral, color.ramp.above.neutral,
-                  sort, decreasing, main, xlab, xlim, ...)
+                  use.influence, sort, decreasing, main, xlab, xlim, ...)
     },
     pie.ciu = function(instance, ind.inputs=NULL, ind.output=1, in.min.max.limits=NULL, n.samples=100,
                        neutral.CU=0.5, show.input.values=TRUE, concepts.to.explain=NULL, target.concept=NULL, target.ciu=NULL,
