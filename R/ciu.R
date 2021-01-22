@@ -52,7 +52,7 @@ ciu <- function(model, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min.
 
 #' Create `CIU` object from `ciu` object.
 #'
-#' @param ciu blabla
+#' @param ciu `ciu` object.
 #'
 #' @return CIU object
 #' @export
@@ -65,13 +65,39 @@ ciu.to.CIU <- function(ciu) {
 
 #' Explain CIU
 #'
-#' @param ciu blabla
-#' @param instance blabla
-#' @param ind.inputs.to.explain blabla
-#' @param in.min.max.limits blabla
-#' @param n.samples blabla
-#' @param target.concept blabla
-#' @param target.ciu blabla
+#' @param ciu `ciu` object as created with [ciu] function (not to be confused
+#' with `CIU` object as created by [ciu.new]).
+#' @param instance Input values for the instance to explain. Should be a
+#' [data.frame] even though a `vector` or `matrix` might work too if input
+#' names and other needed metadata can be deduced from the dataset or other
+#' parameters given to \code{\link{ciu.new}}.
+#' @param ind.inputs.to.explain [vector] of indices for the inputs to be
+#' explained, i.e. for which CIU should be calculated. If `NULL`, then all
+#' inputs will be included.
+#' @param in.min.max.limits [data.frame] or [matrix] with one row per output
+#' and two columns, where the first column indicates the minimal value and the
+#' second column the maximal value for that output. ONLY NEEDED HERE IF not
+#' given as parameter to [ciu.new] or if the limits are different for this
+#' specific instance than the default ones.
+#' @param n.samples How many instances to generate for estimating CI and CU.
+#' For inputs of type [factor], all possible combinations of input values
+#' are generated, so this parameter only influences how many instances are
+#' (at least) generated for continuous-valued inputs.
+#' @param target.concept If provided, then calculate CIU of inputs
+#' `ind.inputs.to.explain` relative to the given concept rather than
+#' relative to the actual output(s). `ind.inputs.to.explain` should
+#' normally be a subset (or all) of the inputs that `target.concept`
+#' consists of, even though that not required by the CIU calculation.
+#' If a `target.ciu` is provided, then the `target.concept` doesn't have to
+#' be included in the `vocabulary` gives as parameter to [ciu.new]
+#' (at least for the moment).
+#' @param target.ciu [ciu.result] object previously calculated for
+#' `target.concept`. If a `target.concept` is provided but `target.ciu=NULL`,
+#' then `target.ciu` is estimated by a call to [ciu.explain] with the
+#' `n.samples` value given as a parameter to this call. It may be useful
+#' to provide `target.ciu` if it should be estimated using some other
+#' (typically greater) value for `n.samples` than the default one, or if it
+#' has already been calculated for some reason.
 #'
 #' @return `ciu.result` object.
 #' @export
@@ -85,7 +111,7 @@ ciu.explain <- function(ciu, instance, ind.inputs.to.explain, in.min.max.limits=
 
 #' ciu.plot
 #'
-#' @param ciu blabla
+#' @param ciu `ciu` object.
 #' @param instance blabla
 #' @param ind.input blabla
 #' @param ind.output blabla
@@ -108,7 +134,7 @@ ciu.plot <- function(ciu, instance, ind.input, ind.output, in.min.max.limits=NUL
 
 #' ciu.plot.3D
 #'
-#' @param ciu blabla
+#' @param ciu `ciu` object.
 #' @param instance blabla
 #' @param ind.inputs blabla
 #' @param ind.output blabla
@@ -133,30 +159,43 @@ ciu.plot.3D <- function(ciu, instance, ind.inputs, ind.output, in.min.max.limits
 
 #' ciu.barplot.ciu
 #'
-#' @param ciu blabla
-#' @param instance blabla
-#' @param ind.inputs blabla
-#' @param ind.output blabla
-#' @param in.min.max.limits blabla
-#' @param n.samples blabla
-#' @param neutral.CU blabla
-#' @param show.input.values blabla
-#' @param concepts.to.explain blabla
-#' @param target.concept blabla
-#' @param target.ciu blabla
-#' @param color.ramp.below.neutral blabla
-#' @param color.ramp.above.neutral blabla
-#' @param use.influence blabla
-#' @param sort blabla
-#' @param decreasing blabla
-#' @param main blabla
-#' @param xlab blabla
-#' @param xlim blabla
-#' @param ... blabla
+#' @param ciu `ciu` object.
+#' @param instance Instance to explain. See \code{\link{ciu.explain}}.
+#' @param ind.inputs \code{\link{vector}} of indices for the inputs to be
+#' included in the plot. If NULL then all inputs will be included.
+#' @param ind.output Index of output to be explained.
+#' @param in.min.max.limits See \code{\link{ciu.explain}}.
+#' @param n.samples See \code{\link{ciu.explain}}.
+#' @param neutral.CU Indicates when the Contextual Utility is considered
+#' to be "negative". The default value of 0.5 seems quite logical for most cases.
+#' @param show.input.values Include input values after input labels or not.
+#' Default is TRUE.
+#' @param concepts.to.explain List of concepts to use in the plot, as defined
+#' by vocabulary provided as argument to [ciu.new]. If `ind.inputs=NULL`,
+#' then use `concepts.to.explain` instead. If both are `NULL`, then use all inputs.
+#' @param target.concept See [ciu.explain].
+#' @param target.ciu See [ciu.explain].
+#' @param color.ramp.below.neutral Color ramp function as returned by function
+#' `colorRamp()`. Default color ramp is from red3 to yellow.
+#' @param color.ramp.above.neutral Color ramp function as returned by function
+#' `colorRamp()`. Default colorramp is from yellow to darkgreen.
+#' @param use.influence Plot using "influence" rather than CIU, i.e. a
+#' LIME-like barplot. Default is FALSE.
+#' @param sort NULL, "CI" or "CU". No sorting by default, other options are
+#' sorting by CI or CU.
+#' @param decreasing Set to TRUE for decreasing sort.
+#' @param main Usual plot parameter, possible to override default one if needed.
+#' @param xlab Usual plot parameter, possible to override default one if needed.
+#' @param xlim Usual plot parameter, possible to override default one if needed.
+#' @param ... Other graphical parameters to pass to [base::plot]
 #'
-#' @return blabla
+#' @return "void", i.e. whatever happens to be result of last instruction.
 #' @export
 #' @author Kary Främling
+#' @seealso [ggplot.col.ciu]
+#' @seealso [pie.ciu]
+#' @seealso [ciu.new]
+#' @seealso [ciu.explain]
 ciu.barplot <- function(ciu, instance, ind.inputs=NULL, ind.output=1, in.min.max.limits=NULL, n.samples=100,
                         neutral.CU=0.5, show.input.values=TRUE, concepts.to.explain=NULL, target.concept=NULL, target.ciu=NULL,
                         color.ramp.below.neutral=NULL, color.ramp.above.neutral=NULL, use.influence=FALSE,

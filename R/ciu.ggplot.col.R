@@ -124,7 +124,8 @@ ciu.ggplot.col <- function(ciu, instance, ind.inputs=NULL, output.names=NULL,
   if ( use.influence ) {
     ci <- ci*2*(cu - neutral.CU)
     cu <- sign(ci)/2 + 0.5
-    ymin <- -1;
+    #ymin <- -1;
+    ymin <- min(ci); ymax <- max(ci)
   }
 
   # Create the plot. Have to use some tricks here for avoiding warnings either

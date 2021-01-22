@@ -31,6 +31,8 @@ to be "negative". The default value of 0.5 seems quite logical for most cases.}
   \code{colorRamp()}. Default color ramp is from red3 to yellow.}
   \item{color.ramp.above.neutral}{Color ramp function as returned by function
   \code{colorRamp()}. Default colorramp is from yellow to darkgreen.}
+  \item{use.influence}{Plot using "influence" rather than CIU, i.e. a
+  LIME-like barplot. Default is FALSE.}
   \item{sort}{NULL, "CI" or "CU". No sorting by default, other options are
   sorting by CI or CU.}
   \item{decreasing}{Set to TRUE for decreasing sort.}

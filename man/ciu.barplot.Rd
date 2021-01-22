@@ -28,51 +28,69 @@ ciu.barplot(
 )
 }
 \arguments{
-\item{ciu}{blabla}
+\item{ciu}{\code{ciu} object.}
 
-\item{instance}{blabla}
+\item{instance}{Instance to explain. See \code{\link{ciu.explain}}.}
 
-\item{ind.inputs}{blabla}
+\item{ind.inputs}{\code{\link{vector}} of indices for the inputs to be
+included in the plot. If NULL then all inputs will be included.}
 
-\item{ind.output}{blabla}
+\item{ind.output}{Index of output to be explained.}
 
-\item{in.min.max.limits}{blabla}
+\item{in.min.max.limits}{See \code{\link{ciu.explain}}.}
 
-\item{n.samples}{blabla}
+\item{n.samples}{See \code{\link{ciu.explain}}.}
 
-\item{neutral.CU}{blabla}
+\item{neutral.CU}{Indicates when the Contextual Utility is considered
+to be "negative". The default value of 0.5 seems quite logical for most cases.}
 
-\item{show.input.values}{blabla}
+\item{show.input.values}{Include input values after input labels or not.
+Default is TRUE.}
 
-\item{concepts.to.explain}{blabla}
+\item{concepts.to.explain}{List of concepts to use in the plot, as defined
+by vocabulary provided as argument to \link{ciu.new}. If \code{ind.inputs=NULL},
+then use \code{concepts.to.explain} instead. If both are \code{NULL}, then use all inputs.}
 
-\item{target.concept}{blabla}
+\item{target.concept}{See \link{ciu.explain}.}
 
-\item{target.ciu}{blabla}
+\item{target.ciu}{See \link{ciu.explain}.}
 
-\item{color.ramp.below.neutral}{blabla}
+\item{color.ramp.below.neutral}{Color ramp function as returned by function
+\code{colorRamp()}. Default color ramp is from red3 to yellow.}
 
-\item{color.ramp.above.neutral}{blabla}
+\item{color.ramp.above.neutral}{Color ramp function as returned by function
+\code{colorRamp()}. Default colorramp is from yellow to darkgreen.}
 
-\item{use.influence}{blabla}
+\item{use.influence}{Plot using "influence" rather than CIU, i.e. a
+LIME-like barplot. Default is FALSE.}
 
-\item{sort}{blabla}
+\item{sort}{NULL, "CI" or "CU". No sorting by default, other options are
+sorting by CI or CU.}
 
-\item{decreasing}{blabla}
+\item{decreasing}{Set to TRUE for decreasing sort.}
 
-\item{main}{blabla}
+\item{main}{Usual plot parameter, possible to override default one if needed.}
 
-\item{xlab}{blabla}
+\item{xlab}{Usual plot parameter, possible to override default one if needed.}
 
-\item{xlim}{blabla}
+\item{xlim}{Usual plot parameter, possible to override default one if needed.}
 
-\item{...}{blabla}
+\item{...}{Other graphical parameters to pass to \link[base:plot]{base::plot}}
 }
 \value{
-blabla
+"void", i.e. whatever happens to be result of last instruction.
 }
 \description{
 ciu.barplot.ciu
+}
+\seealso{
+\link{ggplot.col.ciu}
+
+\link{pie.ciu}
+
+\link{ciu.new}
+
+\link{ciu.explain}
 }
 \author{
 Kary Främling

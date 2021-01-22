@@ -20,7 +20,7 @@ ciu.plot.3D(
 )
 }
 \arguments{
-\item{ciu}{blabla}
+\item{ciu}{\code{ciu} object.}
 
 \item{instance}{blabla}
 

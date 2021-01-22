@@ -7,7 +7,7 @@
 ciu.to.CIU(ciu)
 }
 \arguments{
-\item{ciu}{blabla}
+\item{ciu}{\code{ciu} object.}
 }
 \value{
 CIU object

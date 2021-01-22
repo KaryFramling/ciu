@@ -28,7 +28,7 @@ test.boston.gbm <- function() {
   gbm <- train(medv ~ ., Boston, method="gbm", trControl=kfoldcv)
   instance <- Boston[370,1:13]
   ciu <- ciu.new(gbm, medv~., Boston)
-  p <- ciu$ggplot.col.ciu(instance, use.influence=TRUE); print(p)
+  p <- ciu$ggplot.col.ciu(instance); print(p)
   ciu$barplot.ciu(instance, sort="CI", use.influence=TRUE)
   # See how lstat,rm,crim affect output.
   oldpar <- par(no.readonly = TRUE)

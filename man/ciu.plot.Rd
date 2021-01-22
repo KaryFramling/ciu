@@ -19,7 +19,7 @@ ciu.plot(
 )
 }
 \arguments{
-\item{ciu}{blabla}
+\item{ciu}{\code{ciu} object.}
 
 \item{instance}{blabla}
 
