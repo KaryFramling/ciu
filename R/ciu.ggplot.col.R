@@ -118,30 +118,53 @@ ciu.ggplot.col <- function(ciu, instance, ind.inputs=NULL, output.names=NULL,
       main <- paste0(main, "\nTarget concept is \"", target.concept, "\"")
   }
 
-  # Influence plot requires small manipulations.
+  # Create the plot. Have to use some tricks here for avoiding warnings either
+  # by devtools.check or during execution. Apparently devtools.check
+  # doesn't understand attach() explicitly nor done by ggplot
+  fl <- ci.cu$feature.labels;
   ci <- ci.cu$CI; cu <- ci.cu$CU
-  ymin <- 0; ymax <- 1
+  # Influence plot separated because needs more than trivial manipulations.
+  p <- ggplot(ci.cu)
   if ( use.influence ) {
     ci <- ci*2*(cu - neutral.CU)
     cu <- sign(ci)/2 + 0.5
     #ymin <- -1;
     ymin <- min(ci); ymax <- max(ci)
+    # Have to do special treatment here for the case if we have only one "cu"
+    # value for all features.
+    cumin <- min(cu); cumax <- max(cu)
+    # Have to do special treatment here for the case if we have only one "cu"
+    # value for all features.
+    cumin <- min(cu); cumax <- max(cu)
+    if ( cumin == cumax ) {
+      if ( cumin == 0 ) cu_col <- low.color
+      else if ( cumin == 0.5 ) cu_col <- mid.color
+      else cu_col <- high.color
+      low.color <- mid.color <- high.color <- cu_col
+    }
+    else {
+      p <- p + ylim(ymin, ymax)
+    }
+    p <- p + theme(legend.position="none")
   }
-
-  # Create the plot. Have to use some tricks here for avoiding warnings either
-  # by devtools.check or during execution. Apparently devtools.check
-  # doesn't understand attach() explicitly nor done by ggplot
-  fl <- ci.cu$feature.labels;
-  p <- ggplot(ci.cu) +
+  else {
+    # # Have to do special treatment here for the case if all features have same
+    # # cu value because ggplot doesn't use color palette correctly in that case.
+    # # SKIPPED FOR THE moment because it still won't work if we have only one feature.
+    # cumin <- min(cu); cumax <- max(cu)
+    # if ( all.equal(cumin, cumax) ) {
+    #   cu <- cu + runif(length(cu), -0.1, 0.1)
+    #   print(cu)
+    # }
+    ymin <- 0; ymax <- 1
+    p <- p + ylim(ymin, ymax)
+  }
+  p <- p +
     geom_col(aes(reorder(fl, ci), ci, fill=cu)) +
+    scale_fill_gradient2(low=low.color, mid=mid.color, high=high.color, midpoint=neutral.CU) +
     coord_flip() +
     facet_wrap(~Output, labeller=label_both) + # Use scales="free_y" is different ordering for every facet
     ggtitle(main) +
-    xlab("Feature") +
-    ylim(ymin, ymax) +
-    scale_fill_gradient2(low=low.color, mid=mid.color, high=high.color, midpoint=neutral.CU)
-  if ( use.influence ) {
-    p <- p + theme(legend.position="none")
-  }
+    xlab("Feature")
   return(p)
 }
