@@ -1,8 +1,8 @@
 citHeader("To cite ciu in publications, please use:")
 
-bibentry(bibtype = "proceedings",
+bibentry(bibtype = "InProceedings",
   author = "Kary Främling",
   title = "Contextual Importance and Utility in R: the ‘ciu’ Package",
   year = "2021",
-  organization = {1st Workshop on Explainable Agency in Artificial Intelligence at 35th AAAI Conference on Artificial Intelligence},
+  booktitle = "Proceedings of 1st Workshop on Explainable Agency in Artificial Intelligence at 35th AAAI Conference on Artificial Intelligence"
 )
