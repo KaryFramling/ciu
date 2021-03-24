@@ -4,5 +4,6 @@ bibentry(bibtype = "InProceedings",
   author = "Kary Främling",
   title = "Contextual Importance and Utility in R: the ‘ciu’ Package",
   year = "2021",
-  booktitle = "Proceedings of 1st Workshop on Explainable Agency in Artificial Intelligence at 35th AAAI Conference on Artificial Intelligence"
+  pages = "110--114",
+  booktitle = "Proceedings of 1st Workshop on Explainable Agency in Artificial Intelligence, at 35th AAAI Conference on Artificial Intelligence"
 )

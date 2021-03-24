@@ -20,6 +20,7 @@ ciu.ggplot.col(
   mid.color = "yellow",
   high.color = "darkgreen",
   use.influence = FALSE,
+  influence.minmax = c(-1, 1),
   sort = NULL,
   decreasing = FALSE,
   main = NULL
@@ -55,6 +56,8 @@ ciu.ggplot.col(
 \item{high.color}{blabla}
 
 \item{use.influence}{Plot "influence" instead of CI and CU.}
+
+\item{influence.minmax}{Range to use for influence.}
 
 \item{sort}{blabla}
 

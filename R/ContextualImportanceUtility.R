@@ -684,7 +684,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
                           show.input.values=TRUE, concepts.to.explain=NULL,
                           target.concept=NULL, target.ciu=NULL,
                           color.ramp.below.neutral=NULL, color.ramp.above.neutral=NULL,
-                          use.influence=FALSE,
+                          use.influence=FALSE, influence.minmax = c(-1,1),
                           sort=NULL, decreasing=FALSE,
                           main=NULL, xlab=NULL, xlim=NULL, ...) {
 
@@ -742,7 +742,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
     # We get error otherwise...
     CIs <- as.numeric(ci.cu[,1])
     CUs <- as.numeric(ci.cu[,2])
-    C.influence <- CIs*2*(CUs - neutral.CU)
+    C.influence <- (influence.minmax[2] - influence.minmax[1])*CIs*(CUs - neutral.CU)
 
     # Labels for the bars. Haven't tested what happens if this is NULL, maybe still fine.
     if ( !explain.concepts ) {
@@ -787,6 +787,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
       neg_color <- rgb(cols.below(0)/255)
       bar.col <- rep(pos_color, length(CIs))
       bar.col[below] <- neg_color
+      my.xlab <- "Contextual Influence"
     }
     else{
       # Get plotting values. Bar length corresponds to CI.
@@ -799,6 +800,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
       bar.col <- c(cols1, cols2) # Not right, just initialize. Not most elegant in the world...
       bar.col[below] <- cols1
       bar.col[above] <- cols2
+      my.xlab <- "Contextual Importance"
     }
 
     # Plot title
@@ -812,7 +814,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
     }
 
     # Do bar plot. Limit X axis to 1 because that's normally the maximal CI value.
-    if ( is.null(xlab) ) xlab <- "Contextual Importance"
+    if ( is.null(xlab) ) xlab <- my.xlab
     if ( is.null(xlim) ) ifelse(use.influence, xlim <- c(min(bar.heights),max(bar.heights)), xlim <- c(0,1))
     barplot(bar.heights,col=bar.col,names=inp.names,horiz=T,las=1,
             main=main.title, xlab=xlab, xlim=xlim, ...)
@@ -1001,12 +1003,13 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
     },
     barplot.ciu = function(instance, ind.inputs=NULL, ind.output=1, in.min.max.limits=NULL, n.samples=100,
                            neutral.CU=0.5, show.input.values=TRUE, concepts.to.explain=NULL, target.concept=NULL, target.ciu=NULL,
-                           color.ramp.below.neutral=NULL, color.ramp.above.neutral=NULL, use.influence=FALSE,
+                           color.ramp.below.neutral=NULL, color.ramp.above.neutral=NULL,
+                           use.influence=FALSE, influence.minmax = c(-1,1),
                            sort=NULL, decreasing=FALSE,
                            main= NULL, xlab=NULL, xlim=NULL, ...) {
       barplot.ciu(instance, ind.inputs, ind.output, in.min.max.limits, n.samples, neutral.CU, show.input.values,
                   concepts.to.explain, target.concept, target.ciu, color.ramp.below.neutral, color.ramp.above.neutral,
-                  use.influence, sort, decreasing, main, xlab, xlim, ...)
+                  use.influence, influence.minmax, sort, decreasing, main, xlab, xlim, ...)
     },
     pie.ciu = function(instance, ind.inputs=NULL, ind.output=1, in.min.max.limits=NULL, n.samples=100,
                        neutral.CU=0.5, show.input.values=TRUE, concepts.to.explain=NULL, target.concept=NULL, target.ciu=NULL,
@@ -1025,14 +1028,15 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
                               target.concept=NULL, target.ciu=NULL,
                               low.color="red", mid.color="yellow",
                               high.color="darkgreen",
-                              use.influence=FALSE,
+                              use.influence=FALSE, influence.minmax = c(-1,1),
                               sort=NULL, decreasing=FALSE, # These are not used yet.
                               main=NULL) {
       ciu.ggplot.col(as.ciu(), instance, ind.inputs, output.names, in.min.max.limits,
                      n.samples, neutral.CU,
                      show.input.values, concepts.to.explain,
                      target.concept, target.ciu,
-                     low.color, mid.color, high.color, use.influence,
+                     low.color, mid.color, high.color,
+                     use.influence,influence.minmax,
                      sort, decreasing, main)
     }
   )

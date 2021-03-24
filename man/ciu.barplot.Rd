@@ -19,6 +19,7 @@ ciu.barplot(
   color.ramp.below.neutral = NULL,
   color.ramp.above.neutral = NULL,
   use.influence = FALSE,
+  influence.minmax = c(-1, 1),
   sort = NULL,
   decreasing = FALSE,
   main = NULL,

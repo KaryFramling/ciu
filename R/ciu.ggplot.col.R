@@ -25,6 +25,7 @@
 #' @param mid.color  blabla
 #' @param high.color  blabla
 #' @param use.influence Plot "influence" instead of CI and CU.
+#' @param influence.minmax Range to use for influence.
 #' @param sort  blabla
 #' @param decreasing  blabla
 #' @param main  blabla
@@ -39,7 +40,7 @@ ciu.ggplot.col <- function(ciu, instance, ind.inputs=NULL, output.names=NULL,
                            target.concept=NULL, target.ciu=NULL,
                            low.color="red", mid.color="yellow",
                            high.color="darkgreen",
-                           use.influence=FALSE,
+                           use.influence=FALSE, influence.minmax = c(-1,1),
                            sort=NULL, decreasing=FALSE, # These are not used yet.
                            main=NULL) {
 
@@ -126,7 +127,7 @@ ciu.ggplot.col <- function(ciu, instance, ind.inputs=NULL, output.names=NULL,
   # Influence plot separated because needs more than trivial manipulations.
   p <- ggplot(ci.cu)
   if ( use.influence ) {
-    ci <- ci*2*(cu - neutral.CU)
+    ci <- (influence.minmax[2] - influence.minmax[1])*ci*(cu - neutral.CU)
     cu <- sign(ci)/2 + 0.5
     #ymin <- -1;
     ymin <- min(ci); ymax <- max(ci)

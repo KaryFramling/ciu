@@ -198,14 +198,15 @@ ciu.plot.3D <- function(ciu, instance, ind.inputs, ind.output, in.min.max.limits
 #' @seealso [ciu.explain]
 ciu.barplot <- function(ciu, instance, ind.inputs=NULL, ind.output=1, in.min.max.limits=NULL, n.samples=100,
                         neutral.CU=0.5, show.input.values=TRUE, concepts.to.explain=NULL, target.concept=NULL, target.ciu=NULL,
-                        color.ramp.below.neutral=NULL, color.ramp.above.neutral=NULL, use.influence=FALSE,
+                        color.ramp.below.neutral=NULL, color.ramp.above.neutral=NULL,
+                        use.influence=FALSE, influence.minmax = c(-1,1),
                         sort=NULL, decreasing=FALSE,
                         main= NULL, xlab=NULL, xlim=NULL, ...) {
   if ( inherits(ciu, "ciu") )
     ciu <- ciu.to.CIU(ciu)
   ciu$barplot.ciu(instance, ind.inputs, ind.output, in.min.max.limits, n.samples, neutral.CU, show.input.values,
                   concepts.to.explain, target.concept, target.ciu, color.ramp.below.neutral, color.ramp.above.neutral,
-                  use.influence, sort, decreasing, main, xlab, xlim, ...)
+                  use.influence, influence.minmax, sort, decreasing, main, xlab, xlim, ...)
 }
 
 #' ciu.pie
