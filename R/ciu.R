@@ -63,7 +63,10 @@ ciu.to.CIU <- function(ciu) {
   return(CIU)
 }
 
-#' Explain CIU
+#' Calculate CIU for specific instance
+#'
+#' Calculate Contextual Importance (CI) and Contextual Utility (CU) for an
+#' instance (Context) using the given "black-box" model.
 #'
 #' @param ciu `ciu` object as created with [ciu] function (not to be confused
 #' with `CIU` object as created by [ciu.new]).
@@ -91,7 +94,7 @@ ciu.to.CIU <- function(ciu) {
 #' If a `target.ciu` is provided, then the `target.concept` doesn't have to
 #' be included in the `vocabulary` gives as parameter to [ciu.new]
 #' (at least for the moment).
-#' @param target.ciu [ciu.result] object previously calculated for
+#' @param target.ciu `ciu.result` object previously calculated for
 #' `target.concept`. If a `target.concept` is provided but `target.ciu=NULL`,
 #' then `target.ciu` is estimated by a call to [ciu.explain] with the
 #' `n.samples` value given as a parameter to this call. It may be useful
@@ -111,20 +114,21 @@ ciu.explain <- function(ciu, instance, ind.inputs.to.explain, in.min.max.limits=
 
 #' ciu.plot
 #'
-#' @param ciu `ciu` object.
-#' @param instance blabla
-#' @param ind.input blabla
-#' @param ind.output blabla
-#' @param in.min.max.limits blabla
-#' @param n.points blabla
-#' @param main blabla
-#' @param xlab blabla
-#' @param ylab blabla
-#' @param ylim blabla
-#' @param ... blabla
+#' Function for plotting out the effect of changing values of one input on one output
 #'
-#' @return blabla
+#' @inheritParams ciu.explain
+#' @param ind.input Index of input feature to plot.
+#' @param ind.output Index of output to plot.
+#' @param n.points How many x,y pairs will be calculated, equally spaced over in.min.max.limits.
+#' @param main Text to use as main title.
+#' @param xlab Label for x-axis.
+#' @param ylab Label for y-axis.
+#' @param ylim Minimal and maximal values for y-axis.
+#' @param ... See [base::plot].
+#'
+#' @return "void", or whatever happens to be result of last instruction.
 #' @export
+#' @seealso [base::plot] for "..." parameters.
 #' @author Kary Främling
 ciu.plot <- function(ciu, instance, ind.input, ind.output, in.min.max.limits=NULL, n.points=40, main=NULL, xlab=NULL, ylab=NULL, ylim=NULL, ...) {
   if ( inherits(ciu, "ciu") )
@@ -134,20 +138,15 @@ ciu.plot <- function(ciu, instance, ind.input, ind.output, in.min.max.limits=NUL
 
 #' ciu.plot.3D
 #'
-#' @param ciu `ciu` object.
-#' @param instance blabla
-#' @param ind.inputs blabla
-#' @param ind.output blabla
-#' @param in.min.max.limits blabla
-#' @param n.points blabla
-#' @param main blabla
-#' @param xlab blabla
-#' @param ylab blabla
-#' @param zlab blabla
-#' @param zlim blabla
-#' @param ... blabla
+#' Function for 3D plotting the effect of changing values of two inputs on one output.
 #'
-#' @return blabla
+#' @inheritParams ciu.explain
+#' @inheritParams graphics::persp
+#' @param ind.inputs Indices of input features to plot.
+#' @param ind.output Index of output to plot.
+#' @param n.points Number of x/y-axis points to use.
+#'
+#' @return "void", or whatever happens to be result of last instruction.
 #' @export
 #' @author Kary Främling
 ciu.plot.3D <- function(ciu, instance, ind.inputs, ind.output, in.min.max.limits=NULL, n.points=40,
@@ -157,15 +156,15 @@ ciu.plot.3D <- function(ciu, instance, ind.inputs, ind.output, in.min.max.limits
   ciu$plot.ciu.3D(instance, ind.inputs, ind.output, in.min.max.limits, n.points, main, xlab, ylab, zlab, zlim, ...)
 }
 
-#' ciu.barplot.ciu
+#' ciu.barplot
 #'
-#' @param ciu `ciu` object.
-#' @param instance Instance to explain. See \code{\link{ciu.explain}}.
+#' Create a barplot showing CI as the length of the bar and CU on color scale from
+#' red to green, via yellow, for the given inputs and the given output.
+#'
+#' @inheritParams ciu.meta.explain
 #' @param ind.inputs \code{\link{vector}} of indices for the inputs to be
 #' included in the plot. If NULL then all inputs will be included.
 #' @param ind.output Index of output to be explained.
-#' @param in.min.max.limits See \code{\link{ciu.explain}}.
-#' @param n.samples See \code{\link{ciu.explain}}.
 #' @param neutral.CU Indicates when the Contextual Utility is considered
 #' to be "negative". The default value of 0.5 seems quite logical for most cases.
 #' @param show.input.values Include input values after input labels or not.
@@ -173,21 +172,22 @@ ciu.plot.3D <- function(ciu, instance, ind.inputs, ind.output, in.min.max.limits
 #' @param concepts.to.explain List of concepts to use in the plot, as defined
 #' by vocabulary provided as argument to [ciu.new]. If `ind.inputs=NULL`,
 #' then use `concepts.to.explain` instead. If both are `NULL`, then use all inputs.
-#' @param target.concept See [ciu.explain].
-#' @param target.ciu See [ciu.explain].
+#' @param ciu.meta If given, then use existing `ciu.meta.result` rather
+#' than calling [ciu.meta.explain].
 #' @param color.ramp.below.neutral Color ramp function as returned by function
 #' `colorRamp()`. Default color ramp is from red3 to yellow.
 #' @param color.ramp.above.neutral Color ramp function as returned by function
 #' `colorRamp()`. Default colorramp is from yellow to darkgreen.
 #' @param use.influence Plot using "influence" rather than CIU, i.e. a
 #' LIME-like barplot. Default is FALSE.
+#' @param influence.minmax Range to use for influence values.
 #' @param sort NULL, "CI" or "CU". No sorting by default, other options are
 #' sorting by CI or CU.
 #' @param decreasing Set to TRUE for decreasing sort.
-#' @param main Usual plot parameter, possible to override default one if needed.
-#' @param xlab Usual plot parameter, possible to override default one if needed.
-#' @param xlim Usual plot parameter, possible to override default one if needed.
-#' @param ... Other graphical parameters to pass to [base::plot]
+#' @param main Text to use as main title.
+#' @param xlab Label for x-axis.
+#' @param xlim Minimal and maximal values for x-axis.
+#' @param ... See [base::plot].
 #'
 #' @return "void", i.e. whatever happens to be result of last instruction.
 #' @export
@@ -198,6 +198,7 @@ ciu.plot.3D <- function(ciu, instance, ind.inputs, ind.output, in.min.max.limits
 #' @seealso [ciu.explain]
 ciu.barplot <- function(ciu, instance, ind.inputs=NULL, ind.output=1, in.min.max.limits=NULL, n.samples=100,
                         neutral.CU=0.5, show.input.values=TRUE, concepts.to.explain=NULL, target.concept=NULL, target.ciu=NULL,
+                        ciu.meta = NULL,
                         color.ramp.below.neutral=NULL, color.ramp.above.neutral=NULL,
                         use.influence=FALSE, influence.minmax = c(-1,1),
                         sort=NULL, decreasing=FALSE,
@@ -205,42 +206,29 @@ ciu.barplot <- function(ciu, instance, ind.inputs=NULL, ind.output=1, in.min.max
   if ( inherits(ciu, "ciu") )
     ciu <- ciu.to.CIU(ciu)
   ciu$barplot.ciu(instance, ind.inputs, ind.output, in.min.max.limits, n.samples, neutral.CU, show.input.values,
-                  concepts.to.explain, target.concept, target.ciu, color.ramp.below.neutral, color.ramp.above.neutral,
+                  concepts.to.explain, target.concept, target.ciu, ciu.meta, color.ramp.below.neutral, color.ramp.above.neutral,
                   use.influence, influence.minmax, sort, decreasing, main, xlab, xlim, ...)
 }
 
 #' ciu.pie
 #'
-#' @param ciu blabla
-#' @param instance blabla
-#' @param ind.inputs blabla
-#' @param ind.output blabla
-#' @param in.min.max.limits blabla
-#' @param n.samples blabla
-#' @param neutral.CU blabla
-#' @param show.input.values blabla
-#' @param concepts.to.explain blabla
-#' @param target.concept blabla
-#' @param target.ciu blabla
-#' @param color.ramp.below.neutral blabla
-#' @param color.ramp.above.neutral blabla
-#' @param sort blabla
-#' @param decreasing blabla
-#' @param main blabla
-#' @param ... blabla
+#' Create a pie chart showing CI as the area of slice and CU on color scale from
+#' red to green, via yellow, for the given inputs and the given output.
+#' @inheritParams ciu.barplot
 #'
-#' @return blabla
+#' @return "void", i.e. whatever happens to be result of last instruction.
 #' @export
 #' @author Kary Främling
 ciu.pie <- function(ciu, instance, ind.inputs=NULL, ind.output=1, in.min.max.limits=NULL, n.samples=100,
-                    neutral.CU=0.5, show.input.values=TRUE, concepts.to.explain=NULL, target.concept=NULL, target.ciu=NULL,
+                    neutral.CU=0.5, show.input.values=TRUE, concepts.to.explain=NULL,
+                    target.concept=NULL, target.ciu=NULL, ciu.meta = NULL,
                     color.ramp.below.neutral=NULL, color.ramp.above.neutral=NULL,
                     sort=NULL, decreasing=FALSE,
                     main= NULL, ...) {
   if ( inherits(ciu, "ciu") )
     ciu <- ciu.to.CIU(ciu)
   ciu$pie.ciu(instance, ind.inputs, ind.output, in.min.max.limits, n.samples, neutral.CU,
-              show.input.values, concepts.to.explain, target.concept, target.ciu,
+              show.input.values, concepts.to.explain, target.concept, target.ciu, ciu.meta,
               color.ramp.below.neutral, color.ramp.above.neutral,
               sort, decreasing, main, ...)
 }

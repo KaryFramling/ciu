@@ -20,35 +20,50 @@ ciu.plot.3D(
 )
 }
 \arguments{
-\item{ciu}{\code{ciu} object.}
+\item{ciu}{\code{ciu} object as created with \link{ciu} function (not to be confused
+with \code{CIU} object as created by \link{ciu.new}).}
 
-\item{instance}{blabla}
+\item{instance}{Input values for the instance to explain. Should be a
+\link{data.frame} even though a \code{vector} or \code{matrix} might work too if input
+names and other needed metadata can be deduced from the dataset or other
+parameters given to \code{\link{ciu.new}}.}
 
-\item{ind.inputs}{blabla}
+\item{ind.inputs}{Indices of input features to plot.}
 
-\item{ind.output}{blabla}
+\item{ind.output}{Index of output to plot.}
 
-\item{in.min.max.limits}{blabla}
+\item{in.min.max.limits}{\link{data.frame} or \link{matrix} with one row per output
+and two columns, where the first column indicates the minimal value and the
+second column the maximal value for that output. ONLY NEEDED HERE IF not
+given as parameter to \link{ciu.new} or if the limits are different for this
+specific instance than the default ones.}
 
-\item{n.points}{blabla}
+\item{n.points}{Number of x/y-axis points to use.}
 
-\item{main}{blabla}
+\item{main}{main and sub title, as for \code{\link[graphics]{title}}.}
 
-\item{xlab}{blabla}
+\item{xlab}{titles for the axes.  N.B. These must be
+    character strings; expressions are not accepted.  Numbers will be
+    coerced to character strings.}
 
-\item{ylab}{blabla}
+\item{ylab}{titles for the axes.  N.B. These must be
+    character strings; expressions are not accepted.  Numbers will be
+    coerced to character strings.}
 
-\item{zlab}{blabla}
+\item{zlab}{titles for the axes.  N.B. These must be
+    character strings; expressions are not accepted.  Numbers will be
+    coerced to character strings.}
 
-\item{zlim}{blabla}
+\item{zlim}{x-, y-  and z-limits.  These should be chosen
+    to cover the range of values of the surface: see \sQuote{Details}.}
 
-\item{...}{blabla}
+\item{...}{additional \link[graphics]{graphical parameters} (see \code{\link[graphics]{par}}).}
 }
 \value{
-blabla
+"void", or whatever happens to be result of last instruction.
 }
 \description{
-ciu.plot.3D
+Function for 3D plotting the effect of changing values of two inputs on one output.
 }
 \author{
 Kary Främling

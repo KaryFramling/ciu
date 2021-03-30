@@ -78,6 +78,7 @@ first get a \code{CIU} object by calling \code{\link{ciu.new}} as e.g.
 The methods that can be used in \verb{<method>} are:
 \itemize{
 \item \code{\link{explain}}
+\item \code{meta.explain}, see \link{ciu.meta.explain} (but omit first parameter \code{ciu}).
 \item \code{\link{barplot.ciu}}
 \item \code{\link{ggplot.col.ciu}}
 \item \code{\link{pie.ciu}}

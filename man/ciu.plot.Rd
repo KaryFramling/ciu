@@ -19,33 +19,44 @@ ciu.plot(
 )
 }
 \arguments{
-\item{ciu}{\code{ciu} object.}
+\item{ciu}{\code{ciu} object as created with \link{ciu} function (not to be confused
+with \code{CIU} object as created by \link{ciu.new}).}
 
-\item{instance}{blabla}
+\item{instance}{Input values for the instance to explain. Should be a
+\link{data.frame} even though a \code{vector} or \code{matrix} might work too if input
+names and other needed metadata can be deduced from the dataset or other
+parameters given to \code{\link{ciu.new}}.}
 
-\item{ind.input}{blabla}
+\item{ind.input}{Index of input feature to plot.}
 
-\item{ind.output}{blabla}
+\item{ind.output}{Index of output to plot.}
 
-\item{in.min.max.limits}{blabla}
+\item{in.min.max.limits}{\link{data.frame} or \link{matrix} with one row per output
+and two columns, where the first column indicates the minimal value and the
+second column the maximal value for that output. ONLY NEEDED HERE IF not
+given as parameter to \link{ciu.new} or if the limits are different for this
+specific instance than the default ones.}
 
-\item{n.points}{blabla}
+\item{n.points}{How many x,y pairs will be calculated, equally spaced over in.min.max.limits.}
 
-\item{main}{blabla}
+\item{main}{Text to use as main title.}
 
-\item{xlab}{blabla}
+\item{xlab}{Label for x-axis.}
 
-\item{ylab}{blabla}
+\item{ylab}{Label for y-axis.}
 
-\item{ylim}{blabla}
+\item{ylim}{Minimal and maximal values for y-axis.}
 
-\item{...}{blabla}
+\item{...}{See \link[base:plot]{base::plot}.}
 }
 \value{
-blabla
+"void", or whatever happens to be result of last instruction.
 }
 \description{
-ciu.plot
+Function for plotting out the effect of changing values of one input on one output
+}
+\seealso{
+\link[base:plot]{base::plot} for "..." parameters.
 }
 \author{
 Kary Främling

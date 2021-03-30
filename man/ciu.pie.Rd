@@ -16,6 +16,7 @@ ciu.pie(
   concepts.to.explain = NULL,
   target.concept = NULL,
   target.ciu = NULL,
+  ciu.meta = NULL,
   color.ramp.below.neutral = NULL,
   color.ramp.above.neutral = NULL,
   sort = NULL,
@@ -25,45 +26,81 @@ ciu.pie(
 )
 }
 \arguments{
-\item{ciu}{blabla}
+\item{ciu}{\code{ciu} object as created with \link{ciu} function (not to be confused
+with \code{CIU} object as created by \link{ciu.new}).}
 
-\item{instance}{blabla}
+\item{instance}{Input values for the instance to explain. Should be a
+\link{data.frame} even though a \code{vector} or \code{matrix} might work too if input
+names and other needed metadata can be deduced from the dataset or other
+parameters given to \code{\link{ciu.new}}.}
 
-\item{ind.inputs}{blabla}
+\item{ind.inputs}{\code{\link{vector}} of indices for the inputs to be
+included in the plot. If NULL then all inputs will be included.}
 
-\item{ind.output}{blabla}
+\item{ind.output}{Index of output to be explained.}
 
-\item{in.min.max.limits}{blabla}
+\item{in.min.max.limits}{\link{data.frame} or \link{matrix} with one row per output
+and two columns, where the first column indicates the minimal value and the
+second column the maximal value for that output. ONLY NEEDED HERE IF not
+given as parameter to \link{ciu.new} or if the limits are different for this
+specific instance than the default ones.}
 
-\item{n.samples}{blabla}
+\item{n.samples}{How many instances to generate for estimating CI and CU.
+For inputs of type \link{factor}, all possible combinations of input values
+are generated, so this parameter only influences how many instances are
+(at least) generated for continuous-valued inputs.}
 
-\item{neutral.CU}{blabla}
+\item{neutral.CU}{Indicates when the Contextual Utility is considered
+to be "negative". The default value of 0.5 seems quite logical for most cases.}
 
-\item{show.input.values}{blabla}
+\item{show.input.values}{Include input values after input labels or not.
+Default is TRUE.}
 
-\item{concepts.to.explain}{blabla}
+\item{concepts.to.explain}{List of concepts to use in the plot, as defined
+by vocabulary provided as argument to \link{ciu.new}. If \code{ind.inputs=NULL},
+then use \code{concepts.to.explain} instead. If both are \code{NULL}, then use all inputs.}
 
-\item{target.concept}{blabla}
+\item{target.concept}{If provided, then calculate CIU of inputs
+\code{ind.inputs.to.explain} relative to the given concept rather than
+relative to the actual output(s). \code{ind.inputs.to.explain} should
+normally be a subset (or all) of the inputs that \code{target.concept}
+consists of, even though that not required by the CIU calculation.
+If a \code{target.ciu} is provided, then the \code{target.concept} doesn't have to
+be included in the \code{vocabulary} gives as parameter to \link{ciu.new}
+(at least for the moment).}
 
-\item{target.ciu}{blabla}
+\item{target.ciu}{\code{ciu.result} object previously calculated for
+\code{target.concept}. If a \code{target.concept} is provided but \code{target.ciu=NULL},
+then \code{target.ciu} is estimated by a call to \link{ciu.explain} with the
+\code{n.samples} value given as a parameter to this call. It may be useful
+to provide \code{target.ciu} if it should be estimated using some other
+(typically greater) value for \code{n.samples} than the default one, or if it
+has already been calculated for some reason.}
 
-\item{color.ramp.below.neutral}{blabla}
+\item{ciu.meta}{If given, then use existing \code{ciu.meta.result} rather
+than calling \link{ciu.meta.explain}.}
 
-\item{color.ramp.above.neutral}{blabla}
+\item{color.ramp.below.neutral}{Color ramp function as returned by function
+\code{colorRamp()}. Default color ramp is from red3 to yellow.}
 
-\item{sort}{blabla}
+\item{color.ramp.above.neutral}{Color ramp function as returned by function
+\code{colorRamp()}. Default colorramp is from yellow to darkgreen.}
 
-\item{decreasing}{blabla}
+\item{sort}{NULL, "CI" or "CU". No sorting by default, other options are
+sorting by CI or CU.}
 
-\item{main}{blabla}
+\item{decreasing}{Set to TRUE for decreasing sort.}
 
-\item{...}{blabla}
+\item{main}{Text to use as main title.}
+
+\item{...}{See \link[base:plot]{base::plot}.}
 }
 \value{
-blabla
+"void", i.e. whatever happens to be result of last instruction.
 }
 \description{
-ciu.pie
+Create a pie chart showing CI as the area of slice and CU on color scale from
+red to green, via yellow, for the given inputs and the given output.
 }
 \author{
 Kary Främling
