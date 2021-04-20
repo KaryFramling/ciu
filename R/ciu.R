@@ -52,6 +52,26 @@ ciu <- function(model, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min.
 
 #' Create `CIU` object from `ciu` object.
 #'
+#' A `CIU` object is an "object-oriented programming" object, i.e. it has its
+#' own environment, private variables and methods etc. A `CIU` object is created
+#' using [ciu.new] like `ciu_obj <- ciu.new(...)` and the object's methods
+#' are then called as `ciu_obj$method(...)`. This approach has numerous advantages
+#' but CIU objects consume much more memory than "ordinary" R data structures.
+#'
+#' A `ciu` object is simply a [list] that contains all the "object variables" of
+#' a `CIU` object, which is the reason why CIU <-> ciu conversions can be done at
+#' any time. CIU -> ciu conversion doesn't have any overhead but ciu -> CIU does
+#' require overhead due to the environment setup etc. Therefore, it is advisable
+#' to avoid unnecessary CIU -> ciu conversions.
+#'
+#' `ciu` objects are very memory-efficient because they are ordinary [list] objects
+#' (however, make sure that ciu$CIU element's value is NULL). `ciu` objects also
+#' give direct access to all the object variables that are private in a `CIU` object.
+#'
+#' However, using `ciu` objects means that they have to be passed as a parameter
+#' to all functions that use them. The advantages of object oriented programming
+#' are of course lost too.
+#'
 #' @param ciu `ciu` object.
 #'
 #' @return CIU object
@@ -181,8 +201,7 @@ ciu.plot.3D <- function(ciu, instance, ind.inputs, ind.output, in.min.max.limits
 #' @param use.influence Plot using "influence" rather than CIU, i.e. a
 #' LIME-like barplot. Default is FALSE.
 #' @param influence.minmax Range to use for influence values.
-#' @param sort NULL, "CI" or "CU". No sorting by default, other options are
-#' sorting by CI or CU.
+#' @param sort NULL, "CI" or "CU".
 #' @param decreasing Set to TRUE for decreasing sort.
 #' @param main Text to use as main title.
 #' @param xlab Label for x-axis.

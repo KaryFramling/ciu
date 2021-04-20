@@ -1,5 +1,13 @@
 # ciu 0.1.0.9000
 
+* Textual explanations have been implemented with function "ciu.textual". 
+* Implemented "meta.explain" method, which returns a self-contained 
+  "ciu.meta.result" object with CIU results for a given instance. 
+  This mainly makes it possible to visualize exactly the same CIU result 
+  in different ways. 
+  Before this (and still if no "ciu.meta" parameter is given), every 
+  visualization method ran "explain" again, so CIU results could differ 
+  somewhat between different runs.
 * Added parameters "use.influence" and "influence.minmax" to "ggplot.col" 
   and "barplot.ciu" functions/methods, which produces a LIME/SHAP/etc-like plot 
   where "influence = (influence.max - influence.min)*ci(cu-neutral.CU)", bars 

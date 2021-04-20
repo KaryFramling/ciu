@@ -77,6 +77,9 @@ ciu.meta.explain <- function(ciu, instance, ind.inputs=NULL, in.min.max.limits=N
   if ( inherits(ciu, "ciu") ) {
     CIU <- ciu.to.CIU(ciu)
   }
+  else {
+    ciu <- ciu$as.ciu()
+  }
 
   # Check if concepts are to be explained or pure inputs.
   # If no input indices are given, then use all inputs

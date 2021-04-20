@@ -2,7 +2,7 @@
 % Please edit documentation in R/ciu.ggplot.col.R
 \name{ciu.ggplot.col}
 \alias{ciu.ggplot.col}
-\title{ciu.ggplot.col}
+\title{CIU feature importance/utility plot using ggplot.}
 \usage{
 ciu.ggplot.col(
   ciu,
@@ -56,7 +56,8 @@ are generated, so this parameter only influences how many instances are
 \item{neutral.CU}{Indicates when the Contextual Utility is considered
 to be "negative". The default value of 0.5 seems quite logical for most cases.}
 
-\item{show.input.values}{blabla}
+\item{show.input.values}{Include input values after input labels or not.
+Default is TRUE.}
 
 \item{concepts.to.explain}{List of input feature concepts to explain, as defined
 by vocabulary provided as argument to \link{ciu.new}. If \code{ind.inputs=NULL},
@@ -82,27 +83,29 @@ has already been calculated for some reason.}
 \item{ciu.meta}{If given, then use existing \code{ciu.meta.result} rather
 than calling \link{ciu.meta.explain}.}
 
-\item{low.color}{blabla}
+\item{low.color}{Colour to use for CU=0}
 
-\item{mid.color}{blabla}
+\item{mid.color}{Colour to use for CU=Neutral.CU}
 
-\item{high.color}{blabla}
+\item{high.color}{Colour to use for CU=1}
 
-\item{use.influence}{Plot "influence" instead of CI and CU.}
+\item{use.influence}{Plot using "influence" rather than CIU, i.e. a
+LIME-like barplot. Default is FALSE.}
 
-\item{influence.minmax}{Range to use for influence.}
+\item{influence.minmax}{Range to use for influence values.}
 
-\item{sort}{blabla}
+\item{sort}{NULL, "CI" or "CU".}
 
-\item{decreasing}{blabla}
+\item{decreasing}{Set to TRUE for decreasing sort.}
 
-\item{main}{blabla}
+\item{main}{Text to use as main title.}
 }
 \value{
-blabla
+ggplot object.
 }
 \description{
-ciu.ggplot.col
+Create a barplot showing CI as the length of the bar and CU on color scale from
+red to green, via yellow, for the given inputs and the given output.
 }
 \author{
 Kary Främling

@@ -95,8 +95,7 @@ LIME-like barplot. Default is FALSE.}
 
 \item{influence.minmax}{Range to use for influence values.}
 
-\item{sort}{NULL, "CI" or "CU". No sorting by default, other options are
-sorting by CI or CU.}
+\item{sort}{NULL, "CI" or "CU".}
 
 \item{decreasing}{Set to TRUE for decreasing sort.}
 

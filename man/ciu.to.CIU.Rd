@@ -13,5 +13,24 @@ ciu.to.CIU(ciu)
 CIU object
 }
 \description{
-Create \code{CIU} object from \code{ciu} object.
+A \code{CIU} object is an "object-oriented programming" object, i.e. it has its
+own environment, private variables and methods etc. A \code{CIU} object is created
+using \link{ciu.new} like \code{ciu_obj <- ciu.new(...)} and the object's methods
+are then called as \code{ciu_obj$method(...)}. This approach has numerous advantages
+but CIU objects consume much more memory than "ordinary" R data structures.
+}
+\details{
+A \code{ciu} object is simply a \link{list} that contains all the "object variables" of
+a \code{CIU} object, which is the reason why CIU <-> ciu conversions can be done at
+any time. CIU -> ciu conversion doesn't have any overhead but ciu -> CIU does
+require overhead due to the environment setup etc. Therefore, it is advisable
+to avoid unnecessary CIU -> ciu conversions.
+
+\code{ciu} objects are very memory-efficient because they are ordinary \link{list} objects
+(however, make sure that ciu$CIU element's value is NULL). \code{ciu} objects also
+give direct access to all the object variables that are private in a \code{CIU} object.
+
+However, using \code{ciu} objects means that they have to be passed as a parameter
+to all functions that use them. The advantages of object oriented programming
+are of course lost too.
 }
