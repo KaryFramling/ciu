@@ -1,3 +1,21 @@
+# Version 0.5.0 comments
+
+## Test environments
+
+* local OS X install, R 4.0.2, platform x86_64-apple-darwin17.0 
+* devtools::check_win_devel()
+* devtools::check_rhub()
+  - Ubuntu Linux 20.04.1 LTS, R-release, GCC
+  - Fedora Linux, R-devel, clang, gfortran
+
+## R CMD check results
+
+OK in all environments.
+
+# Comments from version 0.1.0 submission
+
+Kept here mainly for logging purposes.
+
 ## Test environments
 * local OS X install, R 4.0.2
 * win-builder (devel) 

@@ -77,7 +77,7 @@
 #' at 35th AAAI Conference on Artificial Intelligence. Virtual, Online. February 8-9, 2021. pp. 110-114.
 #' <https://www.researchgate.net/publication/349521362_Contextual_Importance_and_Utility_in_R_the_%27ciu%27_Package>.
 #' @references Främling, K. *Explainable AI without Interpretable Model*. 2020, <https://arxiv.org/abs/2009.13996>.
-#' @references Främling, K. *Decision Theory Meets Explainable AI*. 2020, <https://doi.org/10.1007/978-3-030-51924-7_4>.
+#' @references Främling, K. *Decision Theory Meets Explainable AI*. 2020, <doi.org/10.1007/978-3-030-51924-7_4>.
 #' @references Främling, K. *Modélisation et apprentissage des préférences par réseaux de neurones pour l'aide à la décision multicritère*. 1996, <https://tel.archives-ouvertes.fr/tel-00825854/document> (title translation in English: *Learning and Explaining Preferences with Neural Networks for Multiple Criteria Decision Making*)
 #' @examples
 #' # Explaining the classification of an Iris instance with lda model.

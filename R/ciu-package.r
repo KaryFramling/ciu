@@ -28,7 +28,7 @@
 #' packages or user code.
 #'
 #' @references Främling, K. *Explainable AI without Interpretable Model*. 2020, <https://arxiv.org/abs/2009.13996>.
-#' @references Främling, K. *Decision Theory Meets Explainable AI*. 2020, <https://doi.org/10.1007/978-3-030-51924-7_4>.
+#' @references Främling, K. *Decision Theory Meets Explainable AI*. 2020, <doi.org/10.1007/978-3-030-51924-7_4>.
 #' @references Främling, K. *Modélisation et apprentissage des préférences par réseaux de neurones pour l'aide à la décision multicritère*. 1996, <https://tel.archives-ouvertes.fr/tel-00825854/document> (title translation in English: *Learning and Explaining Preferences with Neural Networks for Multiple Criteria Decision Making*)
 #'
 #' @aliases ciu-package

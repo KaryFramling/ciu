@@ -9,7 +9,6 @@ Description: Implementation of the Contextual Importance and Utility
     can be found in e.g. Främling (2020) <arXiv:2009.13996>.
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
 Imports: graphics, 
     stats,
     Rcpp,

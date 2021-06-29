@@ -150,7 +150,7 @@ at 35th AAAI Conference on Artificial Intelligence. Virtual, Online. February 8-
 
 Främling, K. \emph{Explainable AI without Interpretable Model}. 2020, \url{https://arxiv.org/abs/2009.13996}.
 
-Främling, K. \emph{Decision Theory Meets Explainable AI}. 2020, \url{https://doi.org/10.1007/978-3-030-51924-7_4}.
+Främling, K. \emph{Decision Theory Meets Explainable AI}. 2020, <doi.org/10.1007/978-3-030-51924-7_4>.
 
 Främling, K. \emph{Modélisation et apprentissage des préférences par réseaux de neurones pour l'aide à la décision multicritère}. 1996, \url{https://tel.archives-ouvertes.fr/tel-00825854/document} (title translation in English: \emph{Learning and Explaining Preferences with Neural Networks for Multiple Criteria Decision Making})
 }
