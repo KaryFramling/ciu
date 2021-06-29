@@ -7,6 +7,28 @@ require(MASS)
 require(caret)
 require(ciu)
 
+scaleFUN <- function(x) as.character(round(x, digits = 2))
+
+# Simple weighted sum
+test.ws <- function() {
+  x <- y <- seq(0, 1, 0.05)
+  pm <- as.matrix(expand.grid(x,y))
+  pm_df <- data.frame(x1=pm[,1],x2=pm[,2])
+  c <- data.frame(x1=0.7, x2=0.8)
+  c1 <- data.frame(x1=0.5, x2=0.5)
+  linfunc <- function(m, inp) { 0.3*inp[,1] + 0.7*inp[,2] }
+  z <- linfunc(NULL, pm)
+  ciu <- ciu(NULL, in.min.max.limits = matrix(c(0,0,1,1), ncol=2), abs.min.max=matrix(c(0,1), ncol=2),
+                 input.names=c("x1","x2"), output.names = c("y"),
+                 predict.function = linfunc)
+  p <- ciu.ggplot.col(ciu, c1) + labs(title="", x ="", y="CI", fill="CU"); print(p)
+  p <- ciu.ggplot.col(ciu, c1, use.influence=TRUE, low.color = "firebrick", high.color = "steelblue")
+  p <- p + labs(title="", x ="", y = expression(phi)) + scale_y_continuous(labels=scaleFUN)
+  print(p)
+  print(ciu.explain(ciu, c1,1))
+  print(ciu.explain(ciu, c1,2))
+}
+
 # Iris data set, lda model.
 test.ciu.iris.lda <- function() {
   iris_train <- iris[, 1:4]
@@ -86,6 +108,8 @@ test.ciu.cars.UCI.rf <- function() {
   # Global plot, inputs
   p <- ciu.ggplot.col(ciu, instance, c(1:6)); print(p)
   # Plot according to PRICE, TECH
+  for ( i in 1:4 )
+    ciu.barplot(ciu, instance, ind.output=i, sort="CI", concepts.to.explain=c("PRICE", "TECH"))
   p <- ciu.ggplot.col(ciu, instance, concepts.to.explain=c("PRICE", "TECH")); print(p)
   # Why is PRICE good?
   p <- ciu.ggplot.col(ciu, instance, ind.inputs = voc$PRICE, target.concept = "PRICE"); print(p)
@@ -145,15 +169,95 @@ test.ciu.titanic.rf <- function() {
     ciu.plot(ciu, new_passenger,i,1)
   for ( i in 1:ncol(new_passenger) )
     ciu.plot(ciu, new_passenger,i,2)
+
+  # Text-based.
+  cat(ciu.textual(ciu, new_passenger[,-8], use.text.effects = TRUE, ind.output = 2))
+  # Customized limits for CI.
+  cat(ciu.textual(ciu, new_passenger[,-8], use.text.effects = TRUE, ind.output = 2,
+                  CI.voc = data.frame(limits=c(0.05,0.15,0.25,0.5,1.0),
+                                      texts=c("not important","little important", "important","very important",
+                                              "extremely important"))))
+
+  # Intermediate concepts
+  wealth<-c(1,6); family<-c(4,5); gender<-c(2); age<-c(3); embarked <- c(7)
+  Titanic.voc <- list("WEALTH"=wealth, "FAMILY"=family, "Gender"=gender,
+                      "Age"=age, "Embarkment port"=embarked)
+  ciu <- ciu.new(model_rf, survived~., titanic_train, vocabulary = Titanic.voc)
+  # Need to use meta.explain here in order to guarantee same CIU values for
+  # intermediate concepts when moving from one level to the other.
+  meta.top <- ciu$meta.explain(new_passenger[,-8], concepts.to.explain=names(Titanic.voc), n.samples = 1000)
+  cat(ciu.textual(ciu, new_passenger[,-8], use.text.effects = TRUE, ind.output = 2, ciu.meta = meta.top))
+
+  # Explain intermediate concept utility, using input features (could also
+  # be using other intermediate concepts).
+  cat(ciu.textual(ciu, new_passenger[,-8], use.text.effects = TRUE, ind.output = 2, ind.inputs = Titanic.voc$FAMILY,
+                  target.concept = "FAMILY", target.ciu = meta.top$ciuvals[["FAMILY"]], n.samples = 100))
+  cat(ciu.textual(ciu, new_passenger[,-8], use.text.effects = TRUE, ind.output = 2, ind.inputs = Titanic.voc$WEALTH,
+                  target.concept = "WEALTH", target.ciu = meta.top$ciuvals[["WEALTH"]], n.samples = 100))
 }
 
+# Adult dataset with Random Forest (not caret).
+# This is a mixed discrete/continuous input case. For some reason caret RF takes
+# very long to train, so we use randomForest library instead, which for the
+# moment requires providing a predict.function.
+# This data set also requires some pre-processing.
+test.adult.rf <- function() {
+  adult <- read.table('https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data',
+                      sep = ',', fill = F, strip.white = T, na.strings = c("?","NA"))
+  colnames(adult) <- c('age', 'workclass', 'fnlwgt', 'education',
+                       'education_num', 'marital_status', 'occupation', 'relationship', 'race', 'sex',
+                       'capital_gain', 'capital_loss', 'hours_per_week', 'native_country', 'income')
+
+  # For simplicity of this analysis, the following variables are removed:
+  # education.num, relationship, fnlwgt, capital.gain and capital.loss
+  adult$capital_gain<-NULL
+  adult$capital_loss<-NULL
+  adult$fnlwgt<-NULL
+  adult$education_num<-NULL
+  adult$relationship<-NULL
+
+  # Remove all rows with NAs
+  adult1 <- stats::na.omit(adult)
+
+  # Convert "chr" type columns into factor to avoid problems with RandomForest
+  # classifier later.
+  adult1$workclass <- factor(adult1$workclass)
+  adult1$education <- factor(adult1$education)
+  adult1$marital_status <- factor(adult1$marital_status)
+  adult1$occupation <- factor(adult1$occupation)
+  adult1$race <- factor(adult1$race)
+  adult1$sex <- factor(adult1$sex)
+  adult1$native_country <- factor(adult1$native_country)
+  adult1$income <- factor(adult1$income)
+
+  # Train with Random Forest, then do CIU.
+  rf_adult_model<-randomForest(income~.,data = adult1)
+  n.in <- ncol(adult1) - 1
+  instance <- adult1[10,1:n.in]
+  predict.function <- function(model, inputs) { as.matrix((predict(model, inputs, type = "prob"))) }
+  ciu <- ciu(rf_adult_model, income~., adult1, predict.function=predict.function)
+  p <- ciu.ggplot.col(ciu, instance, c(1:n.in)); print(p)
+
+  # Textual explanation
+  cat(ciu.textual(ciu, instance[,1:n.in], use.text.effects = TRUE, ind.output = 2))
+
+  # Plot effect of every input on the output "2" ('>50K').
+  par("cex.lab"=1.5)
+  for ( i in 1:ncol(instance[,1:n.in]) )
+    ciu.plot(ciu, instance[,1:n.in],i,2, n.points = 200, main = "", ylab="")
+  par("cex.lab"=1)
+}
 
 # This can be useful at least for ordinary barplots.
 # par(mai=c(0.8,1.2,0.4,0.2))
 
-#test.ciu.iris.lda()
-#test.ciu.boston.gbm()
-#test.ciu.heart.disease.rf()
-#test.ciu.cars.UCI.rf() # Takes about 15 seconds for RF to train
-#test.ciu.diamonds.gbm() # Takes something like 2-3 minutes to train but GBM seems to be best by far here.
-#test.ciu.titanic.rf() # Takes maybe half minute.
+test.all<- function() {
+  test.ws()
+  test.ciu.iris.lda()
+  test.ciu.boston.gbm()
+  test.ciu.heart.disease.rf()
+  test.ciu.cars.UCI.rf() # Takes about 15 seconds for RF to train
+  test.ciu.diamonds.gbm() # Takes something like 2-3 minutes to train but GBM seems to be best by far here.
+  test.ciu.titanic.rf() # Takes maybe half minute.
+  test.adult.rf() # Takes about half minute.
+}

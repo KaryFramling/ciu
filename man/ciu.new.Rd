@@ -84,6 +84,7 @@ The methods that can be used in \verb{<method>} are:
 \item \code{\link{pie.ciu}}
 \item \code{\link{plot.ciu}}
 \item \code{\link{plot.ciu.3D}}
+\item \code{textual}, see \link{ciu.textual} (but omit first parameter \code{ciu}).
 }
 
 \emph{"Usage" section is here in "Details" section because Roxygen etc.
@@ -142,6 +143,11 @@ ciu$plot.ciu(Boston[370,1:13],13)
 
 }
 \references{
+Främling, K. \emph{Contextual Importance and Utility in R: the 'ciu' Package.}
+In: Proceedings of 1st Workshop on Explainable Agency in Artificial Intelligence,
+at 35th AAAI Conference on Artificial Intelligence. Virtual, Online. February 8-9, 2021. pp. 110-114.
+\url{https://www.researchgate.net/publication/349521362_Contextual_Importance_and_Utility_in_R_the_\%27ciu\%27_Package}.
+
 Främling, K. \emph{Explainable AI without Interpretable Model}. 2020, \url{https://arxiv.org/abs/2009.13996}.
 
 Främling, K. \emph{Decision Theory Meets Explainable AI}. 2020, \url{https://doi.org/10.1007/978-3-030-51924-7_4}.

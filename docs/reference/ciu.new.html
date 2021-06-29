@@ -74,7 +74,7 @@ are the public functions (methods)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ciu</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -88,6 +88,9 @@ are the public functions (methods)." />
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -196,6 +199,7 @@ two intermediate concepts and a higher-level one that combines them:
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Object of class <code>CIU</code>.</p>
+<p><code>ciu</code> object</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>CIU is implemented in an object-oriented manner, where a CIU
@@ -205,23 +209,30 @@ first get a <code>CIU</code> object by calling <code>ciu.new</code> as e.g.
 <code>ciu &lt;- ciu.new(...)</code>, then call <code>ciu.res &lt;- ciu$&lt;method&gt;(...)</code>.
 The methods that can be used in <code>&lt;method&gt;</code> are:</p><ul>
 <li><p><code><a href='explain.html'>explain</a></code></p></li>
+<li><p><code>meta.explain</code>, see <a href='ciu.meta.explain.html'>ciu.meta.explain</a> (but omit first parameter <code>ciu</code>).</p></li>
 <li><p><code><a href='barplot.ciu.html'>barplot.ciu</a></code></p></li>
 <li><p><code><a href='ggplot.col.ciu.html'>ggplot.col.ciu</a></code></p></li>
 <li><p><code><a href='pie.ciu.html'>pie.ciu</a></code></p></li>
 <li><p><code><a href='plot.ciu.html'>plot.ciu</a></code></p></li>
 <li><p><code><a href='plot.ciu.3D.html'>plot.ciu.3D</a></code></p></li>
+<li><p><code>textual</code>, see <a href='ciu.textual.html'>ciu.textual</a> (but omit first parameter <code>ciu</code>).</p></li>
 </ul>
 
 <p><em>"Usage" section is here in "Details" section because Roxygen etc.
 don't support documentation of functions within functions.</em></p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Främling, K. <em>Explainable AI without Interpretable Model</em>. 2020, <a href='https://arxiv.org/abs/2009.13996'>https://arxiv.org/abs/2009.13996</a>.</p>
+    <p>Främling, K. <em>Contextual Importance and Utility in R: the 'ciu' Package.</em>
+In: Proceedings of 1st Workshop on Explainable Agency in Artificial Intelligence,
+at 35th AAAI Conference on Artificial Intelligence. Virtual, Online. February 8-9, 2021. pp. 110-114.
+<a href='https://www.researchgate.net/publication/349521362_Contextual_Importance_and_Utility_in_R_the_%27ciu%27_Package'>https://www.researchgate.net/publication/349521362_Contextual_Importance_and_Utility_in_R_the_%27ciu%27_Package</a>.</p>
+<p>Främling, K. <em>Explainable AI without Interpretable Model</em>. 2020, <a href='https://arxiv.org/abs/2009.13996'>https://arxiv.org/abs/2009.13996</a>.</p>
 <p>Främling, K. <em>Decision Theory Meets Explainable AI</em>. 2020, <a href='https://doi.org/10.1007/978-3-030-51924-7_4'>https://doi.org/10.1007/978-3-030-51924-7_4</a>.</p>
 <p>Främling, K. <em>Modélisation et apprentissage des préférences par réseaux de neurones pour l'aide à la décision multicritère</em>. 1996, <a href='https://tel.archives-ouvertes.fr/tel-00825854/document'>https://tel.archives-ouvertes.fr/tel-00825854/document</a> (title translation in English: <em>Learning and Explaining Preferences with Neural Networks for Multiple Criteria Decision Making</em>)</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
-    <p>Kary Främling</p>
+    <p>Kary Främling
+Create <code>ciu</code> object from this <code>CIU</code> object.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Explaining the classification of an Iris instance with lda model.</span>
@@ -254,649 +265,648 @@ don't support documentation of functions within functions.</em></p>
 <span class='co'># as a function of Petal Length&amp;Width. Iris #100 (shown as the red dot)</span>
 <span class='co'># is on the ridge of the "versicolor" class, which is quite narrow for</span>
 <span class='co'># Petal Length&amp;Width.</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mfrow<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>ciu</span><span class='op'>$</span><span class='fu'>plot.ciu.3D</span><span class='op'>(</span><span class='va'>iris_test</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>4</span><span class='op'>)</span>,<span class='fl'>1</span>,main<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/levels.html'>levels</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>$</span><span class='va'>Species</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>,<span class='op'>)</span>
-<span class='va'>ciu</span><span class='op'>$</span><span class='fu'>plot.ciu.3D</span><span class='op'>(</span><span class='va'>iris_test</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>4</span><span class='op'>)</span>,<span class='fl'>2</span>,main<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/levels.html'>levels</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>$</span><span class='va'>Species</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span>
-<span class='va'>ciu</span><span class='op'>$</span><span class='fu'>plot.ciu.3D</span><span class='op'>(</span><span class='va'>iris_test</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>4</span><span class='op'>)</span>,<span class='fl'>3</span>,main<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/levels.html'>levels</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>$</span><span class='va'>Species</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='img'><img src='ciu.new-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mfrow<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
-
+</div><div class='img'><img src='ciu.new-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>ciu</span><span class='op'>$</span><span class='fu'>plot.ciu.3D</span><span class='op'>(</span><span class='va'>iris_test</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>4</span><span class='op'>)</span>,<span class='fl'>2</span>,main<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/levels.html'>levels</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>$</span><span class='va'>Species</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span>
+</div><div class='img'><img src='ciu.new-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>ciu</span><span class='op'>$</span><span class='fu'>plot.ciu.3D</span><span class='op'>(</span><span class='va'>iris_test</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>4</span><span class='op'>)</span>,<span class='fl'>3</span>,main<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/levels.html'>levels</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>$</span><span class='va'>Species</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>)</span>
+</div><div class='img'><img src='ciu.new-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Same thing with a regression task, the Boston Housing data set. Instance</span>
 <span class='co'># #370 has the highest valuation (50k$). Model is gbm, which performs</span>
 <span class='co'># decently here. Plotting with "standard" bar plot this time.</span>
+<span class='co'># Use something like "par(mai=c(0.8,1.2,0.4,0.2))" for seeing Y-axis labels.</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/topepo/caret/'>caret</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Loading required package: lattice</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: ggplot2</span></div><div class='input'><span class='va'>gbm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/caret/man/train.html'>train</a></span><span class='op'>(</span><span class='va'>medv</span> <span class='op'>~</span> <span class='va'>.</span>, <span class='va'>Boston</span>, method<span class='op'>=</span><span class='st'>"gbm"</span>, trControl<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/pkg/caret/man/trainControl.html'>trainControl</a></span><span class='op'>(</span>method<span class='op'>=</span><span class='st'>"cv"</span>, number<span class='op'>=</span><span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>gbm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/caret/man/train.html'>train</a></span><span class='op'>(</span><span class='va'>medv</span> <span class='op'>~</span> <span class='va'>.</span>, <span class='va'>Boston</span>, method<span class='op'>=</span><span class='st'>"gbm"</span>, trControl<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/pkg/caret/man/trainControl.html'>trainControl</a></span><span class='op'>(</span>method<span class='op'>=</span><span class='st'>"cv"</span>, number<span class='op'>=</span><span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       75.5149             nan     0.1000    6.1494
-#&gt;      2       69.3119             nan     0.1000    6.3256
-#&gt;      3       63.1943             nan     0.1000    5.6281
-#&gt;      4       58.6685             nan     0.1000    3.8241
-#&gt;      5       54.6917             nan     0.1000    4.1496
-#&gt;      6       50.7862             nan     0.1000    3.7492
-#&gt;      7       47.0648             nan     0.1000    3.2252
-#&gt;      8       43.7867             nan     0.1000    3.2310
-#&gt;      9       41.2270             nan     0.1000    2.7047
-#&gt;     10       38.6763             nan     0.1000    2.4898
-#&gt;     20       23.9035             nan     0.1000    1.0592
-#&gt;     40       14.7459             nan     0.1000    0.1100
-#&gt;     60       12.7107             nan     0.1000   -0.0523
-#&gt;     80       11.7487             nan     0.1000   -0.2563
-#&gt;    100       11.0535             nan     0.1000    0.0309
-#&gt;    120       10.5272             nan     0.1000   -0.0182
-#&gt;    140       10.0929             nan     0.1000   -0.0316
-#&gt;    150        9.8934             nan     0.1000   -0.0356
+#&gt;      1       75.2215             nan     0.1000    6.8978
+#&gt;      2       69.0293             nan     0.1000    4.6034
+#&gt;      3       63.3583             nan     0.1000    5.8052
+#&gt;      4       59.3108             nan     0.1000    4.5997
+#&gt;      5       54.7956             nan     0.1000    4.2274
+#&gt;      6       51.2700             nan     0.1000    3.5988
+#&gt;      7       47.7351             nan     0.1000    3.4051
+#&gt;      8       44.5695             nan     0.1000    3.0483
+#&gt;      9       42.0724             nan     0.1000    2.3546
+#&gt;     10       39.7807             nan     0.1000    2.2714
+#&gt;     20       24.5963             nan     0.1000    0.8707
+#&gt;     40       16.1454             nan     0.1000    0.1642
+#&gt;     60       13.7594             nan     0.1000   -0.0137
+#&gt;     80       12.6018             nan     0.1000    0.0113
+#&gt;    100       11.5040             nan     0.1000    0.0074
+#&gt;    120       10.8995             nan     0.1000    0.0224
+#&gt;    140       10.3805             nan     0.1000   -0.0062
+#&gt;    150       10.2202             nan     0.1000    0.0002
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       72.5366             nan     0.1000    8.8426
-#&gt;      2       64.2037             nan     0.1000    8.5834
-#&gt;      3       56.7129             nan     0.1000    6.7567
-#&gt;      4       50.8286             nan     0.1000    6.2362
-#&gt;      5       45.8737             nan     0.1000    4.6021
-#&gt;      6       41.7676             nan     0.1000    3.5649
-#&gt;      7       37.5677             nan     0.1000    3.2419
-#&gt;      8       34.1891             nan     0.1000    2.9550
-#&gt;      9       31.2753             nan     0.1000    2.5192
-#&gt;     10       28.8158             nan     0.1000    2.3410
-#&gt;     20       16.4023             nan     0.1000    0.6481
-#&gt;     40       11.0325             nan     0.1000    0.0102
-#&gt;     60        9.2338             nan     0.1000   -0.0838
-#&gt;     80        8.1651             nan     0.1000   -0.0190
-#&gt;    100        7.5731             nan     0.1000   -0.0811
-#&gt;    120        7.0300             nan     0.1000   -0.0536
-#&gt;    140        6.6421             nan     0.1000   -0.0770
-#&gt;    150        6.3383             nan     0.1000   -0.0549
+#&gt;      1       72.6868             nan     0.1000    8.9776
+#&gt;      2       64.5885             nan     0.1000    7.8700
+#&gt;      3       57.6530             nan     0.1000    6.4313
+#&gt;      4       51.8981             nan     0.1000    5.6741
+#&gt;      5       46.1563             nan     0.1000    5.0209
+#&gt;      6       41.4214             nan     0.1000    3.7439
+#&gt;      7       38.0055             nan     0.1000    3.0250
+#&gt;      8       34.9250             nan     0.1000    2.7428
+#&gt;      9       32.6519             nan     0.1000    1.7717
+#&gt;     10       29.8366             nan     0.1000    2.8965
+#&gt;     20       17.3859             nan     0.1000    0.3868
+#&gt;     40       11.8289             nan     0.1000    0.0068
+#&gt;     60       10.0104             nan     0.1000   -0.0545
+#&gt;     80        8.8538             nan     0.1000    0.0128
+#&gt;    100        8.1414             nan     0.1000   -0.0192
+#&gt;    120        7.5245             nan     0.1000   -0.0078
+#&gt;    140        7.0487             nan     0.1000   -0.0129
+#&gt;    150        6.8948             nan     0.1000   -0.0391
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       71.4399             nan     0.1000   10.9453
-#&gt;      2       61.4099             nan     0.1000    8.0344
-#&gt;      3       53.3121             nan     0.1000    6.8786
-#&gt;      4       46.7709             nan     0.1000    5.0669
-#&gt;      5       41.1739             nan     0.1000    5.5111
-#&gt;      6       36.8489             nan     0.1000    4.1749
-#&gt;      7       32.9476             nan     0.1000    3.3101
-#&gt;      8       30.1520             nan     0.1000    2.8392
-#&gt;      9       27.4653             nan     0.1000    2.4788
-#&gt;     10       24.8838             nan     0.1000    2.2942
-#&gt;     20       13.6889             nan     0.1000    0.4507
-#&gt;     40        8.8557             nan     0.1000   -0.0393
-#&gt;     60        7.1747             nan     0.1000   -0.0365
-#&gt;     80        6.2561             nan     0.1000    0.0009
-#&gt;    100        5.4775             nan     0.1000   -0.0274
-#&gt;    120        4.9288             nan     0.1000   -0.0227
-#&gt;    140        4.5891             nan     0.1000   -0.0315
-#&gt;    150        4.3657             nan     0.1000   -0.0186
+#&gt;      1       71.3771             nan     0.1000   10.5163
+#&gt;      2       62.4916             nan     0.1000    9.2678
+#&gt;      3       54.6342             nan     0.1000    6.5825
+#&gt;      4       48.4288             nan     0.1000    5.9510
+#&gt;      5       43.2605             nan     0.1000    5.6658
+#&gt;      6       38.5667             nan     0.1000    5.0132
+#&gt;      7       34.7180             nan     0.1000    3.4970
+#&gt;      8       30.7270             nan     0.1000    3.3379
+#&gt;      9       27.9259             nan     0.1000    2.0486
+#&gt;     10       25.3477             nan     0.1000    2.2926
+#&gt;     20       14.6684             nan     0.1000    0.4009
+#&gt;     40        9.5936             nan     0.1000   -0.0146
+#&gt;     60        7.8769             nan     0.1000   -0.0946
+#&gt;     80        6.8332             nan     0.1000    0.0434
+#&gt;    100        5.9483             nan     0.1000   -0.0471
+#&gt;    120        5.2966             nan     0.1000   -0.0600
+#&gt;    140        4.7939             nan     0.1000   -0.0218
+#&gt;    150        4.5001             nan     0.1000   -0.0362
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       76.5349             nan     0.1000    6.5947
-#&gt;      2       69.9243             nan     0.1000    6.5694
-#&gt;      3       64.7745             nan     0.1000    4.8644
-#&gt;      4       59.9944             nan     0.1000    4.3393
-#&gt;      5       55.6582             nan     0.1000    3.8349
-#&gt;      6       51.2932             nan     0.1000    4.3518
-#&gt;      7       47.7747             nan     0.1000    2.2942
-#&gt;      8       45.1592             nan     0.1000    2.5802
-#&gt;      9       42.5175             nan     0.1000    2.5388
-#&gt;     10       40.2444             nan     0.1000    2.4350
-#&gt;     20       25.3381             nan     0.1000    0.7653
-#&gt;     40       16.5837             nan     0.1000    0.1745
-#&gt;     60       13.7898             nan     0.1000    0.0570
-#&gt;     80       12.4128             nan     0.1000    0.0262
-#&gt;    100       11.5865             nan     0.1000   -0.1178
-#&gt;    120       11.0406             nan     0.1000   -0.0865
-#&gt;    140       10.4679             nan     0.1000   -0.0045
-#&gt;    150       10.2487             nan     0.1000   -0.0903
+#&gt;      1       76.7738             nan     0.1000    8.4336
+#&gt;      2       71.1446             nan     0.1000    5.8958
+#&gt;      3       65.6121             nan     0.1000    5.5614
+#&gt;      4       61.0126             nan     0.1000    4.9041
+#&gt;      5       57.1632             nan     0.1000    3.9673
+#&gt;      6       53.6348             nan     0.1000    3.6524
+#&gt;      7       50.1963             nan     0.1000    3.0240
+#&gt;      8       47.1070             nan     0.1000    2.9846
+#&gt;      9       43.8722             nan     0.1000    3.3161
+#&gt;     10       41.5290             nan     0.1000    2.3191
+#&gt;     20       26.1675             nan     0.1000    0.8036
+#&gt;     40       16.6667             nan     0.1000    0.0909
+#&gt;     60       13.7448             nan     0.1000   -0.0243
+#&gt;     80       12.2713             nan     0.1000    0.0238
+#&gt;    100       11.4109             nan     0.1000   -0.0819
+#&gt;    120       10.6749             nan     0.1000   -0.0065
+#&gt;    140       10.3056             nan     0.1000   -0.1383
+#&gt;    150       10.1531             nan     0.1000   -0.0546
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       73.8444             nan     0.1000    9.6068
-#&gt;      2       66.2838             nan     0.1000    6.4687
-#&gt;      3       59.7072             nan     0.1000    6.8811
-#&gt;      4       53.0208             nan     0.1000    6.5563
-#&gt;      5       47.3549             nan     0.1000    5.3829
-#&gt;      6       43.3937             nan     0.1000    2.8643
-#&gt;      7       39.6342             nan     0.1000    3.6636
-#&gt;      8       35.8435             nan     0.1000    3.5656
-#&gt;      9       32.7448             nan     0.1000    2.5944
-#&gt;     10       30.7395             nan     0.1000    2.1694
-#&gt;     20       17.8747             nan     0.1000    0.3248
-#&gt;     40       11.7938             nan     0.1000    0.0660
-#&gt;     60        9.6633             nan     0.1000   -0.0314
-#&gt;     80        8.6010             nan     0.1000   -0.0526
-#&gt;    100        7.8022             nan     0.1000    0.0002
-#&gt;    120        7.1661             nan     0.1000   -0.0145
-#&gt;    140        6.7014             nan     0.1000    0.0025
-#&gt;    150        6.4019             nan     0.1000    0.0086
+#&gt;      1       73.4591             nan     0.1000    8.8822
+#&gt;      2       64.8771             nan     0.1000    7.5361
+#&gt;      3       57.3431             nan     0.1000    7.2688
+#&gt;      4       51.3496             nan     0.1000    6.7225
+#&gt;      5       46.2060             nan     0.1000    4.3277
+#&gt;      6       42.0797             nan     0.1000    3.7296
+#&gt;      7       37.5882             nan     0.1000    3.1789
+#&gt;      8       34.3908             nan     0.1000    3.0324
+#&gt;      9       31.5965             nan     0.1000    2.8463
+#&gt;     10       29.2291             nan     0.1000    2.4189
+#&gt;     20       16.9907             nan     0.1000    0.2216
+#&gt;     40       11.2138             nan     0.1000    0.0297
+#&gt;     60        9.1126             nan     0.1000    0.0320
+#&gt;     80        8.1850             nan     0.1000   -0.0476
+#&gt;    100        7.5391             nan     0.1000   -0.1310
+#&gt;    120        7.0835             nan     0.1000   -0.1116
+#&gt;    140        6.6674             nan     0.1000   -0.0294
+#&gt;    150        6.4873             nan     0.1000   -0.0450
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       72.4816             nan     0.1000    9.8003
-#&gt;      2       62.2973             nan     0.1000    8.7726
-#&gt;      3       54.9263             nan     0.1000    7.3261
-#&gt;      4       48.8381             nan     0.1000    6.2864
-#&gt;      5       43.2945             nan     0.1000    5.1764
-#&gt;      6       38.6784             nan     0.1000    4.4872
-#&gt;      7       35.0059             nan     0.1000    3.0742
-#&gt;      8       31.6835             nan     0.1000    3.0145
-#&gt;      9       28.9770             nan     0.1000    2.2077
-#&gt;     10       26.8635             nan     0.1000    1.9593
-#&gt;     20       15.0733             nan     0.1000    0.5702
-#&gt;     40        9.6045             nan     0.1000    0.0080
-#&gt;     60        7.9659             nan     0.1000   -0.0195
-#&gt;     80        6.8090             nan     0.1000    0.0664
-#&gt;    100        5.9006             nan     0.1000   -0.0713
-#&gt;    120        5.2665             nan     0.1000   -0.0326
-#&gt;    140        4.8015             nan     0.1000    0.0034
-#&gt;    150        4.6030             nan     0.1000   -0.0493
+#&gt;      1       73.1397             nan     0.1000   11.1309
+#&gt;      2       63.7495             nan     0.1000    8.0026
+#&gt;      3       56.5209             nan     0.1000    6.3725
+#&gt;      4       49.6279             nan     0.1000    7.2836
+#&gt;      5       44.4202             nan     0.1000    5.4798
+#&gt;      6       39.7959             nan     0.1000    4.5078
+#&gt;      7       35.8225             nan     0.1000    2.9153
+#&gt;      8       32.5884             nan     0.1000    3.1374
+#&gt;      9       29.7437             nan     0.1000    2.5818
+#&gt;     10       27.3284             nan     0.1000    2.3490
+#&gt;     20       14.6933             nan     0.1000    0.4500
+#&gt;     40        9.7858             nan     0.1000   -0.2021
+#&gt;     60        7.7544             nan     0.1000   -0.0809
+#&gt;     80        6.6470             nan     0.1000    0.0023
+#&gt;    100        5.8356             nan     0.1000   -0.0267
+#&gt;    120        5.1906             nan     0.1000   -0.0423
+#&gt;    140        4.7346             nan     0.1000   -0.0277
+#&gt;    150        4.4534             nan     0.1000   -0.0355
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       78.6295             nan     0.1000    7.4792
-#&gt;      2       72.2054             nan     0.1000    5.2041
-#&gt;      3       65.9261             nan     0.1000    6.7680
-#&gt;      4       59.6096             nan     0.1000    5.0233
-#&gt;      5       55.3326             nan     0.1000    4.2651
-#&gt;      6       51.6566             nan     0.1000    3.5280
-#&gt;      7       48.1738             nan     0.1000    3.1756
-#&gt;      8       44.9672             nan     0.1000    3.1553
-#&gt;      9       42.3742             nan     0.1000    2.6404
-#&gt;     10       39.7337             nan     0.1000    2.7283
-#&gt;     20       24.6115             nan     0.1000    0.8789
-#&gt;     40       16.4108             nan     0.1000   -0.0335
-#&gt;     60       13.7532             nan     0.1000    0.0614
-#&gt;     80       12.3330             nan     0.1000   -0.2012
-#&gt;    100       11.5708             nan     0.1000   -0.0054
-#&gt;    120       10.8974             nan     0.1000   -0.0599
-#&gt;    140       10.5821             nan     0.1000    0.0011
-#&gt;    150       10.4058             nan     0.1000    0.0009
+#&gt;      1       76.8040             nan     0.1000    7.4688
+#&gt;      2       70.2747             nan     0.1000    6.5896
+#&gt;      3       64.5188             nan     0.1000    5.4622
+#&gt;      4       59.7857             nan     0.1000    4.1791
+#&gt;      5       55.1745             nan     0.1000    3.9433
+#&gt;      6       51.0123             nan     0.1000    3.5584
+#&gt;      7       47.2476             nan     0.1000    2.7351
+#&gt;      8       44.5557             nan     0.1000    2.7372
+#&gt;      9       41.9307             nan     0.1000    2.5856
+#&gt;     10       39.6549             nan     0.1000    2.2152
+#&gt;     20       24.6651             nan     0.1000    1.1121
+#&gt;     40       15.9357             nan     0.1000    0.0718
+#&gt;     60       13.3529             nan     0.1000    0.0588
+#&gt;     80       12.1354             nan     0.1000   -0.0046
+#&gt;    100       11.3562             nan     0.1000    0.0299
+#&gt;    120       10.7728             nan     0.1000    0.0174
+#&gt;    140       10.3192             nan     0.1000   -0.0477
+#&gt;    150       10.1195             nan     0.1000    0.0055
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       76.8997             nan     0.1000    8.9300
-#&gt;      2       68.9977             nan     0.1000    8.6568
-#&gt;      3       61.1961             nan     0.1000    7.4730
-#&gt;      4       54.8890             nan     0.1000    5.9656
-#&gt;      5       48.8769             nan     0.1000    5.2232
-#&gt;      6       44.3769             nan     0.1000    4.0037
-#&gt;      7       40.8857             nan     0.1000    3.4870
-#&gt;      8       37.2683             nan     0.1000    3.4989
-#&gt;      9       34.3493             nan     0.1000    2.7323
-#&gt;     10       31.8187             nan     0.1000    2.1882
-#&gt;     20       18.6267             nan     0.1000    0.9470
-#&gt;     40       11.5293             nan     0.1000    0.0074
-#&gt;     60        9.3594             nan     0.1000    0.0062
-#&gt;     80        8.3780             nan     0.1000   -0.0255
-#&gt;    100        7.6364             nan     0.1000   -0.0613
-#&gt;    120        6.9690             nan     0.1000   -0.0023
-#&gt;    140        6.5098             nan     0.1000   -0.0534
-#&gt;    150        6.3196             nan     0.1000   -0.0557
+#&gt;      1       74.8691             nan     0.1000   10.8877
+#&gt;      2       67.2161             nan     0.1000    6.0468
+#&gt;      3       59.6747             nan     0.1000    6.9134
+#&gt;      4       53.1041             nan     0.1000    5.9229
+#&gt;      5       47.5612             nan     0.1000    5.2945
+#&gt;      6       42.5285             nan     0.1000    4.2424
+#&gt;      7       39.0056             nan     0.1000    3.5848
+#&gt;      8       35.5429             nan     0.1000    3.1408
+#&gt;      9       32.5220             nan     0.1000    2.9962
+#&gt;     10       30.3044             nan     0.1000    2.0074
+#&gt;     20       18.0016             nan     0.1000    0.6282
+#&gt;     40       11.6828             nan     0.1000   -0.0019
+#&gt;     60        9.8753             nan     0.1000   -0.0465
+#&gt;     80        8.6668             nan     0.1000   -0.0123
+#&gt;    100        7.8213             nan     0.1000   -0.1204
+#&gt;    120        7.1295             nan     0.1000   -0.0080
+#&gt;    140        6.5539             nan     0.1000    0.0001
+#&gt;    150        6.3375             nan     0.1000   -0.0179
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       75.4500             nan     0.1000   11.9575
-#&gt;      2       65.5810             nan     0.1000    9.1126
-#&gt;      3       58.2241             nan     0.1000    7.8582
-#&gt;      4       51.2112             nan     0.1000    7.8893
-#&gt;      5       45.1245             nan     0.1000    6.0632
-#&gt;      6       40.0915             nan     0.1000    4.6480
-#&gt;      7       36.0133             nan     0.1000    3.3111
-#&gt;      8       32.6575             nan     0.1000    2.5178
-#&gt;      9       29.6729             nan     0.1000    2.1162
-#&gt;     10       26.8318             nan     0.1000    1.9603
-#&gt;     20       15.1870             nan     0.1000    0.3690
-#&gt;     40        9.3424             nan     0.1000    0.0745
-#&gt;     60        7.7218             nan     0.1000   -0.0595
-#&gt;     80        6.7398             nan     0.1000   -0.0306
-#&gt;    100        5.9863             nan     0.1000   -0.0549
-#&gt;    120        5.3797             nan     0.1000   -0.0182
-#&gt;    140        4.9268             nan     0.1000   -0.0445
-#&gt;    150        4.7585             nan     0.1000   -0.0820
+#&gt;      1       73.5943             nan     0.1000    8.8998
+#&gt;      2       63.8609             nan     0.1000    9.5584
+#&gt;      3       56.1351             nan     0.1000    6.4727
+#&gt;      4       49.4071             nan     0.1000    6.1019
+#&gt;      5       43.7107             nan     0.1000    4.9606
+#&gt;      6       39.0010             nan     0.1000    4.7175
+#&gt;      7       35.2047             nan     0.1000    3.5995
+#&gt;      8       31.7243             nan     0.1000    2.7477
+#&gt;      9       29.0473             nan     0.1000    2.5923
+#&gt;     10       26.7034             nan     0.1000    1.8947
+#&gt;     20       15.0040             nan     0.1000    0.3184
+#&gt;     40        9.8791             nan     0.1000   -0.0793
+#&gt;     60        8.1816             nan     0.1000    0.0718
+#&gt;     80        7.0478             nan     0.1000    0.0078
+#&gt;    100        6.0930             nan     0.1000   -0.0482
+#&gt;    120        5.4193             nan     0.1000   -0.0161
+#&gt;    140        4.9356             nan     0.1000   -0.0495
+#&gt;    150        4.7134             nan     0.1000   -0.0464
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       75.5575             nan     0.1000    6.4993
-#&gt;      2       68.9756             nan     0.1000    6.4171
-#&gt;      3       63.1718             nan     0.1000    5.4424
-#&gt;      4       58.6061             nan     0.1000    4.3052
-#&gt;      5       54.3867             nan     0.1000    3.7898
-#&gt;      6       51.0315             nan     0.1000    3.1744
-#&gt;      7       47.4061             nan     0.1000    3.3934
-#&gt;      8       44.2536             nan     0.1000    2.2031
-#&gt;      9       41.4816             nan     0.1000    2.2940
-#&gt;     10       39.3529             nan     0.1000    2.1895
-#&gt;     20       24.7380             nan     0.1000    0.7117
-#&gt;     40       15.4350             nan     0.1000    0.0864
-#&gt;     60       12.7558             nan     0.1000    0.0878
-#&gt;     80       11.5162             nan     0.1000    0.0175
-#&gt;    100       10.7540             nan     0.1000   -0.0554
-#&gt;    120       10.1377             nan     0.1000   -0.0264
-#&gt;    140        9.7423             nan     0.1000   -0.0552
-#&gt;    150        9.5841             nan     0.1000   -0.0190
+#&gt;      1       78.5786             nan     0.1000    6.9195
+#&gt;      2       72.7192             nan     0.1000    5.8624
+#&gt;      3       67.2927             nan     0.1000    5.9055
+#&gt;      4       61.8352             nan     0.1000    5.2196
+#&gt;      5       57.1151             nan     0.1000    3.4065
+#&gt;      6       53.3717             nan     0.1000    3.6489
+#&gt;      7       49.4470             nan     0.1000    3.7639
+#&gt;      8       45.8854             nan     0.1000    3.4214
+#&gt;      9       43.2803             nan     0.1000    2.5329
+#&gt;     10       40.3682             nan     0.1000    3.3280
+#&gt;     20       24.8608             nan     0.1000    0.9846
+#&gt;     40       16.5028             nan     0.1000   -0.3605
+#&gt;     60       13.6580             nan     0.1000   -0.0075
+#&gt;     80       12.3327             nan     0.1000    0.0203
+#&gt;    100       11.4903             nan     0.1000   -0.1157
+#&gt;    120       10.9021             nan     0.1000   -0.0180
+#&gt;    140       10.4160             nan     0.1000   -0.0032
+#&gt;    150       10.1745             nan     0.1000   -0.1270
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       72.6663             nan     0.1000    9.9872
-#&gt;      2       64.6487             nan     0.1000    6.8675
-#&gt;      3       57.5487             nan     0.1000    6.2550
-#&gt;      4       51.4684             nan     0.1000    6.4653
-#&gt;      5       45.9501             nan     0.1000    5.2398
-#&gt;      6       41.5433             nan     0.1000    3.8859
-#&gt;      7       37.8484             nan     0.1000    3.6091
-#&gt;      8       33.9174             nan     0.1000    3.5836
-#&gt;      9       30.7824             nan     0.1000    2.8785
-#&gt;     10       28.4798             nan     0.1000    2.1372
-#&gt;     20       16.5745             nan     0.1000    0.4498
-#&gt;     40       10.4003             nan     0.1000   -0.0221
-#&gt;     60        8.6843             nan     0.1000    0.0233
-#&gt;     80        7.7121             nan     0.1000   -0.0681
-#&gt;    100        7.0870             nan     0.1000   -0.0426
-#&gt;    120        6.6142             nan     0.1000   -0.0370
-#&gt;    140        5.9598             nan     0.1000   -0.0466
-#&gt;    150        5.7148             nan     0.1000   -0.0065
+#&gt;      1       75.9599             nan     0.1000    9.1555
+#&gt;      2       66.6906             nan     0.1000   10.4896
+#&gt;      3       59.0460             nan     0.1000    6.6804
+#&gt;      4       52.3169             nan     0.1000    5.8702
+#&gt;      5       47.6757             nan     0.1000    4.3725
+#&gt;      6       42.5698             nan     0.1000    5.3351
+#&gt;      7       39.0018             nan     0.1000    3.3602
+#&gt;      8       35.6545             nan     0.1000    3.0546
+#&gt;      9       32.6168             nan     0.1000    1.7713
+#&gt;     10       30.2041             nan     0.1000    1.5723
+#&gt;     20       17.8120             nan     0.1000    0.6658
+#&gt;     40       11.3761             nan     0.1000   -0.0865
+#&gt;     60        9.6437             nan     0.1000   -0.0865
+#&gt;     80        8.3940             nan     0.1000   -0.0123
+#&gt;    100        7.4801             nan     0.1000    0.0262
+#&gt;    120        7.0649             nan     0.1000   -0.0400
+#&gt;    140        6.5968             nan     0.1000   -0.0299
+#&gt;    150        6.3471             nan     0.1000   -0.0364
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       71.7316             nan     0.1000   10.1823
-#&gt;      2       63.1178             nan     0.1000    8.1480
-#&gt;      3       55.6444             nan     0.1000    7.6413
-#&gt;      4       49.2472             nan     0.1000    6.6501
-#&gt;      5       43.7511             nan     0.1000    4.8846
-#&gt;      6       38.4311             nan     0.1000    4.8467
-#&gt;      7       34.7297             nan     0.1000    3.3560
-#&gt;      8       31.3481             nan     0.1000    3.1378
-#&gt;      9       28.2252             nan     0.1000    3.3926
-#&gt;     10       25.7329             nan     0.1000    2.0703
-#&gt;     20       14.0430             nan     0.1000    0.3442
-#&gt;     40        8.9306             nan     0.1000    0.0925
-#&gt;     60        7.1516             nan     0.1000   -0.0480
-#&gt;     80        6.1515             nan     0.1000   -0.0627
-#&gt;    100        5.5278             nan     0.1000   -0.0484
-#&gt;    120        4.9096             nan     0.1000   -0.0236
-#&gt;    140        4.4891             nan     0.1000   -0.0737
-#&gt;    150        4.3184             nan     0.1000   -0.0360
+#&gt;      1       74.5418             nan     0.1000   12.3252
+#&gt;      2       65.1344             nan     0.1000    7.6373
+#&gt;      3       56.7609             nan     0.1000    7.4660
+#&gt;      4       50.7330             nan     0.1000    5.3254
+#&gt;      5       44.7576             nan     0.1000    4.8813
+#&gt;      6       40.1303             nan     0.1000    4.1004
+#&gt;      7       35.8623             nan     0.1000    3.7212
+#&gt;      8       32.0736             nan     0.1000    3.2933
+#&gt;      9       29.1561             nan     0.1000    2.6692
+#&gt;     10       26.7989             nan     0.1000    1.8241
+#&gt;     20       14.8189             nan     0.1000    0.4251
+#&gt;     40        9.7378             nan     0.1000    0.0324
+#&gt;     60        7.7832             nan     0.1000   -0.0454
+#&gt;     80        6.6908             nan     0.1000   -0.0333
+#&gt;    100        5.8557             nan     0.1000   -0.0009
+#&gt;    120        5.1928             nan     0.1000   -0.0277
+#&gt;    140        4.6891             nan     0.1000   -0.0305
+#&gt;    150        4.5041             nan     0.1000   -0.0276
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       77.4928             nan     0.1000    6.8802
-#&gt;      2       70.8517             nan     0.1000    6.9205
-#&gt;      3       65.5170             nan     0.1000    5.8456
-#&gt;      4       60.8017             nan     0.1000    3.8996
-#&gt;      5       56.7664             nan     0.1000    4.2248
-#&gt;      6       52.8238             nan     0.1000    3.7478
-#&gt;      7       49.3655             nan     0.1000    2.6965
-#&gt;      8       45.9332             nan     0.1000    3.1101
-#&gt;      9       43.2855             nan     0.1000    2.8386
-#&gt;     10       40.5797             nan     0.1000    2.5660
-#&gt;     20       25.5752             nan     0.1000    0.7601
-#&gt;     40       16.5614             nan     0.1000    0.0594
-#&gt;     60       13.9161             nan     0.1000    0.0501
-#&gt;     80       12.5040             nan     0.1000   -0.0145
-#&gt;    100       11.6309             nan     0.1000   -0.0293
-#&gt;    120       11.0448             nan     0.1000   -0.0102
-#&gt;    140       10.5185             nan     0.1000   -0.0693
-#&gt;    150       10.2561             nan     0.1000   -0.0168
+#&gt;      1       75.7485             nan     0.1000    6.9327
+#&gt;      2       69.6634             nan     0.1000    5.4405
+#&gt;      3       64.5752             nan     0.1000    5.0511
+#&gt;      4       60.2439             nan     0.1000    4.0340
+#&gt;      5       55.7645             nan     0.1000    3.4482
+#&gt;      6       51.5007             nan     0.1000    3.6832
+#&gt;      7       48.3182             nan     0.1000    2.4533
+#&gt;      8       45.1272             nan     0.1000    2.2213
+#&gt;      9       42.6756             nan     0.1000    2.5857
+#&gt;     10       40.0820             nan     0.1000    2.1918
+#&gt;     20       25.5645             nan     0.1000    0.6341
+#&gt;     40       17.1041             nan     0.1000    0.0784
+#&gt;     60       14.1966             nan     0.1000    0.0337
+#&gt;     80       12.7153             nan     0.1000    0.0498
+#&gt;    100       11.7908             nan     0.1000   -0.0283
+#&gt;    120       11.1768             nan     0.1000    0.0185
+#&gt;    140       10.6801             nan     0.1000   -0.0677
+#&gt;    150       10.4611             nan     0.1000   -0.0301
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       75.2849             nan     0.1000    9.7994
-#&gt;      2       66.5423             nan     0.1000    7.5918
-#&gt;      3       59.3448             nan     0.1000    6.3937
-#&gt;      4       54.2166             nan     0.1000    4.5728
-#&gt;      5       49.2555             nan     0.1000    4.8991
-#&gt;      6       44.1026             nan     0.1000    4.4295
-#&gt;      7       40.0734             nan     0.1000    3.9633
-#&gt;      8       36.8457             nan     0.1000    3.1750
-#&gt;      9       33.8813             nan     0.1000    2.7626
-#&gt;     10       30.9779             nan     0.1000    1.8804
-#&gt;     20       18.1011             nan     0.1000    0.2431
-#&gt;     40       11.4669             nan     0.1000   -0.1077
-#&gt;     60        9.5864             nan     0.1000   -0.0338
-#&gt;     80        8.6038             nan     0.1000   -0.1233
-#&gt;    100        7.8465             nan     0.1000   -0.0545
-#&gt;    120        7.3012             nan     0.1000   -0.1594
-#&gt;    140        6.7758             nan     0.1000   -0.0067
-#&gt;    150        6.5045             nan     0.1000   -0.0452
+#&gt;      1       73.0659             nan     0.1000    9.1318
+#&gt;      2       64.2970             nan     0.1000    9.3265
+#&gt;      3       57.4705             nan     0.1000    6.6968
+#&gt;      4       51.3866             nan     0.1000    4.7160
+#&gt;      5       46.5479             nan     0.1000    5.3462
+#&gt;      6       42.5645             nan     0.1000    3.7964
+#&gt;      7       39.1750             nan     0.1000    2.8972
+#&gt;      8       35.8827             nan     0.1000    3.0855
+#&gt;      9       33.2833             nan     0.1000    2.3238
+#&gt;     10       30.9492             nan     0.1000    2.3366
+#&gt;     20       18.5410             nan     0.1000    0.3225
+#&gt;     40       12.6757             nan     0.1000    0.0113
+#&gt;     60       10.4531             nan     0.1000    0.0356
+#&gt;     80        9.2029             nan     0.1000    0.0222
+#&gt;    100        8.2018             nan     0.1000    0.0267
+#&gt;    120        7.5514             nan     0.1000   -0.0133
+#&gt;    140        6.9769             nan     0.1000   -0.0732
+#&gt;    150        6.7547             nan     0.1000   -0.0177
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       73.4892             nan     0.1000   10.6082
-#&gt;      2       64.8180             nan     0.1000    8.6339
-#&gt;      3       57.0056             nan     0.1000    8.0186
-#&gt;      4       50.2588             nan     0.1000    5.0834
-#&gt;      5       45.0310             nan     0.1000    4.0881
-#&gt;      6       40.4070             nan     0.1000    4.3812
-#&gt;      7       36.3409             nan     0.1000    3.8223
-#&gt;      8       33.2863             nan     0.1000    2.7466
-#&gt;      9       30.2925             nan     0.1000    2.7267
-#&gt;     10       27.9656             nan     0.1000    1.8678
-#&gt;     20       16.1576             nan     0.1000    0.5516
-#&gt;     40        9.8477             nan     0.1000    0.1500
-#&gt;     60        7.7640             nan     0.1000   -0.0144
-#&gt;     80        6.7936             nan     0.1000   -0.0605
-#&gt;    100        5.9380             nan     0.1000   -0.0370
-#&gt;    120        5.1437             nan     0.1000   -0.0064
-#&gt;    140        4.6667             nan     0.1000   -0.0480
-#&gt;    150        4.4620             nan     0.1000   -0.0237
+#&gt;      1       72.3460             nan     0.1000   10.3615
+#&gt;      2       63.5909             nan     0.1000    8.8323
+#&gt;      3       55.8229             nan     0.1000    7.7115
+#&gt;      4       49.0036             nan     0.1000    6.1812
+#&gt;      5       44.1010             nan     0.1000    4.8901
+#&gt;      6       39.6666             nan     0.1000    3.7592
+#&gt;      7       35.6623             nan     0.1000    3.2195
+#&gt;      8       32.4367             nan     0.1000    2.4554
+#&gt;      9       29.9488             nan     0.1000    2.4358
+#&gt;     10       27.7897             nan     0.1000    2.2332
+#&gt;     20       15.6336             nan     0.1000    0.4269
+#&gt;     40       10.2381             nan     0.1000   -0.0015
+#&gt;     60        8.1738             nan     0.1000   -0.0044
+#&gt;     80        7.2826             nan     0.1000   -0.1106
+#&gt;    100        6.5248             nan     0.1000   -0.0798
+#&gt;    120        5.9178             nan     0.1000    0.0109
+#&gt;    140        5.4265             nan     0.1000   -0.0809
+#&gt;    150        5.2025             nan     0.1000   -0.0433
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       75.4017             nan     0.1000    6.5555
-#&gt;      2       69.1531             nan     0.1000    6.1856
-#&gt;      3       63.7729             nan     0.1000    4.4518
-#&gt;      4       58.4080             nan     0.1000    4.9225
-#&gt;      5       54.8154             nan     0.1000    3.6280
-#&gt;      6       50.8904             nan     0.1000    3.5598
-#&gt;      7       47.2551             nan     0.1000    2.8988
-#&gt;      8       44.4971             nan     0.1000    2.7503
-#&gt;      9       41.7268             nan     0.1000    2.5600
-#&gt;     10       39.5286             nan     0.1000    1.9192
-#&gt;     20       24.8192             nan     0.1000    0.7527
-#&gt;     40       16.3553             nan     0.1000    0.1368
-#&gt;     60       13.4899             nan     0.1000    0.0312
-#&gt;     80       12.0294             nan     0.1000   -0.0834
-#&gt;    100       11.1202             nan     0.1000   -0.0144
-#&gt;    120       10.6336             nan     0.1000   -0.0204
-#&gt;    140       10.2333             nan     0.1000   -0.0446
-#&gt;    150       10.0172             nan     0.1000   -0.0006
+#&gt;      1       79.4476             nan     0.1000    7.1708
+#&gt;      2       72.6322             nan     0.1000    5.7331
+#&gt;      3       66.5594             nan     0.1000    6.3091
+#&gt;      4       61.5776             nan     0.1000    5.0887
+#&gt;      5       56.6927             nan     0.1000    3.5906
+#&gt;      6       53.3405             nan     0.1000    3.7300
+#&gt;      7       49.5067             nan     0.1000    3.8880
+#&gt;      8       46.2729             nan     0.1000    3.3041
+#&gt;      9       43.4807             nan     0.1000    2.9592
+#&gt;     10       40.9435             nan     0.1000    2.4302
+#&gt;     20       25.2949             nan     0.1000    0.7768
+#&gt;     40       16.5360             nan     0.1000    0.1475
+#&gt;     60       13.4236             nan     0.1000    0.0739
+#&gt;     80       12.0431             nan     0.1000    0.0338
+#&gt;    100       11.0700             nan     0.1000    0.0144
+#&gt;    120       10.5278             nan     0.1000   -0.1386
+#&gt;    140       10.1150             nan     0.1000   -0.0406
+#&gt;    150        9.9450             nan     0.1000   -0.0205
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       72.9581             nan     0.1000    8.4740
-#&gt;      2       64.1574             nan     0.1000    8.3363
-#&gt;      3       57.0737             nan     0.1000    6.0158
-#&gt;      4       51.0082             nan     0.1000    5.9266
-#&gt;      5       46.0656             nan     0.1000    4.0094
-#&gt;      6       41.7647             nan     0.1000    3.2533
-#&gt;      7       38.4609             nan     0.1000    3.0015
-#&gt;      8       35.1978             nan     0.1000    3.5745
-#&gt;      9       31.9753             nan     0.1000    2.5313
-#&gt;     10       29.7869             nan     0.1000    1.5192
-#&gt;     20       17.8034             nan     0.1000    0.5078
-#&gt;     40       11.1562             nan     0.1000    0.0699
-#&gt;     60        9.3429             nan     0.1000   -0.0720
-#&gt;     80        8.2423             nan     0.1000   -0.0069
-#&gt;    100        7.5614             nan     0.1000   -0.0292
-#&gt;    120        7.0627             nan     0.1000   -0.0655
-#&gt;    140        6.5134             nan     0.1000   -0.0908
-#&gt;    150        6.2817             nan     0.1000   -0.0372
+#&gt;      1       76.5246             nan     0.1000    9.5723
+#&gt;      2       67.4173             nan     0.1000    8.9899
+#&gt;      3       59.1241             nan     0.1000    8.5815
+#&gt;      4       52.1458             nan     0.1000    6.7935
+#&gt;      5       46.8238             nan     0.1000    4.7861
+#&gt;      6       42.5999             nan     0.1000    3.6909
+#&gt;      7       39.0345             nan     0.1000    3.1663
+#&gt;      8       35.4331             nan     0.1000    2.7985
+#&gt;      9       32.8260             nan     0.1000    2.2354
+#&gt;     10       30.4869             nan     0.1000    2.4409
+#&gt;     20       17.1479             nan     0.1000    0.4609
+#&gt;     40       10.9760             nan     0.1000   -0.0099
+#&gt;     60        8.8049             nan     0.1000   -0.0030
+#&gt;     80        7.9488             nan     0.1000   -0.0036
+#&gt;    100        7.1971             nan     0.1000   -0.0386
+#&gt;    120        6.7734             nan     0.1000   -0.0199
+#&gt;    140        6.2783             nan     0.1000   -0.0628
+#&gt;    150        6.0899             nan     0.1000   -0.0232
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       71.3446             nan     0.1000   12.0271
-#&gt;      2       62.0774             nan     0.1000    8.5193
-#&gt;      3       55.0266             nan     0.1000    7.6367
-#&gt;      4       49.1568             nan     0.1000    4.6002
-#&gt;      5       43.8953             nan     0.1000    4.7458
-#&gt;      6       39.0179             nan     0.1000    4.2465
-#&gt;      7       35.3658             nan     0.1000    4.4239
-#&gt;      8       31.9597             nan     0.1000    2.6852
-#&gt;      9       29.1345             nan     0.1000    2.4472
-#&gt;     10       26.7545             nan     0.1000    2.1748
-#&gt;     20       14.1146             nan     0.1000    0.4531
-#&gt;     40        8.8261             nan     0.1000    0.0422
-#&gt;     60        7.3493             nan     0.1000   -0.0312
-#&gt;     80        6.3044             nan     0.1000   -0.0145
-#&gt;    100        5.5325             nan     0.1000   -0.0105
-#&gt;    120        4.8530             nan     0.1000   -0.0288
-#&gt;    140        4.4123             nan     0.1000   -0.0189
-#&gt;    150        4.1858             nan     0.1000   -0.0314
+#&gt;      1       74.2180             nan     0.1000   10.5948
+#&gt;      2       64.4481             nan     0.1000    9.4499
+#&gt;      3       56.3272             nan     0.1000    8.4460
+#&gt;      4       49.8784             nan     0.1000    5.5917
+#&gt;      5       43.7570             nan     0.1000    5.1252
+#&gt;      6       39.0331             nan     0.1000    4.7365
+#&gt;      7       35.0203             nan     0.1000    3.8636
+#&gt;      8       31.7871             nan     0.1000    3.2271
+#&gt;      9       29.2290             nan     0.1000    2.1444
+#&gt;     10       26.7544             nan     0.1000    2.1724
+#&gt;     20       14.4163             nan     0.1000    0.1928
+#&gt;     40        8.8956             nan     0.1000    0.0865
+#&gt;     60        7.1234             nan     0.1000   -0.0323
+#&gt;     80        6.1481             nan     0.1000   -0.0288
+#&gt;    100        5.3770             nan     0.1000   -0.0423
+#&gt;    120        4.7898             nan     0.1000   -0.0323
+#&gt;    140        4.2568             nan     0.1000    0.0056
+#&gt;    150        4.0711             nan     0.1000   -0.0195
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       80.5609             nan     0.1000    7.5422
-#&gt;      2       73.4281             nan     0.1000    6.8610
-#&gt;      3       67.3917             nan     0.1000    4.9992
-#&gt;      4       62.2212             nan     0.1000    4.7297
-#&gt;      5       57.9485             nan     0.1000    3.7350
-#&gt;      6       53.8916             nan     0.1000    3.4935
-#&gt;      7       50.3325             nan     0.1000    3.4811
-#&gt;      8       46.9359             nan     0.1000    2.2615
-#&gt;      9       44.0210             nan     0.1000    2.8256
-#&gt;     10       41.6431             nan     0.1000    2.5930
-#&gt;     20       25.7617             nan     0.1000    0.7353
-#&gt;     40       16.8916             nan     0.1000    0.1904
-#&gt;     60       13.9282             nan     0.1000    0.0670
-#&gt;     80       12.5456             nan     0.1000    0.0345
-#&gt;    100       11.6665             nan     0.1000   -0.1888
-#&gt;    120       11.2371             nan     0.1000   -0.0872
-#&gt;    140       10.8080             nan     0.1000   -0.0410
-#&gt;    150       10.5999             nan     0.1000   -0.0600
+#&gt;      1       76.8519             nan     0.1000    6.8054
+#&gt;      2       69.9920             nan     0.1000    5.9507
+#&gt;      3       64.6248             nan     0.1000    5.5362
+#&gt;      4       59.4803             nan     0.1000    4.5967
+#&gt;      5       55.4540             nan     0.1000    4.0542
+#&gt;      6       50.8745             nan     0.1000    3.9006
+#&gt;      7       47.9101             nan     0.1000    3.0746
+#&gt;      8       44.6412             nan     0.1000    2.6462
+#&gt;      9       41.4789             nan     0.1000    2.6855
+#&gt;     10       38.8653             nan     0.1000    2.5714
+#&gt;     20       23.8658             nan     0.1000    0.6596
+#&gt;     40       15.1431             nan     0.1000    0.0731
+#&gt;     60       12.4555             nan     0.1000    0.0002
+#&gt;     80       11.1922             nan     0.1000   -0.0422
+#&gt;    100       10.4937             nan     0.1000   -0.0712
+#&gt;    120       10.0431             nan     0.1000   -0.1249
+#&gt;    140        9.6669             nan     0.1000   -0.0925
+#&gt;    150        9.4278             nan     0.1000   -0.0073
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       77.8732             nan     0.1000   10.6706
-#&gt;      2       69.1246             nan     0.1000    9.8155
-#&gt;      3       60.8296             nan     0.1000    7.3651
-#&gt;      4       54.1734             nan     0.1000    6.2479
-#&gt;      5       48.4917             nan     0.1000    5.5293
-#&gt;      6       44.0304             nan     0.1000    3.6546
-#&gt;      7       39.9415             nan     0.1000    3.5381
-#&gt;      8       37.1914             nan     0.1000    2.4573
-#&gt;      9       33.8382             nan     0.1000    3.3773
-#&gt;     10       31.3821             nan     0.1000    2.3533
-#&gt;     20       18.2654             nan     0.1000    0.8555
-#&gt;     40       12.0655             nan     0.1000    0.0359
-#&gt;     60        9.9129             nan     0.1000    0.0195
-#&gt;     80        8.9162             nan     0.1000    0.0230
-#&gt;    100        8.0966             nan     0.1000   -0.0265
-#&gt;    120        7.3939             nan     0.1000   -0.0221
-#&gt;    140        6.7395             nan     0.1000   -0.0659
-#&gt;    150        6.5370             nan     0.1000   -0.0016
+#&gt;      1       73.4166             nan     0.1000   10.9917
+#&gt;      2       65.1353             nan     0.1000    7.8150
+#&gt;      3       57.9120             nan     0.1000    6.9625
+#&gt;      4       51.2631             nan     0.1000    6.0544
+#&gt;      5       45.6116             nan     0.1000    4.4515
+#&gt;      6       41.4174             nan     0.1000    5.1220
+#&gt;      7       37.2390             nan     0.1000    3.6446
+#&gt;      8       33.6723             nan     0.1000    2.8674
+#&gt;      9       30.6742             nan     0.1000    2.4399
+#&gt;     10       28.5444             nan     0.1000    1.8482
+#&gt;     20       16.0042             nan     0.1000    0.4966
+#&gt;     40       10.8595             nan     0.1000   -0.0402
+#&gt;     60        9.0567             nan     0.1000   -0.0634
+#&gt;     80        7.9821             nan     0.1000   -0.0162
+#&gt;    100        7.1366             nan     0.1000   -0.0288
+#&gt;    120        6.6498             nan     0.1000   -0.0131
+#&gt;    140        6.2635             nan     0.1000   -0.0285
+#&gt;    150        6.0008             nan     0.1000   -0.0356
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       76.5161             nan     0.1000   12.0947
-#&gt;      2       67.4694             nan     0.1000    8.0000
-#&gt;      3       58.8757             nan     0.1000    8.5606
-#&gt;      4       52.4126             nan     0.1000    5.7100
-#&gt;      5       46.4303             nan     0.1000    5.7061
-#&gt;      6       41.6635             nan     0.1000    4.9854
-#&gt;      7       37.6257             nan     0.1000    3.0628
-#&gt;      8       33.9415             nan     0.1000    3.0112
-#&gt;      9       31.0109             nan     0.1000    2.6818
-#&gt;     10       28.8710             nan     0.1000    2.1611
-#&gt;     20       15.6566             nan     0.1000    0.3902
-#&gt;     40        9.8266             nan     0.1000    0.0163
-#&gt;     60        8.1692             nan     0.1000   -0.0822
-#&gt;     80        6.9054             nan     0.1000   -0.0133
-#&gt;    100        6.0565             nan     0.1000   -0.0456
-#&gt;    120        5.3854             nan     0.1000   -0.0673
-#&gt;    140        4.8853             nan     0.1000   -0.0334
-#&gt;    150        4.7303             nan     0.1000   -0.0488
+#&gt;      1       72.6587             nan     0.1000   11.3624
+#&gt;      2       63.9974             nan     0.1000    8.5424
+#&gt;      3       55.8572             nan     0.1000    8.3204
+#&gt;      4       49.0877             nan     0.1000    6.6283
+#&gt;      5       43.3484             nan     0.1000    5.7637
+#&gt;      6       38.6945             nan     0.1000    4.6310
+#&gt;      7       34.8282             nan     0.1000    3.9905
+#&gt;      8       31.7400             nan     0.1000    2.9346
+#&gt;      9       29.0426             nan     0.1000    2.6107
+#&gt;     10       26.9795             nan     0.1000    1.8381
+#&gt;     20       15.2926             nan     0.1000    0.3725
+#&gt;     40        9.8728             nan     0.1000    0.0506
+#&gt;     60        7.8063             nan     0.1000    0.0469
+#&gt;     80        6.6526             nan     0.1000   -0.0396
+#&gt;    100        5.7797             nan     0.1000   -0.0164
+#&gt;    120        5.1117             nan     0.1000   -0.0511
+#&gt;    140        4.4825             nan     0.1000   -0.0364
+#&gt;    150        4.2835             nan     0.1000   -0.0234
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       75.3852             nan     0.1000    5.5315
-#&gt;      2       69.2937             nan     0.1000    5.9569
-#&gt;      3       63.8360             nan     0.1000    5.8716
-#&gt;      4       58.4119             nan     0.1000    4.9814
-#&gt;      5       54.0829             nan     0.1000    4.1032
-#&gt;      6       50.5348             nan     0.1000    3.6298
-#&gt;      7       47.0332             nan     0.1000    2.9511
-#&gt;      8       44.0140             nan     0.1000    2.9809
-#&gt;      9       41.6066             nan     0.1000    2.4509
-#&gt;     10       39.3777             nan     0.1000    2.4314
-#&gt;     20       24.3151             nan     0.1000    0.8927
-#&gt;     40       15.3217             nan     0.1000    0.1375
-#&gt;     60       12.9303             nan     0.1000   -0.0635
-#&gt;     80       11.5238             nan     0.1000   -0.0098
-#&gt;    100       10.7497             nan     0.1000   -0.0064
-#&gt;    120       10.2173             nan     0.1000   -0.0259
-#&gt;    140        9.8834             nan     0.1000   -0.0859
-#&gt;    150        9.6911             nan     0.1000   -0.0570
+#&gt;      1       75.4000             nan     0.1000    7.2250
+#&gt;      2       69.2894             nan     0.1000    6.0352
+#&gt;      3       63.6127             nan     0.1000    5.4274
+#&gt;      4       58.5594             nan     0.1000    5.0902
+#&gt;      5       54.7333             nan     0.1000    4.0082
+#&gt;      6       50.5214             nan     0.1000    3.7558
+#&gt;      7       46.7302             nan     0.1000    2.3370
+#&gt;      8       43.9954             nan     0.1000    2.7139
+#&gt;      9       41.2543             nan     0.1000    2.2706
+#&gt;     10       39.0149             nan     0.1000    1.9967
+#&gt;     20       23.9018             nan     0.1000    0.7162
+#&gt;     40       15.1786             nan     0.1000    0.1196
+#&gt;     60       12.4140             nan     0.1000    0.0394
+#&gt;     80       11.0875             nan     0.1000    0.0300
+#&gt;    100       10.3673             nan     0.1000   -0.0002
+#&gt;    120        9.8704             nan     0.1000   -0.1034
+#&gt;    140        9.4561             nan     0.1000   -0.0149
+#&gt;    150        9.2821             nan     0.1000   -0.0023
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       73.3634             nan     0.1000    8.0658
-#&gt;      2       65.2606             nan     0.1000    7.5265
-#&gt;      3       57.3665             nan     0.1000    6.9357
-#&gt;      4       52.1482             nan     0.1000    4.9777
-#&gt;      5       46.8278             nan     0.1000    5.5610
-#&gt;      6       42.3154             nan     0.1000    3.6699
-#&gt;      7       38.5633             nan     0.1000    3.7615
-#&gt;      8       35.0700             nan     0.1000    2.7426
-#&gt;      9       31.7937             nan     0.1000    2.6440
-#&gt;     10       29.4128             nan     0.1000    2.2183
-#&gt;     20       17.2703             nan     0.1000    0.5784
-#&gt;     40       10.9492             nan     0.1000    0.0579
-#&gt;     60        9.1977             nan     0.1000    0.0301
-#&gt;     80        8.1445             nan     0.1000    0.0285
-#&gt;    100        7.3913             nan     0.1000    0.0016
-#&gt;    120        6.7883             nan     0.1000   -0.0630
-#&gt;    140        6.3290             nan     0.1000   -0.0428
-#&gt;    150        6.1408             nan     0.1000   -0.0106
+#&gt;      1       72.7703             nan     0.1000    9.1465
+#&gt;      2       65.6603             nan     0.1000    5.3330
+#&gt;      3       58.2233             nan     0.1000    8.1325
+#&gt;      4       51.3041             nan     0.1000    5.1951
+#&gt;      5       46.1774             nan     0.1000    4.6104
+#&gt;      6       41.9580             nan     0.1000    4.1022
+#&gt;      7       38.0685             nan     0.1000    3.3206
+#&gt;      8       34.7052             nan     0.1000    2.9871
+#&gt;      9       32.0901             nan     0.1000    2.6271
+#&gt;     10       29.8716             nan     0.1000    1.6289
+#&gt;     20       17.1905             nan     0.1000    0.4074
+#&gt;     40       11.4483             nan     0.1000    0.0978
+#&gt;     60        9.4345             nan     0.1000    0.0312
+#&gt;     80        8.1563             nan     0.1000   -0.0774
+#&gt;    100        7.2918             nan     0.1000   -0.0419
+#&gt;    120        6.7684             nan     0.1000   -0.0260
+#&gt;    140        6.2148             nan     0.1000   -0.1119
+#&gt;    150        6.0297             nan     0.1000   -0.0359
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       72.3575             nan     0.1000   10.1281
-#&gt;      2       63.2904             nan     0.1000    9.0413
-#&gt;      3       55.6412             nan     0.1000    8.5039
-#&gt;      4       49.3489             nan     0.1000    5.3286
-#&gt;      5       44.0532             nan     0.1000    4.3191
-#&gt;      6       39.4068             nan     0.1000    4.8247
-#&gt;      7       35.6110             nan     0.1000    3.7873
-#&gt;      8       31.9553             nan     0.1000    2.7124
-#&gt;      9       29.2242             nan     0.1000    1.9982
-#&gt;     10       26.6660             nan     0.1000    2.0769
-#&gt;     20       14.5549             nan     0.1000    0.4609
-#&gt;     40        9.3483             nan     0.1000    0.0492
-#&gt;     60        7.4251             nan     0.1000   -0.0398
-#&gt;     80        6.2545             nan     0.1000    0.0128
-#&gt;    100        5.5798             nan     0.1000   -0.0772
-#&gt;    120        5.0964             nan     0.1000   -0.0698
-#&gt;    140        4.6579             nan     0.1000   -0.0500
-#&gt;    150        4.4010             nan     0.1000   -0.0274
+#&gt;      1       71.8918             nan     0.1000   11.2823
+#&gt;      2       62.8180             nan     0.1000    7.4777
+#&gt;      3       55.1612             nan     0.1000    8.2676
+#&gt;      4       49.2064             nan     0.1000    5.1851
+#&gt;      5       44.1723             nan     0.1000    5.3568
+#&gt;      6       39.2100             nan     0.1000    4.9039
+#&gt;      7       34.9435             nan     0.1000    3.4715
+#&gt;      8       31.4259             nan     0.1000    3.2643
+#&gt;      9       28.4566             nan     0.1000    2.2000
+#&gt;     10       25.9366             nan     0.1000    2.8554
+#&gt;     20       14.1047             nan     0.1000    0.3932
+#&gt;     40        9.0166             nan     0.1000   -0.0165
+#&gt;     60        7.3440             nan     0.1000   -0.0158
+#&gt;     80        6.2747             nan     0.1000   -0.0170
+#&gt;    100        5.4622             nan     0.1000   -0.0429
+#&gt;    120        5.0061             nan     0.1000   -0.0400
+#&gt;    140        4.5056             nan     0.1000   -0.0275
+#&gt;    150        4.2676             nan     0.1000   -0.0267
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       79.0574             nan     0.1000    7.1463
-#&gt;      2       71.8394             nan     0.1000    5.4682
-#&gt;      3       65.3299             nan     0.1000    6.1996
-#&gt;      4       60.2345             nan     0.1000    5.1346
-#&gt;      5       56.5528             nan     0.1000    3.2873
-#&gt;      6       52.4071             nan     0.1000    3.9030
-#&gt;      7       48.9578             nan     0.1000    3.2275
-#&gt;      8       45.8992             nan     0.1000    3.1342
-#&gt;      9       43.1151             nan     0.1000    2.1756
-#&gt;     10       40.4242             nan     0.1000    2.4090
-#&gt;     20       25.6435             nan     0.1000    0.8871
-#&gt;     40       17.0416             nan     0.1000    0.1324
-#&gt;     60       13.9880             nan     0.1000    0.0322
-#&gt;     80       12.5568             nan     0.1000    0.0306
-#&gt;    100       11.7882             nan     0.1000   -0.1810
-#&gt;    120       11.2216             nan     0.1000   -0.0111
-#&gt;    140       10.7382             nan     0.1000   -0.0116
-#&gt;    150       10.5284             nan     0.1000   -0.0467
+#&gt;      1       77.4600             nan     0.1000    6.5687
+#&gt;      2       70.8867             nan     0.1000    4.9060
+#&gt;      3       64.6955             nan     0.1000    5.6529
+#&gt;      4       59.9859             nan     0.1000    3.9946
+#&gt;      5       56.0454             nan     0.1000    3.8114
+#&gt;      6       51.9914             nan     0.1000    3.5306
+#&gt;      7       48.3747             nan     0.1000    3.3094
+#&gt;      8       45.3677             nan     0.1000    2.6744
+#&gt;      9       42.8317             nan     0.1000    2.7686
+#&gt;     10       40.3437             nan     0.1000    2.3182
+#&gt;     20       25.6068             nan     0.1000    0.8630
+#&gt;     40       17.1166             nan     0.1000    0.1687
+#&gt;     60       14.1175             nan     0.1000    0.0309
+#&gt;     80       12.6588             nan     0.1000    0.0013
+#&gt;    100       11.8067             nan     0.1000   -0.0088
+#&gt;    120       11.1403             nan     0.1000   -0.0611
+#&gt;    140       10.6241             nan     0.1000   -0.0741
+#&gt;    150       10.4650             nan     0.1000   -0.0734
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       74.9581             nan     0.1000   10.2975
-#&gt;      2       65.6284             nan     0.1000    9.3687
-#&gt;      3       58.7630             nan     0.1000    7.7509
-#&gt;      4       52.4795             nan     0.1000    5.5905
-#&gt;      5       47.4139             nan     0.1000    4.7472
-#&gt;      6       43.4445             nan     0.1000    4.3073
-#&gt;      7       39.7876             nan     0.1000    3.9652
-#&gt;      8       36.8285             nan     0.1000    2.5556
-#&gt;      9       33.6337             nan     0.1000    2.1695
-#&gt;     10       31.1161             nan     0.1000    1.9768
-#&gt;     20       18.1042             nan     0.1000    0.7510
-#&gt;     40       11.9858             nan     0.1000    0.0604
-#&gt;     60        9.9438             nan     0.1000   -0.0111
-#&gt;     80        8.9703             nan     0.1000   -0.0987
-#&gt;    100        8.1624             nan     0.1000   -0.0313
-#&gt;    120        7.4043             nan     0.1000   -0.0011
-#&gt;    140        6.7860             nan     0.1000   -0.0759
-#&gt;    150        6.5390             nan     0.1000   -0.0592
+#&gt;      1       74.9073             nan     0.1000    9.3004
+#&gt;      2       65.9944             nan     0.1000    8.1190
+#&gt;      3       59.2835             nan     0.1000    7.1511
+#&gt;      4       52.3194             nan     0.1000    6.2795
+#&gt;      5       47.7169             nan     0.1000    4.2998
+#&gt;      6       43.2973             nan     0.1000    3.6874
+#&gt;      7       39.3587             nan     0.1000    3.9562
+#&gt;      8       35.5712             nan     0.1000    3.6318
+#&gt;      9       32.8006             nan     0.1000    2.1557
+#&gt;     10       30.2425             nan     0.1000    2.1217
+#&gt;     20       18.0906             nan     0.1000    0.5182
+#&gt;     40       11.7831             nan     0.1000    0.0660
+#&gt;     60        9.9137             nan     0.1000   -0.0560
+#&gt;     80        8.7057             nan     0.1000   -0.0030
+#&gt;    100        7.9219             nan     0.1000    0.0129
+#&gt;    120        7.2386             nan     0.1000    0.0100
+#&gt;    140        6.7532             nan     0.1000   -0.0276
+#&gt;    150        6.5768             nan     0.1000   -0.0685
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       75.6868             nan     0.1000    9.6422
-#&gt;      2       65.8804             nan     0.1000    9.6129
-#&gt;      3       58.2943             nan     0.1000    7.1643
-#&gt;      4       51.7810             nan     0.1000    6.1452
-#&gt;      5       45.9679             nan     0.1000    5.5801
-#&gt;      6       41.5364             nan     0.1000    3.7468
-#&gt;      7       37.1432             nan     0.1000    3.9862
-#&gt;      8       33.7504             nan     0.1000    2.9655
-#&gt;      9       30.8905             nan     0.1000    2.6261
-#&gt;     10       28.1952             nan     0.1000    2.0925
-#&gt;     20       15.6630             nan     0.1000    0.4662
-#&gt;     40        9.7414             nan     0.1000    0.0211
-#&gt;     60        7.9868             nan     0.1000   -0.0074
-#&gt;     80        6.5376             nan     0.1000   -0.0676
-#&gt;    100        5.9392             nan     0.1000    0.0006
-#&gt;    120        5.1925             nan     0.1000   -0.0343
-#&gt;    140        4.6299             nan     0.1000   -0.0122
-#&gt;    150        4.4097             nan     0.1000   -0.0508
+#&gt;      1       73.4544             nan     0.1000   12.4799
+#&gt;      2       64.3402             nan     0.1000    8.9031
+#&gt;      3       55.9726             nan     0.1000    7.4548
+#&gt;      4       49.8272             nan     0.1000    5.8159
+#&gt;      5       44.4005             nan     0.1000    5.8016
+#&gt;      6       39.9629             nan     0.1000    4.4427
+#&gt;      7       35.7907             nan     0.1000    3.9682
+#&gt;      8       32.3343             nan     0.1000    2.9339
+#&gt;      9       29.5344             nan     0.1000    1.9453
+#&gt;     10       27.2546             nan     0.1000    1.7991
+#&gt;     20       14.8919             nan     0.1000    0.3093
+#&gt;     40        9.3560             nan     0.1000    0.0768
+#&gt;     60        7.4800             nan     0.1000   -0.0134
+#&gt;     80        6.5591             nan     0.1000   -0.0102
+#&gt;    100        5.7901             nan     0.1000   -0.0241
+#&gt;    120        5.1426             nan     0.1000   -0.0187
+#&gt;    140        4.6686             nan     0.1000   -0.0425
+#&gt;    150        4.4692             nan     0.1000   -0.0534
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       75.3057             nan     0.1000    6.9182
-#&gt;      2       69.5070             nan     0.1000    4.3278
-#&gt;      3       63.1548             nan     0.1000    5.7505
-#&gt;      4       58.9282             nan     0.1000    3.4470
-#&gt;      5       54.7411             nan     0.1000    4.4685
-#&gt;      6       50.7812             nan     0.1000    3.5417
-#&gt;      7       47.0051             nan     0.1000    4.0821
-#&gt;      8       44.2383             nan     0.1000    2.6508
-#&gt;      9       41.6544             nan     0.1000    2.1264
-#&gt;     10       39.2649             nan     0.1000    1.9895
-#&gt;     20       24.7581             nan     0.1000    0.8435
-#&gt;     40       16.7022             nan     0.1000    0.1296
-#&gt;     60       14.2385             nan     0.1000    0.0882
-#&gt;     80       12.8522             nan     0.1000    0.0259
-#&gt;    100       11.9802             nan     0.1000    0.0246
-#&gt;    120       11.4991             nan     0.1000   -0.0835
-#&gt;    140       11.0126             nan     0.1000   -0.0309
-#&gt;    150       10.8162             nan     0.1000   -0.0720
+#&gt;      1       78.9591             nan     0.1000    7.4893
+#&gt;      2       72.4911             nan     0.1000    5.4848
+#&gt;      3       67.2749             nan     0.1000    5.7984
+#&gt;      4       62.3920             nan     0.1000    5.0667
+#&gt;      5       57.1122             nan     0.1000    4.8612
+#&gt;      6       53.6210             nan     0.1000    3.1344
+#&gt;      7       49.8651             nan     0.1000    3.8245
+#&gt;      8       46.5105             nan     0.1000    2.9344
+#&gt;      9       43.8282             nan     0.1000    2.4877
+#&gt;     10       40.8560             nan     0.1000    2.6822
+#&gt;     20       25.7784             nan     0.1000    0.7492
+#&gt;     40       16.7139             nan     0.1000    0.0909
+#&gt;     60       14.0135             nan     0.1000    0.0164
+#&gt;     80       12.5675             nan     0.1000   -0.1319
+#&gt;    100       11.7075             nan     0.1000    0.0128
+#&gt;    120       11.1505             nan     0.1000    0.0048
+#&gt;    140       10.7388             nan     0.1000   -0.1186
+#&gt;    150       10.5614             nan     0.1000   -0.0550
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       74.0920             nan     0.1000    7.1656
-#&gt;      2       64.9960             nan     0.1000    8.0828
-#&gt;      3       57.4918             nan     0.1000    8.5377
-#&gt;      4       51.8597             nan     0.1000    5.3826
-#&gt;      5       47.1927             nan     0.1000    3.9869
-#&gt;      6       42.9930             nan     0.1000    3.3187
-#&gt;      7       38.8904             nan     0.1000    4.1244
-#&gt;      8       35.6607             nan     0.1000    3.0860
-#&gt;      9       32.7505             nan     0.1000    2.7813
-#&gt;     10       30.0712             nan     0.1000    2.7197
-#&gt;     20       17.5049             nan     0.1000    0.6848
-#&gt;     40       11.5157             nan     0.1000    0.0779
-#&gt;     60        9.5124             nan     0.1000   -0.0593
-#&gt;     80        8.3291             nan     0.1000    0.0094
-#&gt;    100        7.5074             nan     0.1000   -0.0407
-#&gt;    120        7.0263             nan     0.1000   -0.0722
-#&gt;    140        6.6232             nan     0.1000   -0.1173
-#&gt;    150        6.3755             nan     0.1000   -0.0383
+#&gt;      1       76.2432             nan     0.1000    9.5774
+#&gt;      2       67.8073             nan     0.1000    8.0742
+#&gt;      3       60.7494             nan     0.1000    7.6142
+#&gt;      4       53.8795             nan     0.1000    6.9150
+#&gt;      5       48.2101             nan     0.1000    5.7604
+#&gt;      6       43.6234             nan     0.1000    4.5357
+#&gt;      7       40.4286             nan     0.1000    3.1330
+#&gt;      8       37.4250             nan     0.1000    3.1494
+#&gt;      9       34.2596             nan     0.1000    2.5551
+#&gt;     10       31.7023             nan     0.1000    2.4798
+#&gt;     20       18.7414             nan     0.1000    0.3875
+#&gt;     40       11.9012             nan     0.1000    0.0696
+#&gt;     60       10.1634             nan     0.1000   -0.0262
+#&gt;     80        9.0248             nan     0.1000   -0.0509
+#&gt;    100        8.2522             nan     0.1000   -0.0569
+#&gt;    120        7.6305             nan     0.1000   -0.0244
+#&gt;    140        7.0522             nan     0.1000    0.0132
+#&gt;    150        6.7882             nan     0.1000   -0.0266
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       72.2343             nan     0.1000   10.0863
-#&gt;      2       63.7304             nan     0.1000   10.0309
-#&gt;      3       55.7430             nan     0.1000    7.7409
-#&gt;      4       49.3054             nan     0.1000    4.8833
-#&gt;      5       44.3969             nan     0.1000    5.0337
-#&gt;      6       39.8537             nan     0.1000    3.3221
-#&gt;      7       36.0450             nan     0.1000    4.4085
-#&gt;      8       32.2083             nan     0.1000    3.3133
-#&gt;      9       29.5472             nan     0.1000    2.6531
-#&gt;     10       27.5693             nan     0.1000    1.6656
-#&gt;     20       15.3908             nan     0.1000    0.5373
-#&gt;     40        9.9000             nan     0.1000   -0.1057
-#&gt;     60        8.3280             nan     0.1000   -0.1143
-#&gt;     80        7.0698             nan     0.1000   -0.0807
-#&gt;    100        6.1740             nan     0.1000   -0.0655
-#&gt;    120        5.5188             nan     0.1000   -0.0835
-#&gt;    140        4.9665             nan     0.1000   -0.0336
-#&gt;    150        4.6861             nan     0.1000   -0.0177
+#&gt;      1       74.8544             nan     0.1000    8.4810
+#&gt;      2       65.2387             nan     0.1000    9.1911
+#&gt;      3       57.2865             nan     0.1000    7.5138
+#&gt;      4       50.5753             nan     0.1000    6.6622
+#&gt;      5       45.1579             nan     0.1000    5.1404
+#&gt;      6       40.3297             nan     0.1000    4.6956
+#&gt;      7       36.9159             nan     0.1000    3.4420
+#&gt;      8       33.3253             nan     0.1000    3.2902
+#&gt;      9       30.3346             nan     0.1000    2.6114
+#&gt;     10       27.8924             nan     0.1000    2.1573
+#&gt;     20       14.7679             nan     0.1000    0.5343
+#&gt;     40        9.7143             nan     0.1000    0.0438
+#&gt;     60        7.9811             nan     0.1000   -0.0306
+#&gt;     80        6.8359             nan     0.1000   -0.0455
+#&gt;    100        6.0110             nan     0.1000   -0.0373
+#&gt;    120        5.3897             nan     0.1000   -0.0163
+#&gt;    140        4.9587             nan     0.1000   -0.0379
+#&gt;    150        4.6673             nan     0.1000   -0.0230
 #&gt; 
 #&gt; Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-#&gt;      1       73.8025             nan     0.1000    9.2920
-#&gt;      2       64.8693             nan     0.1000    9.1006
-#&gt;      3       58.0794             nan     0.1000    6.3676
-#&gt;      4       51.2847             nan     0.1000    5.9323
-#&gt;      5       45.5543             nan     0.1000    6.1069
-#&gt;      6       40.9431             nan     0.1000    4.1816
-#&gt;      7       36.7517             nan     0.1000    4.2793
-#&gt;      8       33.4895             nan     0.1000    3.0046
-#&gt;      9       30.1651             nan     0.1000    3.1088
-#&gt;     10       27.7324             nan     0.1000    2.3929
-#&gt;     20       15.4602             nan     0.1000    0.6534
-#&gt;     40       10.0886             nan     0.1000    0.0598
-#&gt;     60        8.1220             nan     0.1000   -0.0155
-#&gt;     80        6.9128             nan     0.1000   -0.0500
-#&gt;    100        6.2044             nan     0.1000   -0.0482
-#&gt;    120        5.5941             nan     0.1000   -0.0300
-#&gt;    140        4.9997             nan     0.1000   -0.0435
-#&gt;    150        4.7614             nan     0.1000   -0.0423
+#&gt;      1       72.9026             nan     0.1000   11.4077
+#&gt;      2       63.9185             nan     0.1000    7.6255
+#&gt;      3       57.4803             nan     0.1000    5.2913
+#&gt;      4       50.4845             nan     0.1000    6.3624
+#&gt;      5       44.4957             nan     0.1000    5.3184
+#&gt;      6       39.2164             nan     0.1000    5.6630
+#&gt;      7       35.6417             nan     0.1000    3.3662
+#&gt;      8       32.0365             nan     0.1000    2.6934
+#&gt;      9       29.1698             nan     0.1000    2.7016
+#&gt;     10       26.9136             nan     0.1000    1.7254
+#&gt;     20       14.4459             nan     0.1000    0.3651
+#&gt;     40        9.3423             nan     0.1000    0.0979
+#&gt;     60        7.6699             nan     0.1000   -0.0491
+#&gt;     80        6.7083             nan     0.1000   -0.0033
+#&gt;    100        5.9702             nan     0.1000   -0.0433
+#&gt;    120        5.3980             nan     0.1000   -0.0183
+#&gt;    140        4.9431             nan     0.1000   -0.0441
+#&gt;    150        4.6831             nan     0.1000   -0.0128
 #&gt; </div><div class='input'><span class='va'>ciu</span> <span class='op'>&lt;-</span> <span class='fu'>ciu.new</span><span class='op'>(</span><span class='va'>gbm</span>, <span class='va'>medv</span><span class='op'>~</span><span class='va'>.</span>, <span class='va'>Boston</span><span class='op'>)</span>
 <span class='va'>ciu</span><span class='op'>$</span><span class='fu'>barplot.ciu</span><span class='op'>(</span><span class='va'>Boston</span><span class='op'>[</span><span class='fl'>370</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>13</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='img'><img src='ciu.new-3.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='img'><img src='ciu.new-5.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Same but sort by CI.</span>
 <span class='va'>ciu</span><span class='op'>$</span><span class='fu'>barplot.ciu</span><span class='op'>(</span><span class='va'>Boston</span><span class='op'>[</span><span class='fl'>370</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>13</span><span class='op'>]</span>, sort <span class='op'>=</span> <span class='st'>"CI"</span><span class='op'>)</span>
-</div><div class='img'><img src='ciu.new-4.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='img'><img src='ciu.new-6.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># The two other possible plots</span>
 <span class='va'>ciu</span><span class='op'>$</span><span class='fu'>ggplot.col</span><span class='op'>(</span><span class='va'>Boston</span><span class='op'>[</span><span class='fl'>370</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>13</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='img'><img src='ciu.new-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>ciu</span><span class='op'>$</span><span class='fu'>pie.ciu</span><span class='op'>(</span><span class='va'>Boston</span><span class='op'>[</span><span class='fl'>370</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>13</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='img'><img src='ciu.new-6.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='img'><img src='ciu.new-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>ciu</span><span class='op'>$</span><span class='fu'>pie.ciu</span><span class='op'>(</span><span class='va'>Boston</span><span class='op'>[</span><span class='fl'>370</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>13</span><span class='op'>]</span><span class='op'>)</span>
+</div><div class='img'><img src='ciu.new-8.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Method "plot" for studying the black-box behavior and CIU one input at a time.</span>
 <span class='va'>ciu</span><span class='op'>$</span><span class='fu'>plot.ciu</span><span class='op'>(</span><span class='va'>Boston</span><span class='op'>[</span><span class='fl'>370</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>13</span><span class='op'>]</span>,<span class='fl'>13</span><span class='op'>)</span>
-</div><div class='img'><img src='ciu.new-7.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='img'><img src='ciu.new-9.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

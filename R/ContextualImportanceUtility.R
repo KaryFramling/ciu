@@ -63,6 +63,7 @@
 #' - \code{\link{pie.ciu}}
 #' - \code{\link{plot.ciu}}
 #' - \code{\link{plot.ciu.3D}}
+#' - `textual`, see [ciu.textual] (but omit first parameter `ciu`).
 #'
 #' \emph{"Usage" section is here in "Details" section because Roxygen etc.
 #' don't support documentation of functions within functions.}
@@ -71,6 +72,10 @@
 #' @import graphics
 #' @import grDevices
 #' @import ggplot2
+#' @references Främling, K. *Contextual Importance and Utility in R: the 'ciu' Package.*
+#' In: Proceedings of 1st Workshop on Explainable Agency in Artificial Intelligence,
+#' at 35th AAAI Conference on Artificial Intelligence. Virtual, Online. February 8-9, 2021. pp. 110-114.
+#' <https://www.researchgate.net/publication/349521362_Contextual_Importance_and_Utility_in_R_the_%27ciu%27_Package>.
 #' @references Främling, K. *Explainable AI without Interpretable Model*. 2020, <https://arxiv.org/abs/2009.13996>.
 #' @references Främling, K. *Decision Theory Meets Explainable AI*. 2020, <https://doi.org/10.1007/978-3-030-51924-7_4>.
 #' @references Främling, K. *Modélisation et apprentissage des préférences par réseaux de neurones pour l'aide à la décision multicritère*. 1996, <https://tel.archives-ouvertes.fr/tel-00825854/document> (title translation in English: *Learning and Explaining Preferences with Neural Networks for Multiple Criteria Decision Making*)
@@ -333,7 +338,18 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
     if ( is.null(continuous.ciu.input.set) )
       return(discrete.ciu.input.set)
     res <- continuous.ciu.input.set # This is the bigger (or same size) set so has to be done in this order.
-    res[,ind.discrete.to.explain] <- discrete.ciu.input.set[,ind.discrete.to.explain]
+    # Make sure we have exactly n.samples rows in discrete input set
+    if ( nrow(discrete.ciu.input.set) < n.samples ) {
+      drows <- nrow(discrete.ciu.input.set)
+      n <- (n.samples/drows + 1)*drows
+      discr <- discrete.ciu.input.set
+      discr <- discr[rep(seq(drows), n),]
+      #A[rep(seq(nrow(A)), n), ]
+    }
+    else {
+      discr <- discrete.ciu.input.set
+    }
+    res[1:nrow(res),ind.discrete.to.explain] <- discr[1:nrow(res),ind.discrete.to.explain]
     return(res)
   }
 
@@ -419,7 +435,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
   # order.
   # All "ind.inputs" columns of "data" parameter have to be of type
   # "character" or "factor".
-  create.discrete.ciu.input.set <- function(instance, ind.inputs, data) {
+  create.discrete.ciu.input.set <- function(instance, ind.inputs) {
     # We have to transform character type values into factors here.
     for ( i in 1:min(length(instance),length(o.inp.levels))) {
       if ( is.character(instance[,i]) ) {
@@ -473,7 +489,8 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
       xp <- seq(in.min,in.max,interv)
     }
     else if ( is.factor(instance[,ind.input])) { # Deal with factor.
-      xp <- levels(instance[,ind.input])
+      l <- levels(instance[,ind.input])
+      xp <- factor(l, levels = l)
     }
     else {
       stop(paste("Unsupported data type:", class(instance[,ind.input])))
@@ -608,8 +625,8 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
     # Allow using already existing result.
     if ( is.null(ciu.meta) ) {
       ciu.meta <- ciu.meta.explain(this, instance, ind.inputs=ind.inputs, in.min.max.limits=in.min.max.limits,
-                               n.samples=n.samples, concepts.to.explain=concepts.to.explain,
-                               target.concept=target.concept, target.ciu=target.ciu)
+                                   n.samples=n.samples, concepts.to.explain=concepts.to.explain,
+                                   target.concept=target.concept, target.ciu=target.ciu)
     }
     else {
       instance <- ciu.meta$instance
@@ -654,8 +671,12 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
       if ( show.input.values ) {
         for ( i in 1:length(inp.names) ) {
           value <- instance[ind.inputs[i]]
-          if ( is.data.frame(value) )
-            value <- value[[1]] # Crazy checks...
+          if ( is.data.frame(value) ) { # Crazy checks...
+            if ( ncol(value) > 0 ) # For intermediate concepts that have no value.
+              value <- value[[1]]
+            else
+              value <- ""
+          }
           if ( is.numeric(value) )
             value <- format(value, digits=2)
           inp.names[i] <- paste(inp.names[i], " (", value, ")", sep="")
@@ -780,8 +801,12 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
       if ( show.input.values ) {
         for ( i in 1:length(inp.names) ) {
           value <- instance[ind.inputs[i]]
-          if ( is.data.frame(value) )
-            value <- value[[1]] # Crazy checks...
+          if ( is.data.frame(value) ) { # Crazy checks...
+            if ( ncol(value) > 0 ) # For intermediate concepts that have no value.
+              value <- value[[1]]
+            else
+              value <- ""
+          }
           if ( is.numeric(value) )
             value <- format(value, digits=2)
           inp.names[i] <- paste(inp.names[i], " (", value, ")", sep="")
@@ -913,6 +938,29 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
                      low.color, mid.color, high.color,
                      use.influence,influence.minmax,
                      sort, decreasing, main)
+    },
+    textual = function(instance=NULL, ind.inputs=NULL, ind.output=1,
+                       in.min.max.limits=NULL,
+                       n.samples=100, neutral.CU=0.5,
+                       show.input.values=TRUE, concepts.to.explain=NULL,
+                       target.concept=NULL, target.ciu=NULL,
+                       ciu.meta = NULL,
+                       sort="CI", n.features = NULL,
+                       use.text.effects = FALSE,
+                       CI.voc = data.frame(limits=c(0.2,0.4,0.6,0.8,1.0),
+                                           texts=c("not important","slightly important",
+                                                   "important","very important","extremely important")),
+                       CU.voc = data.frame(limits=c(0.2,0.4,0.6,0.8,1.0),
+                                           texts=c("very bad","bad","average","good","very good"))) {
+      ciu.textual(as.ciu(), instance, ind.inputs, ind.output,
+                  in.min.max.limits,
+                  n.samples, neutral.CU,
+                  show.input.values, concepts.to.explain,
+                  target.concept, target.ciu,
+                  ciu.meta,
+                  sort, n.features,
+                  use.text.effects,
+                  CI.voc, CU.voc)
     }
   )
 

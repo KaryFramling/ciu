@@ -112,6 +112,7 @@ ciu.meta.explain <- function(ciu, instance, ind.inputs=NULL, in.min.max.limits=N
     ciuvals[[i]] <- CIU$explain(instance, ind.inputs.to.explain=expl.inps, in.min.max.limits=in.min.max.limits,
                            n.samples=n.samples, target.concept=target.concept, target.ciu=target.ciu)
   }
+  names(ciuvals) <- inp.names
 
   ciu.meta.result <- ciu.meta.result.new(ciu = CIU$as.ciu(), instance = instance,
                                          ciuvals = ciuvals,

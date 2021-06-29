@@ -49,8 +49,18 @@ ciu.ggplot.col <- function(ciu, instance=NULL, ind.inputs=NULL, output.names=NUL
     f.label <- inp.names[i]
     ciu.res <- ciu.meta$ciuvals[[i]]
     if ( show.input.values ) {
-      # Don't really understand why [1,1] is necessary but otherwise factor values display numerically (not as strings).
-      f.label <- paste0(f.label, " (", as.character(instance[1,ind.inputs[i]]), ")")
+      # Didn't manage to get this done very elegantly...
+      value <- instance[ind.inputs[i]]
+      if ( is.data.frame(value) ) { # Crazy checks...
+        if ( ncol(value) > 0 ) # For intermediate concepts that have no value.
+          value <- value[[1]]
+        else
+          value <- ""
+      }
+      if ( is.numeric(value) )
+        value <- format(value, digits=2)
+      f.label <- paste(f.label, " (", value, ")", sep="")
+      #f.label <- paste0(f.label, " (", as.character(instance[1,ind.inputs[i]]), ")")
     }
 
     # Some special treatment here for getting output names correct if result
@@ -91,6 +101,7 @@ ciu.ggplot.col <- function(ciu, instance=NULL, ind.inputs=NULL, output.names=NUL
   # doesn't understand attach() explicitly nor done by ggplot
   fl <- ci.cu$feature.labels;
   ci <- ci.cu$CI; cu <- ci.cu$CU
+
   # Influence plot separated because needs more than trivial manipulations.
   p <- ggplot(ci.cu)
   if ( use.influence ) {

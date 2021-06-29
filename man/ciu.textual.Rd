@@ -135,13 +135,15 @@ Boston.voc <- list("SOCIAL"=social, "LAND USAGE"=usage_type, "Charles R. dummy"=
 "Air quality (Nox)"=air_quality, "HOUSING"=housing, "TRANSPORT"=transport,
 "Prop. of black people"=blacks, "Tax"=tax)
 ciu <- ciu.new(gbm, medv~., Boston, vocabulary = Boston.voc)
-cat(ciu.textual(ciu, boston.inst,use.text.effects = TRUE,
-  concepts.to.explain=names(Boston.voc)))
+
+# We use `meta.explain` here to avoid differences due to sampling.
+meta.top <- ciu$meta.explain(boston.inst, concepts.to.explain=names(Boston.voc))
+cat(ciu.textual(ciu, boston.inst, use.text.effects = TRUE, ciu.meta = meta.top))
 
 # Explain intermediate concept utility, using input features (could also
 # be using other intermediate concepts).
 cat(ciu.textual(ciu, boston.inst, use.text.effects = TRUE, ind.inputs = Boston.voc$SOCIAL,
-  target.concept = "SOCIAL"))
+  target.concept = "SOCIAL", target.ciu = meta.top$ciuvals[["SOCIAL"]]))
 cat(ciu.textual(ciu, boston.inst, use.text.effects = TRUE, ind.inputs = Boston.voc$HOUSING,
-  target.concept = "HOUSING"))
+  target.concept = "HOUSING", target.ciu = meta.top$ciuvals[["HOUSING"]]))
 }

@@ -1,7 +1,7 @@
 Package: ciu
 Type: Package
 Title: Contextual Importance and Utility
-Version: 0.1.0.9000
+Version: 0.5.0
 Author: Kary Främling
 Maintainer: Kary Främling <Kary.Framling@umu.se>
 Description: Implementation of the Contextual Importance and Utility 
@@ -14,8 +14,8 @@ Imports: graphics,
     stats,
     Rcpp,
     grDevices, 
-    ggplot2, 
-    crayon
+    crayon,
+    ggplot2 
 Suggests: 
     MASS,
     caret,

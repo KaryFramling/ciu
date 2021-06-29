@@ -14,7 +14,7 @@
 #'
 #' @return Text string with explanation.
 #' @export
-#'
+#' @importFrom crayon bold
 #' @examples
 #' # Explaining the classification of an Iris instance with lda model.
 #' # We use a versicolor (instance 100).
@@ -52,15 +52,17 @@
 #' "Air quality (Nox)"=air_quality, "HOUSING"=housing, "TRANSPORT"=transport,
 #' "Prop. of black people"=blacks, "Tax"=tax)
 #' ciu <- ciu.new(gbm, medv~., Boston, vocabulary = Boston.voc)
-#' cat(ciu.textual(ciu, boston.inst,use.text.effects = TRUE,
-#'   concepts.to.explain=names(Boston.voc)))
+#'
+#' # We use `meta.explain` here to avoid differences due to sampling.
+#' meta.top <- ciu$meta.explain(boston.inst, concepts.to.explain=names(Boston.voc))
+#' cat(ciu.textual(ciu, boston.inst, use.text.effects = TRUE, ciu.meta = meta.top))
 #'
 #' # Explain intermediate concept utility, using input features (could also
 #' # be using other intermediate concepts).
 #' cat(ciu.textual(ciu, boston.inst, use.text.effects = TRUE, ind.inputs = Boston.voc$SOCIAL,
-#'   target.concept = "SOCIAL"))
+#'   target.concept = "SOCIAL", target.ciu = meta.top$ciuvals[["SOCIAL"]]))
 #' cat(ciu.textual(ciu, boston.inst, use.text.effects = TRUE, ind.inputs = Boston.voc$HOUSING,
-#'   target.concept = "HOUSING"))
+#'   target.concept = "HOUSING", target.ciu = meta.top$ciuvals[["HOUSING"]]))
 ciu.textual <- function(ciu, instance=NULL, ind.inputs=NULL, ind.output=1,
                         in.min.max.limits=NULL,
                         n.samples=100, neutral.CU=0.5,
@@ -127,10 +129,6 @@ ciu.textual <- function(ciu, instance=NULL, ind.inputs=NULL, ind.output=1,
   else
     n.features <- min(n.features, nrow(ciu.text))
 
-  # # Use text effects?
-  # if ( use.text.effects )
-  #   require(crayon)
-
   # Output value utility (this should be improved...)
   if (is.null(target.concept) ) {
     outval <- ciu.text$outval[ind.output]
@@ -158,9 +156,19 @@ ciu.textual <- function(ciu, instance=NULL, ind.inputs=NULL, ind.output=1,
   for ( i in 1:n.features ) {
     ci.text <- ciu.text$CI.text[i]; if (use.text.effects) ci.text <- crayon::bold(ci.text)
     cu.text <- ciu.text$CU.text[i]; if (use.text.effects) cu.text <- crayon::bold(cu.text)
+    fvalue <- instance[1, ciu.text$ind.inputs[i]]
+    if ( is.null(ciu.meta$ind.inputs) ) {
+      inds <- ciu$vocabulary[ciu.text$inp.names[i]][[1]]
+      if ( length(inds) == 1 )
+        fvalue <- instance[1, inds]
+    }
     t <- paste0(t, "Feature '", ciu.text$inp.names[i], "' is ", ci.text,
-                " (CI=", round(ciu.text$CI[i],3), ") and value ",
-                instance[ciu.text$ind.inputs[i]], " is ", cu.text, " (CU=",
+                " (CI=", round(ciu.text$CI[i],3), ") and value ")
+    # Different depending on if concept or input. Could still be improved (show
+    # value if one-input concept).
+    if ( length(fvalue) >= 1 )
+      t <- paste0(t, "'", fvalue, "' ")
+    t <- paste0(t, "is ", cu.text, " (CU=",
                 round(ciu.text$CU[i],3), ").\n")
   }
 
