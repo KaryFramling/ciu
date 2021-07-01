@@ -1,4 +1,6 @@
-# ciu 0.1.0.9000
+# ciu 0.5.0.9000
+
+# ciu 0.5.0
 
 * Textual explanations have been implemented with function "ciu.textual". 
 * Implemented "meta.explain" method, which returns a self-contained 
