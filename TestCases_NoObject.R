@@ -46,7 +46,7 @@ test.ciu.iris.lda <- function() {
 # Boston with GBM
 test.ciu.boston.gbm <- function() {
   kfoldcv <- trainControl(method="cv", number=10)
-  gbm <- train(medv ~ ., Boston, method="gbm", trControl=kfoldcv)
+  gbm <- caret::train(medv ~ ., Boston, method="gbm", trControl=kfoldcv)
   instance <- Boston[370,1:13]
   ciu <- ciu(gbm, medv~., Boston)
   p <- ciu.ggplot.col(ciu, instance); print(p)
@@ -58,6 +58,9 @@ test.ciu.boston.gbm <- function() {
   ciu.plot(ciu, instance,13,main="BH: #370")
   ciu.plot(ciu, instance,6,main="BH: #370")
   ciu.plot(ciu, instance,1,main="BH: #370")
+  print(ciu.ggplot(ciu, instance,13,main="BH: #370"))
+  print(ciu.ggplot(ciu, instance,6,main="BH: #370",ylim=c(0,60)))
+  print(ciu.ggplot(ciu, instance,1,main="BH: #370"))
 }
 
 # Heart disease with RF

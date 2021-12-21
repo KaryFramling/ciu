@@ -549,6 +549,110 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
     }
   }
 
+  # See 'ggplot.ciu'.
+  # Set neutral.CU="" to avoid having a neutral, orange line.
+  ggplot.ciu <- function(instance, ind.input=1, ind.output=1, in.min.max.limits=NULL,
+                         n.points=40, main=NULL, xlab="x", ylab="y", ylim=NULL,
+                         illustrate.CIU=FALSE, neutral.CU=0.5, CIU.illustration.colours=c("red", "orange", "green")) {
+    # Treatment depends on if it's a factor or numeric input. If it's
+    # "character", then convert to "factor" if possible.
+    if ( is.character(instance[,ind.input]) ) {
+      if ( is.null(o.inp.levels[[ind.input]]) )
+        instance[,ind.input] <- factor(instance[,ind.input])
+      else
+        instance[,ind.input] <- factor(instance[,ind.input], o.inp.levels[[ind.input]])
+    }
+
+    # First deal with "numeric" possibility.
+    if ( is.numeric(instance[,ind.input]) ) {
+      # Check and set up minimum/maximum limits for inputs
+      if ( is.null(in.min.max.limits) )
+        in.min.max.limits <- o.in.minmax[ind.input,]
+      if ( is.null(in.min.max.limits) )
+        stop("No minimum/maximum limits provided to 'new' nor 'plot.ciu'")
+      in.min <- in.min.max.limits[1]
+      in.max <- in.min.max.limits[2]
+      interv <- (in.max - in.min)/n.points
+      xp <- seq(in.min,in.max,interv)
+    }
+    else if ( is.factor(instance[,ind.input])) { # Deal with factor.
+      l <- levels(instance[,ind.input])
+      xp <- factor(l, levels = l)
+    }
+    else {
+      stop(paste("Unsupported data type:", class(instance[,ind.input])))
+    }
+
+    if ( is.null(dim(instance)) )
+      n.col <- length(instance)
+    else
+      n.col <- ncol(instance)
+    if ( is.data.frame(instance)) {
+      m <- instance[1,] # Initialize as data frame
+      m[1:length(xp),] <- instance[1,]
+    }
+    else {
+      m <- matrix(instance, ncol=n.col, nrow=length(xp), byrow=T)
+    }
+    m[,ind.input] <- xp
+    yp <- as.matrix(o.predict.function(o.model, m)) # as.matrix to deal with case of only one output
+    cu.val <- o.predict.function(o.model, instance)
+
+    # Set up plot parameters
+    if ( is.null(ylim) ) ylim <- o.absminmax[ind.output,]
+    inp.names <- o.input.names
+    if ( is.null(inp.names) )
+      inp.names <- colnames(instance)
+    if ( !is.null(inp.names) )
+      in.name <- inp.names[ind.input]
+    else
+      in.name <- paste("Input value", ind.input)
+    if ( !is.null(o.outputnames) )
+      outname <- o.outputnames[ind.output]
+    else
+      outname <- "Y"
+    if ( is.null(xlab) ) {
+      xlab <- in.name
+    }
+    if ( is.null(ylab) ) {
+      ylab <- "Output value"
+    }
+    if ( is.null(main) ) {
+      main <- outname
+      main <- paste(main, " (", format(o.predict.function(o.model, instance)[ind.output], digits=2), ")", sep="")
+    }
+
+    # Create plot, show current value
+    df <- data.frame(x=xp, y=yp[,ind.output])
+    cdf <- data.frame(x=instance[,ind.input], y=as.numeric(cu.val[ind.output]))
+    p <- ggplot(df, aes(x=x, y=y)) +
+      labs(title=main, x=xlab, y=ylab)
+    if ( is.numeric(instance[,ind.input]) ) {
+      p <- p + geom_line()
+    }
+    else { # factor
+      p <- p + geom_col()
+    }
+    p <- p + geom_point(data=cdf, colour = "red", size=4) + lims(y = ylim)
+
+    # Illustrate CIU calculation?
+    if ( illustrate.CIU ) {
+      cmin <- min(yp[,ind.output])
+      cmax <- max(yp[,ind.output])
+      p <- p +
+        geom_hline(yintercept=cmin, colour=c(CIU.illustration.colours[c(1)])) +
+        geom_text(x=in.min, y=cmin, label="Cmin", colour=c(CIU.illustration.colours[c(1)]), vjust = "top", hjust = "inward") +
+        geom_hline(yintercept=cmax, colour=c(CIU.illustration.colours[c(3)])) +
+        geom_text(x=in.min, y=cmax, label="Cmax", colour=c(CIU.illustration.colours[c(3)]), vjust = "bottom", hjust = "inward")
+      if ( is.numeric(neutral.CU)) {
+        neutral <- cmin + neutral.CU*(cmax - cmin)
+        p <- p + geom_hline(yintercept=neutral, colour=c(CIU.illustration.colours[2])) +
+          geom_text(x=in.min, y=neutral, label="neutral.CU", colour=c(CIU.illustration.colours[c(2)]), vjust = "middle", hjust = "inward")
+      }
+    }
+    return(p)
+  }
+
   # See 'ciu.plot.3D'.
   plot.ciu.3D <- function(instance, ind.inputs, ind.output=1, in.min.max.limits=NULL, n.points=40,
                           main=NULL, xlab=NULL, ylab=NULL, zlab=NULL, zlim=NULL, ...) {
@@ -885,6 +989,11 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
                        target.concept=NULL, target.ciu=NULL) {
       explain(instance, ind.inputs.to.explain, in.min.max.limits, n.samples, target.concept, target.ciu)
     },
+    influence = function(ciu.result=NULL, influence.minmax=c(-1,1), neutral.CU=0.5) {
+      if ( is.null(ciu.result) )
+        ciu.result <- o.last.ciu
+      ci <- (influence.minmax[2] - influence.minmax[1])*ciu.result$CI*(ciu.result$CU - neutral.CU)
+    },
     meta.explain = function(instance, ind.inputs=NULL, in.min.max.limits=NULL,
                             n.samples=100, concepts.to.explain=NULL,
                             target.concept=NULL, target.ciu=NULL) {
@@ -893,7 +1002,11 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
                        target.concept, target.ciu)
     },
     plot.ciu = function(instance, ind.input=1, ind.output=1, in.min.max.limits=NULL, n.points=40, main=NULL, xlab=NULL, ylab=NULL, ylim=NULL, ...) {
-      plot.ciu (instance, ind.input, ind.output, in.min.max.limits, n.points, main, xlab, ylab, ylim, ...)
+      plot.ciu(instance, ind.input, ind.output, in.min.max.limits, n.points, main, xlab, ylab, ylim, ...)
+    },
+    ggplot.ciu = function(instance, ind.input=1, ind.output=1, in.min.max.limits=NULL, n.points=40, main=NULL, xlab=NULL, ylab=NULL,
+                          ylim=NULL, illustrate.CIU=FALSE, neutral.CU=0.5, CIU.illustration.colours=c("red", "orange", "green")) {
+      ggplot.ciu(instance, ind.input, ind.output, in.min.max.limits, n.points, main, xlab, ylab, ylim, illustrate.CIU, neutral.CU, CIU.illustration.colours)
     },
     plot.ciu.3D = function(instance, ind.inputs, ind.output, in.min.max.limits=NULL, n.points=40,
                            main=NULL, xlab=NULL, ylab=NULL, zlab=NULL, zlim=NULL, ...) {

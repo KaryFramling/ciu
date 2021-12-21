@@ -48,7 +48,7 @@ test.iris.lda <- function() {
 # Boston with GBM
 test.boston.gbm <- function() {
   kfoldcv <- trainControl(method="cv", number=10)
-  gbm <- train(medv ~ ., Boston, method="gbm", trControl=kfoldcv)
+  gbm <- caret::train(medv ~ ., Boston, method="gbm", trControl=kfoldcv)
   instance <- Boston[370,1:13]
   ciu <- ciu.new(gbm, medv~., Boston)
   p <- ciu$ggplot.col.ciu(instance); print(p)
@@ -60,6 +60,9 @@ test.boston.gbm <- function() {
   ciu$plot.ciu(instance,13,main="BH: #370")
   ciu$plot.ciu(instance,6,main="BH: #370")
   ciu$plot.ciu(instance,1,main="BH: #370")
+  print(ciu$ggplot.ciu(instance,13,main="BH: #370"))
+  print(ciu$ggplot.ciu(instance,6,main="BH: #370",ylim=c(0,60)))
+  print(ciu$ggplot.ciu(instance,1,main="BH: #370"))
 }
 
 # Heart disease with RF
@@ -171,6 +174,10 @@ test.titanic.rf <- function() {
     ciu$plot.ciu(new_passenger,i,1)
   for ( i in 1:ncol(new_passenger) )
     ciu$plot.ciu(new_passenger,i,2)
+  for ( i in 1:ncol(new_passenger) )
+    print(ciu$ggplot.ciu(new_passenger,i,1))
+  for ( i in 1:ncol(new_passenger) )
+    print(ciu$ggplot.ciu(new_passenger,i,2))
 
   # Intermediate concepts.
   cat(ciu$textual(new_passenger[,-8], use.text.effects = TRUE, ind.output = 2))

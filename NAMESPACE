@@ -3,6 +3,7 @@
 export(ciu)
 export(ciu.barplot)
 export(ciu.explain)
+export(ciu.ggplot)
 export(ciu.ggplot.col)
 export(ciu.list.to.frame)
 export(ciu.meta.explain)

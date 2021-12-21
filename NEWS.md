@@ -1,5 +1,13 @@
 # ciu 0.5.0.9000
 
+* Added new method "ggplot.ciu" to ciu.new for plotting input/output graphs with 
+  ggplot. Identical to old plot.ciu, except that 1) ggplot offers some 
+  advantages, notably what comes to figure scaling, 2) added possibility to 
+  include CIU visualisation (cmin, cmax, neutral) by setting "illustrate.CIU=TRUE". 
+* Added new method "influence" to ciu.new for getting contextual influence values
+  for getting them numerically (not just in plots).
+  TO-DO: add corresponding function to "ciu.R".
+
 # ciu 0.5.0
 
 * Textual explanations have been implemented with function "ciu.textual". 
