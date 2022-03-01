@@ -1,5 +1,8 @@
 # ciu 0.5.0.9000
 
+* Removed parameter for min/max values of contextual influence because the 
+  range of contextual influence is (and should be) always one (1) based on 
+  the mathematical constructs. 
 * Added new method "ggplot.ciu" to ciu.new for plotting input/output graphs with 
   ggplot. Identical to old plot.ciu, except that 1) ggplot offers some 
   advantages, notably what comes to figure scaling, 2) added possibility to 

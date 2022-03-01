@@ -21,7 +21,6 @@ ciu.ggplot.col(
   mid.color = "yellow",
   high.color = "darkgreen",
   use.influence = FALSE,
-  influence.minmax = c(-1, 1),
   sort = NULL,
   decreasing = FALSE,
   main = NULL
@@ -91,8 +90,6 @@ than calling \link{ciu.meta.explain}.}
 
 \item{use.influence}{Plot using "influence" rather than CIU, i.e. a
 LIME-like barplot. Default is FALSE.}
-
-\item{influence.minmax}{Range to use for influence values.}
 
 \item{sort}{NULL, "CI" or "CU".}
 

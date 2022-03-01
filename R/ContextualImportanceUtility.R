@@ -553,7 +553,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
   # Set neutral.CU="" to avoid having a neutral, orange line.
   ggplot.ciu <- function(instance, ind.input=1, ind.output=1, in.min.max.limits=NULL,
                          n.points=40, main=NULL, xlab="x", ylab="y", ylim=NULL,
-                         illustrate.CIU=FALSE, neutral.CU=0.5, CIU.illustration.colours=c("red", "orange", "green")) {
+                         illustrate.CIU=FALSE, neutral.CU=0.5, CIU.illustration.colours=c("red", "orange", "green", "blue")) {
     # Treatment depends on if it's a factor or numeric input. If it's
     # "character", then convert to "factor" if possible.
     if ( is.character(instance[,ind.input]) ) {
@@ -640,14 +640,20 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
       cmin <- min(yp[,ind.output])
       cmax <- max(yp[,ind.output])
       p <- p +
-        geom_hline(yintercept=cmin, colour=c(CIU.illustration.colours[c(1)])) +
-        geom_text(x=in.min, y=cmin, label="Cmin", colour=c(CIU.illustration.colours[c(1)]), vjust = "top", hjust = "inward") +
-        geom_hline(yintercept=cmax, colour=c(CIU.illustration.colours[c(3)])) +
-        geom_text(x=in.min, y=cmax, label="Cmax", colour=c(CIU.illustration.colours[c(3)]), vjust = "bottom", hjust = "inward")
+        geom_hline(yintercept=cmin, colour=CIU.illustration.colours[1]) +
+        geom_text(x=in.min, y=cmin, label="ymin", colour=CIU.illustration.colours[1], vjust = "top", hjust = "inward") +
+        geom_hline(yintercept=cmax, colour=CIU.illustration.colours[3]) +
+        geom_text(x=in.min, y=cmax, label="ymax", colour=CIU.illustration.colours[3], vjust = "bottom", hjust = "inward") +
+        geom_hline(yintercept=ylim[1], colour=CIU.illustration.colours[4]) +
+        geom_text(x=in.max, y=ylim[1], label="MIN", colour=CIU.illustration.colours[4], vjust = "bottom", hjust = "inward") +
+        geom_hline(yintercept=ylim[2], colour=CIU.illustration.colours[4]) +
+        geom_text(x=in.max, y=ylim[2], label="MAX", colour=CIU.illustration.colours[4], vjust = "top", hjust = "inward") +
+        geom_hline(yintercept=cdf$y, colour=CIU.illustration.colours[4]) +
+        geom_text(x=in.max, y=cdf$y, label="y", colour=CIU.illustration.colours[4], vjust = "middle", hjust = "inward")
       if ( is.numeric(neutral.CU)) {
         neutral <- cmin + neutral.CU*(cmax - cmin)
-        p <- p + geom_hline(yintercept=neutral, colour=c(CIU.illustration.colours[2])) +
-          geom_text(x=in.min, y=neutral, label="neutral.CU", colour=c(CIU.illustration.colours[c(2)]), vjust = "middle", hjust = "inward")
+        p <- p + geom_hline(yintercept=neutral, colour=CIU.illustration.colours[2]) +
+          geom_text(x=in.min, y=neutral, label="phi0", colour=CIU.illustration.colours[2], vjust = "middle", hjust = "inward")
       }
     }
     return(p)
@@ -722,7 +728,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
                           show.input.values=TRUE, concepts.to.explain=NULL,
                           target.concept=NULL, target.ciu=NULL, ciu.meta = NULL,
                           color.ramp.below.neutral=NULL, color.ramp.above.neutral=NULL,
-                          use.influence=FALSE, influence.minmax = c(-1,1),
+                          use.influence=FALSE,
                           sort=NULL, decreasing=FALSE,
                           main=NULL, xlab=NULL, xlim=NULL, ...) {
 
@@ -760,7 +766,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
     # We get error otherwise...
     CIs <- as.numeric(ci.cu[,1])
     CUs <- as.numeric(ci.cu[,2])
-    C.influence <- (influence.minmax[2] - influence.minmax[1])*CIs*(CUs - neutral.CU)
+    C.influence <- CIs*(CUs - neutral.CU)
 
     # Again, "instance" has to be a data.frame so this can't be NULL.
     inst.name <- rownames(instance)
@@ -989,10 +995,10 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
                        target.concept=NULL, target.ciu=NULL) {
       explain(instance, ind.inputs.to.explain, in.min.max.limits, n.samples, target.concept, target.ciu)
     },
-    influence = function(ciu.result=NULL, influence.minmax=c(-1,1), neutral.CU=0.5) {
+    influence = function(ciu.result=NULL, neutral.CU=0.5) {
       if ( is.null(ciu.result) )
         ciu.result <- o.last.ciu
-      ci <- (influence.minmax[2] - influence.minmax[1])*ciu.result$CI*(ciu.result$CU - neutral.CU)
+      ci <- ciu.result$CI*(ciu.result$CU - neutral.CU)
     },
     meta.explain = function(instance, ind.inputs=NULL, in.min.max.limits=NULL,
                             n.samples=100, concepts.to.explain=NULL,
@@ -1005,7 +1011,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
       plot.ciu(instance, ind.input, ind.output, in.min.max.limits, n.points, main, xlab, ylab, ylim, ...)
     },
     ggplot.ciu = function(instance, ind.input=1, ind.output=1, in.min.max.limits=NULL, n.points=40, main=NULL, xlab=NULL, ylab=NULL,
-                          ylim=NULL, illustrate.CIU=FALSE, neutral.CU=0.5, CIU.illustration.colours=c("red", "orange", "green")) {
+                          ylim=NULL, illustrate.CIU=FALSE, neutral.CU=0.5, CIU.illustration.colours=c("red", "orange", "green", "blue")) {
       ggplot.ciu(instance, ind.input, ind.output, in.min.max.limits, n.points, main, xlab, ylab, ylim, illustrate.CIU, neutral.CU, CIU.illustration.colours)
     },
     plot.ciu.3D = function(instance, ind.inputs, ind.output, in.min.max.limits=NULL, n.points=40,
@@ -1015,12 +1021,12 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
     barplot.ciu = function(instance=NULL, ind.inputs=NULL, ind.output=1, in.min.max.limits=NULL, n.samples=100,
                            neutral.CU=0.5, show.input.values=TRUE, concepts.to.explain=NULL, target.concept=NULL, target.ciu=NULL,
                            ciu.meta = NULL, color.ramp.below.neutral=NULL, color.ramp.above.neutral=NULL,
-                           use.influence=FALSE, influence.minmax = c(-1,1),
+                           use.influence=FALSE,
                            sort=NULL, decreasing=FALSE,
                            main= NULL, xlab=NULL, xlim=NULL, ...) {
       barplot.ciu(instance, ind.inputs, ind.output, in.min.max.limits, n.samples, neutral.CU, show.input.values,
                   concepts.to.explain, target.concept, target.ciu, ciu.meta, color.ramp.below.neutral, color.ramp.above.neutral,
-                  use.influence, influence.minmax, sort, decreasing, main, xlab, xlim, ...)
+                  use.influence, sort, decreasing, main, xlab, xlim, ...)
     },
     pie.ciu = function(instance=NULL, ind.inputs=NULL, ind.output=1, in.min.max.limits=NULL, n.samples=100,
                        neutral.CU=0.5, show.input.values=TRUE, concepts.to.explain=NULL,
@@ -1041,7 +1047,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
                               ciu.meta = NULL,
                               low.color="red", mid.color="yellow",
                               high.color="darkgreen",
-                              use.influence=FALSE, influence.minmax = c(-1,1),
+                              use.influence=FALSE,
                               sort=NULL, decreasing=FALSE, # These are not used yet.
                               main=NULL) {
       ciu.ggplot.col(as.ciu(), instance, ind.inputs, output.names, in.min.max.limits,
@@ -1049,7 +1055,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
                      show.input.values, concepts.to.explain,
                      target.concept, target.ciu, ciu.meta,
                      low.color, mid.color, high.color,
-                     use.influence,influence.minmax,
+                     use.influence,
                      sort, decreasing, main)
     },
     textual = function(instance=NULL, ind.inputs=NULL, ind.output=1,

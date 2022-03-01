@@ -27,7 +27,7 @@ ciu.ggplot.col <- function(ciu, instance=NULL, ind.inputs=NULL, output.names=NUL
                            ciu.meta = NULL,
                            low.color="red", mid.color="yellow",
                            high.color="darkgreen",
-                           use.influence=FALSE, influence.minmax = c(-1,1),
+                           use.influence=FALSE,
                            sort=NULL, decreasing=FALSE, # These are not used yet.
                            main=NULL) {
   # Allow using already existing result.
@@ -105,7 +105,7 @@ ciu.ggplot.col <- function(ciu, instance=NULL, ind.inputs=NULL, output.names=NUL
   # Influence plot separated because needs more than trivial manipulations.
   p <- ggplot(ci.cu)
   if ( use.influence ) {
-    ci <- (influence.minmax[2] - influence.minmax[1])*ci*(cu - neutral.CU)
+    ci <- ci*(cu - neutral.CU)
     cu <- sign(ci)/2 + 0.5
     #ymin <- -1;
     ymin <- min(ci); ymax <- max(ci)

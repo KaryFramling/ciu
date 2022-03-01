@@ -170,7 +170,7 @@ ciu.plot <- function(ciu, instance, ind.input, ind.output, in.min.max.limits=NUL
 #' @export
 #' @author Kary Främling
 ciu.ggplot <- function(ciu, instance, ind.input=1, ind.output=1, in.min.max.limits=NULL, n.points=40, main=NULL, xlab=NULL, ylab=NULL,
-                       ylim=NULL, illustrate.CIU=FALSE, neutral.CU=0.5, CIU.illustration.colours=c("red", "orange", "green")) {
+                       ylim=NULL, illustrate.CIU=FALSE, neutral.CU=0.5, CIU.illustration.colours=c("red", "orange", "green", "blue")) {
   if ( inherits(ciu, "ciu") )
     ciu <- ciu.to.CIU(ciu)
   ciu$ggplot.ciu(instance, ind.input, ind.output, in.min.max.limits, n.points, main, xlab, ylab,
@@ -221,7 +221,6 @@ ciu.plot.3D <- function(ciu, instance, ind.inputs, ind.output, in.min.max.limits
 #' `colorRamp()`. Default colorramp is from yellow to darkgreen.
 #' @param use.influence Plot using "influence" rather than CIU, i.e. a
 #' LIME-like barplot. Default is FALSE.
-#' @param influence.minmax Range to use for influence values.
 #' @param sort NULL, "CI" or "CU".
 #' @param decreasing Set to TRUE for decreasing sort.
 #' @param main Text to use as main title.
@@ -240,14 +239,14 @@ ciu.barplot <- function(ciu, instance, ind.inputs=NULL, ind.output=1, in.min.max
                         neutral.CU=0.5, show.input.values=TRUE, concepts.to.explain=NULL, target.concept=NULL, target.ciu=NULL,
                         ciu.meta = NULL,
                         color.ramp.below.neutral=NULL, color.ramp.above.neutral=NULL,
-                        use.influence=FALSE, influence.minmax = c(-1,1),
+                        use.influence=FALSE,
                         sort=NULL, decreasing=FALSE,
                         main= NULL, xlab=NULL, xlim=NULL, ...) {
   if ( inherits(ciu, "ciu") )
     ciu <- ciu.to.CIU(ciu)
   ciu$barplot.ciu(instance, ind.inputs, ind.output, in.min.max.limits, n.samples, neutral.CU, show.input.values,
                   concepts.to.explain, target.concept, target.ciu, ciu.meta, color.ramp.below.neutral, color.ramp.above.neutral,
-                  use.influence, influence.minmax, sort, decreasing, main, xlab, xlim, ...)
+                  use.influence, sort, decreasing, main, xlab, xlim, ...)
 }
 
 #' ciu.pie
