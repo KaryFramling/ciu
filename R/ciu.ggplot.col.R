@@ -140,7 +140,7 @@ ciu.ggplot.col <- function(ciu, instance=NULL, ind.inputs=NULL, output.names=NUL
   }
   p <- p +
     geom_col(aes(reorder(fl, ci), ci, fill=cu)) +
-    scale_fill_gradient2(low=low.color, mid=mid.color, high=high.color, midpoint=neutral.CU) +
+    scale_fill_gradient2(low=low.color, mid=mid.color, high=high.color, limits=c(0,1), midpoint=neutral.CU) +
     coord_flip() +
     facet_wrap(~Output, labeller=label_both) + # Use scales="free_y" is different ordering for every facet
     ggtitle(main) +
