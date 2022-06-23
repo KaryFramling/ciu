@@ -1,5 +1,14 @@
 # ciu 0.5.0.9000
 
+* Integrated support for mlr3. Only tested with "classif.rpart" model though 
+  because other tested models (xgboost, nnet, ...) don't like R types and no
+  need/time to dive into mlr3 for the moment. To fix in the future in case bugs 
+  are discovered.
+* Added parameter "plot.mode" to "ciu.ggplot.col" function, which allows for value 
+  "overlap" that plots CI as a bar and then CU as another bar over it, scaled 
+  into CI bar. Colour of CU bar can either be fixed (dark green by default) or set to NULL, 
+  which then uses the green-yellow-red color scale (unless those colours are 
+  changed by the function parameters).
 * Removed parameter for min/max values of contextual influence because the 
   range of contextual influence is (and should be) always one (1) based on 
   the mathematical constructs. 
@@ -7,8 +16,8 @@
   ggplot. Identical to old plot.ciu, except that 1) ggplot offers some 
   advantages, notably what comes to figure scaling, 2) added possibility to 
   include CIU visualisation (cmin, cmax, neutral) by setting "illustrate.CIU=TRUE". 
-* Added new method "influence" to ciu.new for getting contextual influence values
-  for getting them numerically (not just in plots).
+* Added new method "influence" to ciu.new for getting numerical contextual 
+  influence (rather than just seeing them in plots).
   TO-DO: add corresponding function to "ciu.R".
 
 # ciu 0.5.0

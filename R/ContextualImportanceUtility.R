@@ -205,6 +205,9 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
       else
         o.predict.function <- function(model, inputs) { predict(model, inputs, type="prob") }
     }
+    else if ( inherits(o.model,"Learner") ) { #mlr3
+      o.predict.function <- function(model, newdata) { model$predict_newdata(newdata)$prob }
+    }
     else if ( inherits(o.model, "lm") ) { # lm
       o.predict.function <- function(model, inputs) { predict(model, inputs) }
     }
@@ -458,9 +461,15 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
     reps <- rbind(instance,instance[rep(1,nrow(rep.ciu)-1),])
     reps[,ind.inputs] <- rep.ciu
 
-    # Finally shuffle rows randomly
+    # Shuffle rows randomly
     rows <- sample(nrow(reps))
     reps <- reps[rows,]
+
+    # Have to restore "ordered" columsn if there are any
+    for ( i in 1:length(ind.inputs) )
+      if ( is.ordered(instance[,ind.inputs[i]]) )
+        reps[,ind.inputs[i]] <- as.ordered(reps[,ind.inputs[i]])
+
     return(reps)
   }
 
@@ -1045,6 +1054,9 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
                               show.input.values=TRUE, concepts.to.explain=NULL,
                               target.concept=NULL, target.ciu=NULL,
                               ciu.meta = NULL,
+                              plot.mode = "colour_cu",
+                              ci.colours = c("aquamarine", "aquamarine3", "0.3"),
+                              cu.colours = c("darkgreen", "darkgreen", "0.8"),
                               low.color="red", mid.color="yellow",
                               high.color="darkgreen",
                               use.influence=FALSE,
@@ -1053,7 +1065,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
       ciu.ggplot.col(as.ciu(), instance, ind.inputs, output.names, in.min.max.limits,
                      n.samples, neutral.CU,
                      show.input.values, concepts.to.explain,
-                     target.concept, target.ciu, ciu.meta,
+                     target.concept, target.ciu, ciu.meta, plot.mode, ci.colours, cu.colours,
                      low.color, mid.color, high.color,
                      use.influence,
                      sort, decreasing, main)

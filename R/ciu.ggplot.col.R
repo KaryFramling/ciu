@@ -11,6 +11,12 @@
 #' @inheritParams ciu.barplot
 #' @param output.names Vector with names of outputs to include.
 #' If NULL (default), then include all.
+#' @param plot.mode "overlap" or "colour_cu". Default is "colour_cu".
+#' @param ci.colours Colours to use for CI part in "overlap" mode. Three values
+#' required: fill colour, border colour, alpha. Default is c("aquamarine", "aquamarine3", "0.3").
+#' @param cu.colours Colours to use for CU part in "overlap" mode. Three values
+#' required: fill colour, border colour, alpha. Default is c("darkgreen", "darkgreen", "0.8").
+#' If it is set to NULL, then the same colour palette is used as for "colour_cu".
 #' @param low.color Colour to use for CU=0
 #' @param mid.color Colour to use for CU=Neutral.CU
 #' @param high.color Colour to use for CU=1
@@ -25,6 +31,9 @@ ciu.ggplot.col <- function(ciu, instance=NULL, ind.inputs=NULL, output.names=NUL
                            show.input.values=TRUE, concepts.to.explain=NULL,
                            target.concept=NULL, target.ciu=NULL,
                            ciu.meta = NULL,
+                           plot.mode = "colour_cu", # overlap or colour_cu
+                           ci.colours = c("aquamarine", "aquamarine3", "0.3"),
+                           cu.colours = c("darkgreen", "darkgreen", "0.8"),
                            low.color="red", mid.color="yellow",
                            high.color="darkgreen",
                            use.influence=FALSE,
@@ -124,24 +133,44 @@ ciu.ggplot.col <- function(ciu, instance=NULL, ind.inputs=NULL, output.names=NUL
     else {
       p <- p + ylim(ymin, ymax)
     }
-    p <- p + labs(y = expression(phi)) + theme(legend.position="none")
+    p <- p + labs(y = expression(phi)) + theme(legend.position="none") +
+      geom_col(aes(reorder(fl, ci), ci, fill=cu)) +
+      labs(y="CI", fill="CU") +
+      scale_fill_gradient2(low=low.color, mid=mid.color, high=high.color, limits=c(0,1), midpoint=neutral.CU)
   }
   else {
-    # # Have to do special treatment here for the case if all features have same
-    # # cu value because ggplot doesn't use color palette correctly in that case.
-    # # SKIPPED FOR THE moment because it still won't work if we have only one feature.
-    # cumin <- min(cu); cumax <- max(cu)
-    # if ( all.equal(cumin, cumax) ) {
-    #   cu <- cu + runif(length(cu), -0.1, 0.1)
-    #   print(cu)
-    # }
     ymin <- 0; ymax <- 1
-    p <- p + ylim(ymin, ymax) + labs(y="CI", fill="CU")
+    p <- p + ylim(ymin, ymax)
+    if ( plot.mode == "colour_cu" ) {
+      p <- p +
+        geom_col(aes(reorder(fl, ci), ci, fill=cu)) +
+        labs(y="CI", fill="CU") +
+        scale_fill_gradient2(low=low.color, mid=mid.color, high=high.color, limits=c(0,1), midpoint=neutral.CU)
+    }
+    else {
+      cu_scaled <- cu*ci
+      p <- p +
+        geom_bar(aes(x=reorder(fl, ci), y=ci), stat="identity", position ="identity",
+                 alpha=as.numeric(ci.colours[3]), fill=ci.colours[1], color=ci.colours[2])
+      if ( is.null(cu.colours) ) {
+        p <- p +
+          geom_bar(aes(x=reorder(fl, ci), y=cu_scaled, fill=cu), stat="identity", position="identity",
+                   alpha=1.0, color='black') +
+        scale_fill_gradient2(low=low.color, mid=mid.color, high=high.color, limits=c(0,1), midpoint=neutral.CU) +
+        labs(y="CI and relative CU", fill="CU")
+      }
+      else {
+        p <- p +
+          geom_bar(aes(x=reorder(fl, ci), y=cu_scaled), stat="identity", position="identity",
+                   alpha=as.numeric(cu.colours[3]), fill=cu.colours[1], color=cu.colours[2]) +
+          labs(y="CI and relative CU")
+      }
+      #   scale_colour_manual(values=c("lightblue4", "red")) +
+      #   scale_fill_manual(values=c("lightblue", "pink")) +
+      #   scale_alpha_manual(values=c(.3, .8))
+    }
   }
-  p <- p +
-    geom_col(aes(reorder(fl, ci), ci, fill=cu)) +
-    scale_fill_gradient2(low=low.color, mid=mid.color, high=high.color, limits=c(0,1), midpoint=neutral.CU) +
-    coord_flip() +
+  p <- p + coord_flip() +
     facet_wrap(~Output, labeller=label_both) + # Use scales="free_y" is different ordering for every facet
     ggtitle(main) +
     xlab("Feature")

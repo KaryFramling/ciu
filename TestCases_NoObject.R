@@ -50,6 +50,8 @@ test.ciu.boston.gbm <- function() {
   instance <- Boston[370,1:13]
   ciu <- ciu(gbm, medv~., Boston)
   p <- ciu.ggplot.col(ciu, instance); print(p)
+  p <- ciu.ggplot.col(ciu, instance, plot.mode = "overlap"); print(p)
+  p <- ciu.ggplot.col(ciu, instance, cu.colours=NULL, plot.mode = "overlap"); print(p)
   ciu.barplot(ciu, instance, sort="CI")
   # See how lstat,rm,crim affect output.
   oldpar <- par(no.readonly = TRUE)
@@ -74,11 +76,13 @@ test.ciu.heart.disease.rf <- function() {
   # Random Forest with caret.
   kfoldcv <- trainControl(method="cv", number=10)
   performance_metric <- "Accuracy"
-  rf.heartdisease <- train(num~., data=heart.data, method="rf", metric=performance_metric, trControl=kfoldcv,preProcess=c("center", "scale"))
+  rf.heartdisease <- caret::train(num~., data=heart.data, method="rf", metric=performance_metric, trControl=kfoldcv,preProcess=c("center", "scale"))
   n.in <- ncol(heart.data) - 1
   instance <- heart.data[32,1:n.in]
   ciu <- ciu(rf.heartdisease, num~., heart.data, output.names=c("No Heart Disease","Heart Disease Present"))
   p <- ciu.ggplot.col(ciu, instance, c(1:n.in)); print(p)
+  p <- ciu.ggplot.col(ciu, instance, plot.mode = "overlap"); print(p)
+  p <- ciu.ggplot.col(ciu, instance, cu.colours=NULL, plot.mode = "overlap"); print(p)
   ciu.barplot(ciu, instance, ind.output=1, sort="CI")
   ciu.barplot(ciu, instance, ind.output=2, sort="CI")
   ciu.pie(ciu, instance, ind.output=1, sort="CI")
@@ -104,7 +108,7 @@ test.ciu.cars.UCI.rf <- function() {
   # Random Forest with caret
   kfoldcv <- trainControl(method="cv", number=10)
   performance_metric <- "Accuracy"
-  rf.carsUCI <- train(result~., data=car.data, method="rf", metric=performance_metric, trControl=kfoldcv)
+  rf.carsUCI <- caret::train(result~., data=car.data, method="rf", metric=performance_metric, trControl=kfoldcv)
   inst.ind <- 1098 # A very good one"
   instance <- car.data[inst.ind,1:6]
   ciu <- ciu(rf.carsUCI, formula=result~., data=car.data, vocabulary=voc)
@@ -131,7 +135,7 @@ test.ciu.cars.UCI.rf <- function() {
 # a long time for GBM to train!
 test.ciu.diamonds.gbm <- function() {
   kfoldcv <- trainControl(method="cv", number=10)
-  diamonds.gbm <- train(price~., diamonds, method="gbm", trControl=kfoldcv)
+  diamonds.gbm <- caret::train(price~., diamonds, method="gbm", trControl=kfoldcv)
   inst.ind <- 27750 # An expensive one!
   instance <- diamonds[inst.ind,-7]
   ciu <- ciu(diamonds.gbm, price~., diamonds)
@@ -154,7 +158,7 @@ test.ciu.titanic.rf <- function() {
 
   # Using Random Forest here. Really bad results... Takes a while also (15 seconds?)
   kfoldcv <- trainControl(method="cv", number=10)
-  model_rf <- train(survived ~ ., titanic_train, method="rf", trControl=kfoldcv)
+  model_rf <- caret::train(survived ~ ., titanic_train, method="rf", trControl=kfoldcv)
 
   # Example instance
   new_passenger <- data.frame(
@@ -168,6 +172,7 @@ test.ciu.titanic.rf <- function() {
   )
   ciu <- ciu(model_rf, survived~., titanic_train)
   p <- ciu.ggplot.col(ciu, new_passenger); print(p)
+  p <- ciu.ggplot.col(ciu, new_passenger, plot.mode = "overlap"); print(p)
   for ( i in 1:ncol(new_passenger) )
     ciu.plot(ciu, new_passenger,i,1)
   for ( i in 1:ncol(new_passenger) )
