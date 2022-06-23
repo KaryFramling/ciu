@@ -144,9 +144,9 @@ Figures such as these make it possible to see where CI and CU come from. CI expr
 
 # Support for different AI/ML models
 
-For the moment, any ``caret`` model should work (and most of them have been tested). The ``MASS:lda`` and ``stats::lm`` are also supported. Other models might work directly also, the default behaviour is to call ``pred <- predict(model,inputs)`` and retrieve result from ``pred$posterior``. 
+For the moment, any ``caret`` model should work (and most of them have been tested). Any ``mlr3``model should also work but only ``classif.rpart``has been tested. The ``MASS:lda`` and ``stats::lm`` models are also supported. Other models might work directly also, the default behaviour is to call ``pred <- predict(model,inputs)`` and retrieve result from ``pred$posterior``. 
 
-For any other models, the prediction function to be use can be given as value of the ``predict.function`` argument of ``ciu.new`` method. 
+For any other models, the prediction function to be use can be given as value of the ``predict.function`` argument of ``ciu.new`` method. For instance, for ``mlr3`` a function ``predf.ciu <- function(m, newdata) { m$predict_newdata(newdata)$prob }`` is sufficient.
 
 Additionally, any object that implements the ``CIU.BlackBox`` interface with an ``eval`` function is automatically supported. The template for creating such a class looks as follows and examples are provided in the package's documentation (do ``?ciu.blackbox.new``).
 
