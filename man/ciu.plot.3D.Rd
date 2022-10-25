@@ -40,22 +40,9 @@ specific instance than the default ones.}
 
 \item{n.points}{Number of x/y-axis points to use.}
 
-\item{main}{main and sub title, as for \code{\link[graphics]{title}}.}
-
-\item{xlab}{titles for the axes.  N.B. These must be
+\item{xlab, ylab, zlab}{titles for the axes.  N.B. These must be
     character strings; expressions are not accepted.  Numbers will be
     coerced to character strings.}
-
-\item{ylab}{titles for the axes.  N.B. These must be
-    character strings; expressions are not accepted.  Numbers will be
-    coerced to character strings.}
-
-\item{zlab}{titles for the axes.  N.B. These must be
-    character strings; expressions are not accepted.  Numbers will be
-    coerced to character strings.}
-
-\item{zlim}{x-, y-  and z-limits.  These should be chosen
-    to cover the range of values of the surface: see \sQuote{Details}.}
 
 \item{...}{additional \link[graphics]{graphical parameters} (see \code{\link[graphics]{par}}).}
 }

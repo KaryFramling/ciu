@@ -650,19 +650,28 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
       cmax <- max(yp[,ind.output])
       p <- p +
         geom_hline(yintercept=cmin, colour=CIU.illustration.colours[1]) +
-        geom_text(x=in.min, y=cmin, label="ymin", colour=CIU.illustration.colours[1], vjust = "top", hjust = "inward") +
+        annotate("text", x=in.min, y=cmin, label="ymin", colour=CIU.illustration.colours[1],
+                 vjust = "top", hjust = "inward", fontface="italic") +
         geom_hline(yintercept=cmax, colour=CIU.illustration.colours[3]) +
-        geom_text(x=in.min, y=cmax, label="ymax", colour=CIU.illustration.colours[3], vjust = "bottom", hjust = "inward") +
+        annotate("text", x=in.min, y=cmax, label="ymax", colour=CIU.illustration.colours[3],
+                 vjust = "bottom", hjust = "inward", fontface="italic") +
         geom_hline(yintercept=ylim[1], colour=CIU.illustration.colours[4]) +
-        geom_text(x=in.max, y=ylim[1], label="MIN", colour=CIU.illustration.colours[4], vjust = "bottom", hjust = "inward") +
+        annotate("text", x=in.max, y=ylim[1], label="MIN", colour=CIU.illustration.colours[4],
+                 vjust = "bottom", hjust = "inward", fontface="italic") +
         geom_hline(yintercept=ylim[2], colour=CIU.illustration.colours[4]) +
-        geom_text(x=in.max, y=ylim[2], label="MAX", colour=CIU.illustration.colours[4], vjust = "top", hjust = "inward") +
-        geom_hline(yintercept=cdf$y, colour=CIU.illustration.colours[4]) +
-        geom_text(x=in.max, y=cdf$y, label="y", colour=CIU.illustration.colours[4], vjust = "middle", hjust = "inward")
+        annotate("text", x=in.max, y=ylim[2], label="MAX", colour=CIU.illustration.colours[4],
+                 vjust = "top", hjust = "inward", fontface="italic") +
+        geom_hline(yintercept=cdf$y, colour=CIU.illustration.colours[4])
+
+      if ( cmax - cdf$y > cdf$y - cmin ) vjust <- "bottom" else vjust <- "top"
+      p <- p + annotate("text", x=in.max, y=cdf$y, label="y", colour=CIU.illustration.colours[4],
+                        vjust = vjust, hjust = "inward", fontface="italic")
       if ( is.numeric(neutral.CU)) {
         neutral <- cmin + neutral.CU*(cmax - cmin)
+        if ( cmax - neutral > neutral - cmin ) vjust <- "bottom" else vjust <- "top"
         p <- p + geom_hline(yintercept=neutral, colour=CIU.illustration.colours[2]) +
-          geom_text(x=in.min, y=neutral, label="phi0", colour=CIU.illustration.colours[2], vjust = "middle", hjust = "inward")
+          annotate("text", x=in.min, y=neutral, label="y(u(0))", colour=CIU.illustration.colours[2],
+                   vjust = vjust, hjust = "inward", fontface="italic")
       }
     }
     return(p)

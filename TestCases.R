@@ -262,6 +262,153 @@ test.adult.rf <- function() {
   par("cex.lab"=1)
 }
 
+# Ames Housing dataset with Gradient Boosting.
+# This is a regression task.
+test.ames.housing <- function(caret.model="gbm") {
+  data("AmesHousing")
+  # Remove all non-desired columns
+  data <- AmesHousing[,-c(1,2)] # Order, PID
+  data <- subset(data, select=-c(Lot.Frontage,Alley,Fireplace.Qu,Pool.QC,Fence,Misc.Feature)) # Columns that have far too many missing values.
+  # Replace NAs with something that makes sense for columns with only few NAs.
+  # But initially we just remove the columns...
+  data <- subset(data, select=-c(Mas.Vnr.Area,Bsmt.Qual,Bsmt.Cond,Bsmt.Exposure,
+                                 BsmtFin.Type.1,BsmtFin.SF.1,BsmtFin.Type.2,BsmtFin.SF.2,
+                                 Bsmt.Unf.SF,Total.Bsmt.SF,Bsmt.Full.Bath,Bsmt.Half.Bath,
+                                 Garage.Type,Garage.Yr.Blt,Garage.Finish,Garage.Cars,Garage.Area,
+                                 Garage.Qual,Garage.Cond))
+  # Character columns to factors before splitting so that we are sure to have same levels
+  # in both sets.
+  for ( i in 1:ncol(data) )
+    if ( is.character(data[,i]) )
+      data[,i] <- factor(data[,i])
+  # Training
+  target <- 'SalePrice'
+  trainIdx <- createDataPartition(data[,target], p=0.8, list=FALSE)
+  trainData = data[trainIdx,]
+  testData = data[-trainIdx,]
+  # Train and show some performance indicators.
+  kfoldcv <- trainControl(method="cv", number=10)
+  exec.time <- system.time(
+    Ames.gbm.caret <<- train(SalePrice~., trainData, method=caret.model, trControl=kfoldcv))
+  # Training set performance
+  res <- predict(Ames.gbm.caret, newdata=trainData)
+  train.err <- RMSE(trainData$SalePrice, res)
+  # Test set performance
+  res <- predict(Ames.gbm.caret, newdata=testData)
+  test.err <- RMSE(testData$SalePrice, res)
+  # Display useful information
+  cat("Execution times:", exec.time, "\n")
+  cat("Training set RMSE:", train.err, "\n")
+  cat("Test set RMSE:", test.err, "\n")
+
+  # Most expensive instances
+  expensive <- which(testData$SalePrice>500000)
+  # Cheapest instances
+  cheap <- which(testData$SalePrice<50000)
+
+  # Explanations
+  for ( inst.ind in c(expensive,cheap) ) {
+    instance <- subset(testData[inst.ind,], select=-SalePrice)
+    ciu.gbm <- ciu.new(Ames.gbm.caret, SalePrice~., trainData)
+    print(ciu.gbm$ggplot.col.ciu(instance, sort="CI"))
+    print(ciu.gbm$ggplot.ciu(instance,31)) # which(names(trainData)=="X1st.Flr.SF")
+  }
+}
+
+# Cars Framling data set with Gradient Boosting (default).
+# This is a regression task.
+test.cars.framling <- function(caret.model="gbm") {
+  data("CarsFramling")
+  data <- CarsFramling[,-1]
+  rownames(data) <- CarsFramling[,1]
+  # Training
+  target <- 'Preference value'
+  trainIdx <- createDataPartition(data[,target], p=0.8, list=FALSE)
+  trainData = data[trainIdx,]
+  testData = data[-trainIdx,]
+  # Train and show some performance indicators.
+  kfoldcv <- trainControl(method="cv", number=10)
+  exec.time <- system.time(
+    cars.framling.model <<- train(`Preference value`~., trainData, method=caret.model, trControl=kfoldcv))
+  # Training set performance
+  res <- predict(cars.framling.model, newdata=trainData)
+  train.err <- RMSE(trainData$`Preference value`, res)
+  # Test set performance
+  res <- predict(cars.framling.model, newdata=testData)
+  test.err <- RMSE(testData$`Preference value`, res)
+  # Display useful information
+  cat("Execution times:", exec.time, "\n")
+  cat("Training set RMSE:", train.err, "\n")
+  cat("Test set RMSE:", test.err, "\n")
+
+  # Most preferred instances
+  best <- which(testData$`Preference value`>70)
+  # Least preferred instances
+  worst <- which(testData$`Preference value`<55)
+
+  # Vocabulary for Intermediate concepts
+  performance<-c(2,7,8,9); driving.comfort<-c(3,13); price<-c(1); size<-c(5,6)
+  fuel.consumption <- c(10); status=c(11,12)
+  Cars.Framling.voc <- list("Performance"=performance, "Driving comfort"=driving.comfort,
+                            "Price"=price, "Size"=size,
+                            "Fuel consumption"=fuel.consumption, "Status"=status)
+
+  # Explanations
+  ciu <- ciu.new(cars.framling.model, `Preference value`~., trainData, vocabulary = Cars.Framling.voc)
+  for ( inst.ind in c(best,worst) ) {
+    instance <- subset(testData[inst.ind,], select=-`Preference value`)
+    print(ciu$ggplot.col.ciu(instance, sort="CI"))
+    print(ciu$ggplot.ciu(instance,1)) # which(names(trainData)=="Price")
+    print(ciu$ggplot.ciu(instance,2))
+  }
+
+  # Intermediate Concept explanations
+  meta.top <- ciu$meta.explain(instance, concepts.to.explain=names(Cars.Framling.voc), n.samples = 1000)
+  cat(ciu$textual(instance, use.text.effects = TRUE, ind.output = 1, ciu.meta = meta.top))
+  cat(ciu$textual(instance, use.text.effects = TRUE, ind.inputs = Cars.Framling.voc$Performance,
+                  target.concept = "Performance", target.ciu = meta.top$ciuvals[["Performance"]], n.samples = 100))
+}
+
+# Cars Framling data set with Gradient Boosting (default).
+# This is a regression task for predicting car price.
+test.cars.framling.price <- function(caret.model="gbm") {
+  data("CarsFramling")
+  data <- CarsFramling[,-c(1,15)]
+  rownames(data) <- CarsFramling[,1]
+  # Training
+  target <- 'Price'
+  trainIdx <- createDataPartition(data[,target], p=0.8, list=FALSE)
+  trainData = data[trainIdx,]
+  testData = data[-trainIdx,]
+  # Train and show some performance indicators.
+  kfoldcv <- trainControl(method="cv", number=10)
+  exec.time <- system.time(
+    cars.framling.model <<- train(Price~., trainData, method=caret.model, trControl=kfoldcv))
+  # Training set performance
+  res <- predict(cars.framling.model, newdata=trainData)
+  train.err <- RMSE(trainData$Price, res)
+  # Test set performance
+  res <- predict(cars.framling.model, newdata=testData)
+  test.err <- RMSE(testData$Price, res)
+  # Display useful information
+  cat("Execution times:", exec.time, "\n")
+  cat("Training set RMSE:", train.err, "\n")
+  cat("Test set RMSE:", test.err, "\n")
+
+  # Most expensive instances
+  expensive <- which(testData$Price>250000)
+  # Least preferred instances
+  cheap <- which(testData$Price<120000)
+
+  # Explanations
+  for ( inst.ind in c(expensive,cheap) ) {
+    instance <- subset(testData[inst.ind,], select=-Price)
+    ciu <- ciu.new(cars.framling.model, Price~., trainData)
+    print(ciu$ggplot.col.ciu(instance, sort="CI"))
+    print(ciu$ggplot.ciu(instance,1)) # Power
+  }
+}
+
 # par(mai=c(0.8,1.2,0.4,0.2)) # Good parameters for barplot so that labels fit in.
 # par(mai=c(0.8,1.2,0.4,0.2))
 
@@ -274,5 +421,10 @@ test.all<- function() {
   test.diamonds.gbm() # Takes something like 2-3 minutes to train but GBM seems to be best by far here.
   test.titanic.rf() # Takes maybe half minute.
   test.adult.rf() # Takes about half minute.
+  # Takes about 40s with GBM. RF takes about 12 minutes, achieves lower error
+  # for training set but similar for test set.
+  # "lm" is very quick but despite similar error as the more complex ones, the
+  # results don't really seem to make much sense.
+  test.ames.housing()
 }
 

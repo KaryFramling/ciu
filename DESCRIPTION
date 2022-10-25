@@ -19,5 +19,6 @@ Suggests:
     MASS,
     caret,
     gbm
-RoxygenNote: 7.1.2
+LazyData: true
+RoxygenNote: 7.2.1
 Roxygen: list(markdown = TRUE)

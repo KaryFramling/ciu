@@ -18,7 +18,7 @@ ciu.ggplot.col(
   target.ciu = NULL,
   ciu.meta = NULL,
   plot.mode = "colour_cu",
-  ci.colours = c("lightgreen", "lightgreen4", "0.3"),
+  ci.colours = c("aquamarine", "aquamarine3", "0.3"),
   cu.colours = c("darkgreen", "darkgreen", "0.8"),
   low.color = "red",
   mid.color = "yellow",
@@ -88,7 +88,7 @@ than calling \link{ciu.meta.explain}.}
 \item{plot.mode}{"overlap" or "colour_cu". Default is "colour_cu".}
 
 \item{ci.colours}{Colours to use for CI part in "overlap" mode. Three values
-required: fill colour, border colour, alpha. Default is c("lightgreen", "lightgreen4", "0.3").}
+required: fill colour, border colour, alpha. Default is c("aquamarine", "aquamarine3", "0.3").}
 
 \item{cu.colours}{Colours to use for CU part in "overlap" mode. Three values
 required: fill colour, border colour, alpha. Default is c("darkgreen", "darkgreen", "0.8").

@@ -19,6 +19,15 @@ per input feature.
 Convert \link{list} of ciu.result objects into corresponding \link{data.frame} for
 given output.
 }
+\examples{
+iris_train <- iris[, 1:4]
+iris_lab <- iris$Species
+iris.lda <- lda(iris_train, iris_lab)
+instance <- iris[100,1:4]
+ciu <- ciu.new(iris.lda, Species~., iris)
+meta <- ciu$meta.explain(instance)
+ciu.list.to.frame(meta$ciuvals)
+}
 \author{
 Kary Främling
 }
