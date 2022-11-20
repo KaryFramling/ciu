@@ -19,6 +19,7 @@
 * Added new method "influence" to ciu.new for getting numerical contextual 
   influence (rather than just seeing them in plots).
   TO-DO: add corresponding function to "ciu.R".
+* Corrected axis in ``plot.ciu.3D``.
 
 # ciu 0.5.0
 

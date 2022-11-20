@@ -182,11 +182,13 @@ ciu.ggplot <- function(ciu, instance, ind.input=1, ind.output=1, in.min.max.limi
 #' Function for 3D plotting the effect of changing values of two inputs on one output.
 #'
 #' @inheritParams ciu.explain
+#' @inheritParams graphics::plot
 #' @inheritParams graphics::persp
 #' @param ind.inputs Indices of input features to plot.
 #' @param ind.output Index of output to plot.
 #' @param n.points Number of x/y-axis points to use.
-#'
+#' @param zlab Label to use for Z-axis. Default: NULL.
+#' @param zlim Limits to use for Z-axis. Default: NULL.
 #' @return "void", or whatever happens to be result of last instruction.
 #' @export
 #' @author Kary Främling

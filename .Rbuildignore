@@ -12,3 +12,6 @@
 ^TestCases_NoObject.R
 ^cran-comments.md
 ^CRAN-RELEASE$
+^README_files
+^old
+^TestsMlr3.R

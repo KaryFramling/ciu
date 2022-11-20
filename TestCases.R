@@ -310,7 +310,7 @@ test.ames.housing <- function(caret.model="gbm") {
   for ( inst.ind in c(expensive,cheap) ) {
     instance <- subset(testData[inst.ind,], select=-SalePrice)
     ciu.gbm <- ciu.new(Ames.gbm.caret, SalePrice~., trainData)
-    print(ciu.gbm$ggplot.col.ciu(instance, sort="CI"))
+    print(ciu.gbm$ggplot.col.ciu(instance, sort="CI", plot.mode="overlap"))
     print(ciu.gbm$ggplot.ciu(instance,31)) # which(names(trainData)=="X1st.Flr.SF")
   }
 }
@@ -357,7 +357,7 @@ test.cars.framling <- function(caret.model="gbm") {
   ciu <- ciu.new(cars.framling.model, `Preference value`~., trainData, vocabulary = Cars.Framling.voc)
   for ( inst.ind in c(best,worst) ) {
     instance <- subset(testData[inst.ind,], select=-`Preference value`)
-    print(ciu$ggplot.col.ciu(instance, sort="CI"))
+    print(ciu$ggplot.col.ciu(instance, sort="CI", plot.mode = "overlap"))
     print(ciu$ggplot.ciu(instance,1)) # which(names(trainData)=="Price")
     print(ciu$ggplot.ciu(instance,2))
   }
@@ -404,7 +404,7 @@ test.cars.framling.price <- function(caret.model="gbm") {
   for ( inst.ind in c(expensive,cheap) ) {
     instance <- subset(testData[inst.ind,], select=-Price)
     ciu <- ciu.new(cars.framling.model, Price~., trainData)
-    print(ciu$ggplot.col.ciu(instance, sort="CI"))
+    print(ciu$ggplot.col.ciu(instance, sort="CI", plot.mode = "overlap"))
     print(ciu$ggplot.ciu(instance,1)) # Power
   }
 }
@@ -426,5 +426,7 @@ test.all<- function() {
   # "lm" is very quick but despite similar error as the more complex ones, the
   # results don't really seem to make much sense.
   test.ames.housing()
+  test.cars.framling()
+  test.cars.framling.price()
 }
 

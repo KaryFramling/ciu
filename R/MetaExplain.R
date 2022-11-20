@@ -136,6 +136,7 @@ ciu.meta.explain <- function(ciu, instance, ind.inputs=NULL, in.min.max.limits=N
 #' @export
 #'
 #' @examples
+#' library(MASS)
 #' iris_train <- iris[, 1:4]
 #' iris_lab <- iris$Species
 #' iris.lda <- lda(iris_train, iris_lab)

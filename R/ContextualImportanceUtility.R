@@ -684,12 +684,12 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
       in.min.max.limits <- o.in.minmax
     if ( is.null(in.min.max.limits) )
       stop("No minimum/maximum limits provided to 'new' nor 'explain'")
-    in.mins <- in.min.max.limits[,1]
-    in.maxs <- in.min.max.limits[,2]
-    interv <- (in.maxs[ind.inputs] - in.mins[ind.inputs])/n.points
-    xp <- seq(in.mins[ind.inputs[1]], in.maxs[ind.inputs[1]], by=interv[1])
-    yp <- seq(in.mins[ind.inputs[2]], in.maxs[ind.inputs[2]], by=interv[2])
-    pm <- expand.grid(xp, yp)
+    in.mins <- in.min.max.limits[ind.inputs,1]
+    in.maxs <- in.min.max.limits[ind.inputs,2]
+    interv <- (in.maxs - in.mins)/n.points
+    xp <- seq(in.mins[1], in.maxs[1], by=interv[1])
+    yp <- seq(in.mins[2], in.maxs[2], by=interv[2])
+    pm <- expand.grid(xp,yp)
     if ( is.null(dim(instance)) )
       n.col <- length(instance)
     else
@@ -731,13 +731,14 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
     if ( is.null(ylab) ) ylab <- y.name
     if ( is.null(zlab) ) zlab <- "Output value"
     if ( is.null(zlim) ) zlim <- o.absminmax[ind.output,]
-    vt <- persp(xp, yp, zm, xlab=xlab, ylab=ylab, zlab=zlab, zlim=zlim, main=main, ticktype = "detailed", ...) # persp3D might want these: , bg="white", colvar=NULL, col="black", facets=FALSE
+    # Something strange happening here, x and y are somehow inversed?
+    vt <- persp(yp, xp, zm, xlab=ylab, ylab=xlab, zlab=zlab, zlim=zlim, main=main, ticktype = "detailed", ...) # persp3D might want these: , bg="white", colvar=NULL, col="black", facets=FALSE
 
     # Show where current instance is located
     x.plot <- as.numeric(instance[ind.inputs[1]])
     y.plot <- as.numeric(instance[ind.inputs[2]])
     z.plot <- as.numeric(cu.val[ind.output])
-    points(trans3d(x.plot, y.plot, z.plot, pmat = vt), col = "red", pch = 16, cex = 3)
+    points(trans3d(y.plot, x.plot, z.plot, pmat = vt), col = "red", pch = 16, cex = 3)
   }
 
   # See 'ciu.barplot'.

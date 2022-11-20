@@ -20,6 +20,7 @@ Convert \link{list} of ciu.result objects into corresponding \link{data.frame} f
 given output.
 }
 \examples{
+library(MASS)
 iris_train <- iris[, 1:4]
 iris_lab <- iris$Species
 iris.lda <- lda(iris_train, iris_lab)

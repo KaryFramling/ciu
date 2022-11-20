@@ -256,6 +256,60 @@ test.adult.rf <- function() {
   par("cex.lab"=1)
 }
 
+# Ames Housing dataset with Gradient Boosting.
+# This is a regression task.
+test.ames.housing <- function(caret.model="gbm") {
+  data("AmesHousing")
+  # Remove all non-desired columns
+  data <- AmesHousing[,-c(1,2)] # Order, PID
+  data <- subset(data, select=-c(Lot.Frontage,Alley,Fireplace.Qu,Pool.QC,Fence,Misc.Feature)) # Columns that have far too many missing values.
+  # Replace NAs with something that makes sense for columns with only few NAs.
+  # But initially we just remove the columns...
+  data <- subset(data, select=-c(Mas.Vnr.Area,Bsmt.Qual,Bsmt.Cond,Bsmt.Exposure,
+                                 BsmtFin.Type.1,BsmtFin.SF.1,BsmtFin.Type.2,BsmtFin.SF.2,
+                                 Bsmt.Unf.SF,Total.Bsmt.SF,Bsmt.Full.Bath,Bsmt.Half.Bath,
+                                 Garage.Type,Garage.Yr.Blt,Garage.Finish,Garage.Cars,Garage.Area,
+                                 Garage.Qual,Garage.Cond))
+  # Character columns to factors before splitting so that we are sure to have same levels
+  # in both sets.
+  for ( i in 1:ncol(data) )
+    if ( is.character(data[,i]) )
+      data[,i] <- factor(data[,i])
+  # Training
+  target <- 'SalePrice'
+  trainIdx <- createDataPartition(data[,target], p=0.8, list=FALSE)
+  trainData = data[trainIdx,]
+  testData = data[-trainIdx,]
+  # Train and show some performance indicators.
+  kfoldcv <- trainControl(method="cv", number=10)
+  exec.time <- system.time(
+    Ames.gbm.caret <<- train(SalePrice~., trainData, method=caret.model, trControl=kfoldcv))
+  # Training set performance
+  res <- predict(Ames.gbm.caret, newdata=trainData)
+  train.err <- RMSE(trainData$SalePrice, res)
+  # Test set performance
+  res <- predict(Ames.gbm.caret, newdata=testData)
+  test.err <- RMSE(testData$SalePrice, res)
+  # Display useful information
+  cat("Execution times:", exec.time, "\n")
+  cat("Training set RMSE:", train.err, "\n")
+  cat("Test set RMSE:", test.err, "\n")
+
+  # Most expensive instances
+  expensive <- which(testData$SalePrice>500000)
+  # Cheapest instances
+  cheap <- which(testData$SalePrice<50000)
+
+  # Explanations
+  for ( inst.ind in c(expensive,cheap) ) {
+    instance <- subset(testData[inst.ind,], select=-SalePrice)
+    ciu <- ciu(Ames.gbm.caret, SalePrice~., trainData)
+    print(ciu.ggplot.col(ciu, instance, sort="CI", plot.mode="overlap"))
+    print(ciu.ggplot(ciu, instance,31)) # which(names(trainData)=="X1st.Flr.SF")
+  }
+}
+
+
 # This can be useful at least for ordinary barplots.
 # par(mai=c(0.8,1.2,0.4,0.2))
 
@@ -268,4 +322,9 @@ test.all<- function() {
   test.ciu.diamonds.gbm() # Takes something like 2-3 minutes to train but GBM seems to be best by far here.
   test.ciu.titanic.rf() # Takes maybe half minute.
   test.adult.rf() # Takes about half minute.
+  # Takes about 40s with GBM. RF takes about 12 minutes, achieves lower error
+  # for training set but similar for test set.
+  # "lm" is very quick but despite similar error as the more complex ones, the
+  # results don't really seem to make much sense.
+  test.ames.housing()
 }

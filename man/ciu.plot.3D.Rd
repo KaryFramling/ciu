@@ -40,11 +40,18 @@ specific instance than the default ones.}
 
 \item{n.points}{Number of x/y-axis points to use.}
 
-\item{xlab, ylab, zlab}{titles for the axes.  N.B. These must be
-    character strings; expressions are not accepted.  Numbers will be
-    coerced to character strings.}
+\item{main}{a main title for the plot, see also \code{\link[graphics]{title}}.}
 
-\item{...}{additional \link[graphics]{graphical parameters} (see \code{\link[graphics]{par}}).}
+\item{xlab}{a label for the x axis, defaults to a description of \code{x}.}
+
+\item{ylab}{a label for the y axis, defaults to a description of \code{y}.}
+
+\item{zlab}{Label to use for Z-axis. Default: NULL.}
+
+\item{zlim}{Limits to use for Z-axis. Default: NULL.}
+
+\item{...}{other \link[graphics]{graphical parameters} (see \code{\link[graphics]{par}} and
+    section \sQuote{Details} below).}
 }
 \value{
 "void", or whatever happens to be result of last instruction.
