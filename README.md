@@ -45,8 +45,10 @@ calculated as:
 
 $$
 \omega_{j,\{i\},\{I\}}(x)= \frac{ymax_{j,\{i\}}(x)-ymin_{j,\{i\}}(x)}{ ymax_{j,\{I\}}(x)-ymin_{j,\{I\}}(x)}, 
-$$ where $ymin_{j}()$ and $ymax_{j}()$ are the minimal and maximal
-$y_{j}$ values observed for output $j$.
+$$
+
+where $ymin_{j}()$ and $ymax_{j}()$ are the minimal and maximal $y_{j}$
+values observed for output $j$.
 
 CU is defined as
 

@@ -36,7 +36,9 @@ where $\{i\} \subseteq \{I\}$ and $\{I\} \subseteq \{1,\dots,n\}$. $x$ is the in
 
 $$
 \omega_{j,\{i\},\{I\}}(x)= \frac{ymax_{j,\{i\}}(x)-ymin_{j,\{i\}}(x)}{ ymax_{j,\{I\}}(x)-ymin_{j,\{I\}}(x)}, 
-$$ where $ymin_{j}()$ and $ymax_{j}()$ are the minimal and maximal $y_{j}$ values observed for output $j$.
+$$
+
+where $ymin_{j}()$ and $ymax_{j}()$ are the minimal and maximal $y_{j}$ values observed for output $j$.
 
 CU is defined as
 
