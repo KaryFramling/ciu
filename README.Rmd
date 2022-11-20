@@ -35,25 +35,19 @@ $$
 where $\{i\} \subseteq \{I\}$ and $\{I\} \subseteq \{1,\dots,n\}$. $x$ is the instance/context to be explained and defines the values of input features that do not belong to $\{i\}$ or $\{I\}$. In practice, CI is calculated as:
 
 $$
-\begin{equation}
 \omega_{j,\{i\},\{I\}}(x)= \frac{ymax_{j,\{i\}}(x)-ymin_{j,\{i\}}(x)}{ ymax_{j,\{I\}}(x)-ymin_{j,\{I\}}(x)}, 
-\end{equation}
 $$ where $ymin_{j}()$ and $ymax_{j}()$ are the minimal and maximal $y_{j}$ values observed for output $j$.
 
 CU is defined as
 
 $$
-\begin{equation}
 CU_{j,\{i\}}(x)=\frac{u_{j}(x)-umin_{j,\{i\}}(x)}{umax_{j,\{i\}}(x)-umin_{j,\{i\}}(x)}. 
-\end{equation}
 $$
 
 When $u_{j}(y_{j})=Ay_{j}+b$, this can be written as:
 
 $$
-\begin{equation}
 CU_{j,\{i\}}(x)=\left|\frac{ y_{j}(x)-yumin_{j,\{i\}}(x)}{ymax_{j,\{i\}}(x)-ymin_{j,\{i\}}(x)}\right|, 
-\end{equation}
 $$
 
 where $yumin=ymin$ if $A$ is positive and $yumin=ymax$ if $A$ is negative.
