@@ -127,10 +127,10 @@ This CIU bar plot explanation “explains” the probability of survival,
 which is 63.6%, as well as the probability of non-survival. The bar
 lengths show she CI value and the bar color corresponds to the CU value.
 
-The `ciu`\` package provides numerous visualisation possibilities. The
-plot above is produced using \`\`ggplot\`\` but there are also
+The `ciu` package provides numerous visualization possibilities. The
+plot above is produced using `ggplot` but there are also
 methods/functions that use R’s standard (old) plot functionality. In
-practice, it seems like a more clearly “counterfactual” explanation is
+practice, it seems like a more clearly “counter-factual” explanation is
 more easily understood, as produced by the following code:
 
 ``` r
@@ -142,13 +142,13 @@ print(ciu$ggplot.col.ciu(new_passenger, output.names = "yes", plot.mode = "overl
 In this plot, the transparent bar shows the CI value, *i.e.* how much
 the result could change with a different value than the current one. The
 solid part shows how “good” the current value is (CU). This explanation
-can be considered counterfactual (what-if) because it *e.g.*shows that
+can be considered counter-factual (what-if) because it *e.g.*shows that
 being accompanied by even one parent would significantly increase the
 probability of survival (the feature $parch$).
 
 For one input feature, it is easy to see exactly how both CI and CU
 values are calculated, as shown by the following call and plot (the red
-dot shows the value for instance $x$:
+dot shows the value for instance $x$):
 
 ``` r
 print(ciu$ggplot.ciu(new_passenger, ind.input = 3, ind.output = 2, illustrate.CIU = TRUE))
@@ -251,10 +251,10 @@ $$
 \phi_{j,\{i\},\{I\}}(x)=\omega_{j,\{i\},\{I\}}(x)(CU_{j,\{i\}}(x) - \phi_{0}),
 $$
 
-where $\phi_{0}$ is the . For instance, $\phi_{0}=0.5$ signifies using
-the average utility value $0.5$ as the baseline, which is the case in
-the $age$ plot above. An explanation using Contextual influence can be
-obtained as follows:
+where $\phi_{0}$ is the *baseline/reference* value ($y(u(0))$ in the
+plot). For instance, $\phi_{0}=0.5$ signifies using the average utility
+value $0.5$ as the baseline, which is the case in the $age$ plot above.
+An explanation using Contextual influence can be obtained as follows:
 
 ``` r
 print(ciu$ggplot.col.ciu(new_passenger, output.names = "yes", use.influence = TRUE) +
@@ -267,11 +267,11 @@ print(ciu$ggplot.col.ciu(new_passenger, output.names = "yes", use.influence = TR
 **Remark:** The Equation for Contextual influence is similar to the
 definition of Shapley values for linear models, except that the input
 value $x_{i}$ is replaced by its utility value(s) $CU_{j,\{i\}}(x)$. In
-practice, **all Additive Feature Attribution (AFA) methods estimate
+practice, **all *Additive Feature Attribution (AFA)* methods estimate
 influence values, not feature importance. Most state-of-the-art methods
 such as *Shapley values*, *LIME*,** are AFA methods.
 
-Influence values give no counterfactual information and are easily
+Influence values give no counter-factual information and are easily
 misinterpreted. Below, we create a Shapley value explanation using the
 IML package. In that explanation, for instance the close-to-zero Shapley
 value for $parch$ gives the impression that it’s a non-important
@@ -310,7 +310,8 @@ output vqlue and how CI and CU can be deduced in the same way as for a
 single feature.
 
 ``` r
-ciu$plot.ciu.3D(new_passenger, c(5,3), ind.output = 2, theta = 50, phi = 10, col = "lightblue", ltheta = 120, shade = 0.75)
+ciu$plot.ciu.3D(new_passenger, c(5,3), ind.output = 2, theta = 50, phi = 10, 
+                col = "lightblue", ltheta = 120, shade = 0.75)
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
@@ -342,13 +343,19 @@ print(titanic_ciu$ggplot.col.ciu(new_passenger[,-8], output.names = "yes", ciu.m
 Then explain WEALTH and FAMILY
 
 ``` r
-print(titanic_ciu$ggplot.col.ciu(new_passenger[,-8], ind.inputs = Titanic.voc$FAMILY, output.names = "yes", target.concept = "FAMILY", target.ciu = meta.top$ciuvals[["FAMILY"]], n.samples = 100, plot.mode = "overlap"))
+print(titanic_ciu$ggplot.col.ciu(new_passenger[,-8], ind.inputs = Titanic.voc$FAMILY, 
+                                 output.names = "yes", target.concept = "FAMILY", 
+                                 target.ciu = meta.top$ciuvals[["FAMILY"]], n.samples = 100, 
+                                 plot.mode = "overlap"))
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 ``` r
-print(titanic_ciu$ggplot.col.ciu(new_passenger[,-8],ind.inputs = Titanic.voc$WEALTH, output.names = "yes", target.concept = "WEALTH", target.ciu = meta.top$ciuvals[["WEALTH"]], n.samples = 100, plot.mode = "overlap"))
+print(titanic_ciu$ggplot.col.ciu(new_passenger[,-8],ind.inputs = Titanic.voc$WEALTH, 
+                                 output.names = "yes", target.concept = "WEALTH", 
+                                 target.ciu = meta.top$ciuvals[["WEALTH"]], n.samples = 100,
+                                 plot.mode = "overlap"))
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-10-2.png)<!-- -->
@@ -356,7 +363,8 @@ print(titanic_ciu$ggplot.col.ciu(new_passenger[,-8],ind.inputs = Titanic.voc$WEA
 Same thing using textual explanations:
 
 ``` r
-cat(titanic_ciu$textual(new_passenger[,-8], use.text.effects = TRUE, ind.output = 2, ciu.meta = meta.top))
+cat(titanic_ciu$textual(new_passenger[,-8], use.text.effects = TRUE, ind.output = 2, 
+                        ciu.meta = meta.top), "\n")
 ```
 
     ## The value of output 'yes' for instance '1' is 0.666, which is good (CU=0.666).
@@ -365,34 +373,35 @@ cat(titanic_ciu$textual(new_passenger[,-8], use.text.effects = TRUE, ind.output 
     ## Feature 'WEALTH' is slightly important (CI=0.39) and value is good (CU=0.61).
     ## Feature 'Gender' is slightly important (CI=0.278) and value 'male' is very bad (CU=0).
     ## Feature 'Embarkment port' is not important (CI=0.076) and value 'Cherbourg' is very good (CU=1).
+    ## 
 
 ``` r
-cat("\n")
-```
-
-``` r
-cat(titanic_ciu$textual(new_passenger[,-8], use.text.effects = TRUE, ind.output = 2, ind.inputs = Titanic.voc$FAMILY, target.concept = "FAMILY", target.ciu = meta.top$ciuvals[["FAMILY"]], n.samples = 100))
+cat(titanic_ciu$textual(new_passenger[,-8], use.text.effects = TRUE, ind.output = 2, 
+                        ind.inputs = Titanic.voc$FAMILY, target.concept = "FAMILY", 
+                        target.ciu = meta.top$ciuvals[["FAMILY"]], n.samples = 100), 
+    "\n")
 ```
 
     ## The value of intermediate concept 'FAMILY' for output 'yes', with instance '1' is average (CU=0.593).
     ## Feature 'sibsp' is important (CI=0.593) and value '0' is very good (CU=1).
     ## Feature 'parch' is important (CI=0.407) and value '0' is very bad (CU=0).
+    ## 
 
 ``` r
-cat("\n")
-```
-
-``` r
-cat(titanic_ciu$textual(new_passenger[,-8], use.text.effects = TRUE, ind.output = 2, ind.inputs = Titanic.voc$WEALTH, target.concept = "WEALTH", target.ciu = meta.top$ciuvals[["WEALTH"]], n.samples = 100))
+cat(titanic_ciu$textual(new_passenger[,-8], use.text.effects = TRUE, ind.output = 2, 
+                        ind.inputs = Titanic.voc$WEALTH, target.concept = "WEALTH", 
+                        target.ciu = meta.top$ciuvals[["WEALTH"]], n.samples = 100), 
+    "\n")
 ```
 
     ## The value of intermediate concept 'WEALTH' for output 'yes', with instance '1' is good (CU=0.61).
     ## Feature 'class' is important (CI=0.508) and value '1st' is good (CU=0.717).
     ## Feature 'fare' is slightly important (CI=0.379) and value '72' is good (CU=0.622).
+    ## 
 
 ## Ames housing example
 
-Ames housing is a dataset about properties in the towm Ames in the US.
+Ames housing is a data set about properties in the town Ames in the US.
 It contains over 80 features that can be used for learning to estimate
 the sales price. The following code imports the data set, does some
 pre-processing and trains a Gradient Boosting model:
@@ -420,7 +429,7 @@ res <- predict(Ames.gbm, newdata=testData)
 cat(paste("Test set RMSE:", RMSE(testData$Sale_Price, res)))
 ```
 
-We create our vocabulary (only two level sthis time) and initialize CIU
+We create our vocabulary (only two levels this time) and initialize CIU
 object:
 
 ``` r
@@ -437,9 +446,8 @@ Ames.voc <- list(
 Ames.voc_ciu <- ciu.new(Ames.gbm, Sale_Price~., trainData, vocabulary = Ames.voc)
 ```
 
-We start with an \`\`explanation’’ using all 80 basic features, which is
-not very readable and overly detailed for “ordinary” humans to
-understand:
+We start with an “explanation” using all 80 basic features, which is not
+very readable and overly detailed for “ordinary” humans to understand:
 
 ``` r
 # We take an expensive house
@@ -457,8 +465,10 @@ print(Ames.voc_ciu$ggplot.col.ciu(instance, ciu.meta=Ames_ciu.meta, plot.mode = 
 Then the same, using highest-level concepts:
 
 ``` r
-meta.top <- Ames.voc_ciu$meta.explain(instance, concepts.to.explain=names(Ames.voc), n.samples = 1000)
-print(Ames.voc_ciu$ggplot.col.ciu(instance, concepts.to.explain=names(Ames.voc), plot.mode = "overlap"))
+meta.top <- Ames.voc_ciu$meta.explain(instance, concepts.to.explain=names(Ames.voc), 
+                                      n.samples = 1000)
+print(Ames.voc_ciu$ggplot.col.ciu(instance, concepts.to.explain=names(Ames.voc), 
+                                  plot.mode = "overlap"))
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
@@ -467,21 +477,24 @@ Then explain further some intermediate concepts:
 
 ``` r
 # House condition
-print(Ames.voc_ciu$ggplot.col.ciu(instance, ind.inputs = Ames.voc$`House condition`, target.concept = "House condition", plot.mode = "overlap"))
+print(Ames.voc_ciu$ggplot.col.ciu(instance, ind.inputs = Ames.voc$`House condition`, 
+                                  target.concept = "House condition", plot.mode = "overlap"))
 ```
 
 ![](README_files/figure-gfm/ames_subeplanations-1.png)<!-- -->
 
 ``` r
 # Basement
-print(Ames.voc_ciu$ggplot.col.ciu(instance, ind.inputs = Ames.voc$Basement, target.concept = "Basement", plot.mode = "overlap"))
+print(Ames.voc_ciu$ggplot.col.ciu(instance, ind.inputs = Ames.voc$Basement, 
+                                  target.concept = "Basement", plot.mode = "overlap"))
 ```
 
 ![](README_files/figure-gfm/ames_subeplanations-2.png)<!-- -->
 
 ``` r
 # Garage
-print(Ames.voc_ciu$ggplot.col.ciu(instance, ind.inputs = Ames.voc$Garage, target.concept = "Garage", plot.mode = "overlap"))
+print(Ames.voc_ciu$ggplot.col.ciu(instance, ind.inputs = Ames.voc$Garage, 
+                                  target.concept = "Garage", plot.mode = "overlap"))
 ```
 
 ![](README_files/figure-gfm/ames_subeplanations-3.png)<!-- -->
