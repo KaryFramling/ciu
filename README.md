@@ -12,6 +12,12 @@ originally implemented in Matlab.
 
 # What is CIU?
 
+**Remark**: It seems like Github Markdown doesn’t show correctly the “{”
+and “}” characters in Latex equations, whereas they are shown correctly
+in Rstudio. Therefore, in most cases where there is an $i$ shown in
+Github, it actually signifies `{i}` and where there is an $I$ it
+signifies `{I}`.
+
 CIU is a model-agnostic method for producing outcome explanations of
 results of any “black-box” model `y=f(x)`. CIU directly estimates two
 elements of explanation by observing the behaviour of the black-box
@@ -378,8 +384,7 @@ cat(titanic_ciu$textual(new_passenger[,-8], use.text.effects = TRUE, ind.output 
 ``` r
 cat(titanic_ciu$textual(new_passenger[,-8], use.text.effects = TRUE, ind.output = 2, 
                         ind.inputs = Titanic.voc$FAMILY, target.concept = "FAMILY", 
-                        target.ciu = meta.top$ciuvals[["FAMILY"]], n.samples = 100), 
-    "\n")
+                        target.ciu = meta.top$ciuvals[["FAMILY"]], n.samples = 100),  "\n")
 ```
 
     ## The value of intermediate concept 'FAMILY' for output 'yes', with instance '1' is average (CU=0.593).
@@ -390,8 +395,7 @@ cat(titanic_ciu$textual(new_passenger[,-8], use.text.effects = TRUE, ind.output 
 ``` r
 cat(titanic_ciu$textual(new_passenger[,-8], use.text.effects = TRUE, ind.output = 2, 
                         ind.inputs = Titanic.voc$WEALTH, target.concept = "WEALTH", 
-                        target.ciu = meta.top$ciuvals[["WEALTH"]], n.samples = 100), 
-    "\n")
+                        target.ciu = meta.top$ciuvals[["WEALTH"]], n.samples = 100), "\n")
 ```
 
     ## The value of intermediate concept 'WEALTH' for output 'yes', with instance '1' is good (CU=0.61).
