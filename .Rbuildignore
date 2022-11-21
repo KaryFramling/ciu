@@ -4,6 +4,8 @@
 ^\.Rproj\.user$
 ^docs
 ^manual_docs
+^README.Rmd
+^README_files
 ^README.md
 ^NEWS.md
 ^ciu_0.1.0.tgz
@@ -12,6 +14,6 @@
 ^TestCases_NoObject.R
 ^cran-comments.md
 ^CRAN-RELEASE$
-^README_files
 ^old
 ^TestsMlr3.R
+^CarsFramling.csv

@@ -37,7 +37,7 @@ with \code{CIU} object as created by \link{ciu.new}).}
 names and other needed metadata can be deduced from the dataset or other
 parameters given to \code{\link{ciu.new}}.}
 
-\item{ind.inputs}{\code{\link{vector}} of indices for the inputs to be
+\item{ind.inputs}{Vector of indices for the inputs to be
 included in the plot. If NULL then all inputs will be included.}
 
 \item{ind.output}{Index of output to be explained.}
@@ -112,10 +112,6 @@ Create a barplot showing CI as the length of the bar and CU on color scale from
 red to green, via yellow, for the given inputs and the given output.
 }
 \seealso{
-\link{ggplot.col.ciu}
-
-\link{pie.ciu}
-
 \link{ciu.new}
 
 \link{ciu.explain}

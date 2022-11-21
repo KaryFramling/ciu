@@ -205,7 +205,7 @@ ciu.plot.3D <- function(ciu, instance, ind.inputs, ind.output, in.min.max.limits
 #' red to green, via yellow, for the given inputs and the given output.
 #'
 #' @inheritParams ciu.meta.explain
-#' @param ind.inputs \code{\link{vector}} of indices for the inputs to be
+#' @param ind.inputs Vector of indices for the inputs to be
 #' included in the plot. If NULL then all inputs will be included.
 #' @param ind.output Index of output to be explained.
 #' @param neutral.CU Indicates when the Contextual Utility is considered
@@ -233,8 +233,6 @@ ciu.plot.3D <- function(ciu, instance, ind.inputs, ind.output, in.min.max.limits
 #' @return "void", i.e. whatever happens to be result of last instruction.
 #' @export
 #' @author Kary Främling
-#' @seealso [ggplot.col.ciu]
-#' @seealso [pie.ciu]
 #' @seealso [ciu.new]
 #' @seealso [ciu.explain]
 ciu.barplot <- function(ciu, instance, ind.inputs=NULL, ind.output=1, in.min.max.limits=NULL, n.samples=100,

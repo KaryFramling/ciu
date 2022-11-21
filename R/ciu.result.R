@@ -1,7 +1,7 @@
 #' CIU result object
 #'
 #' Create object of class `ciu.result`, which stores results of CIU
-#' calculations. The [explain()] method returns a `ciu.result` object.
+#' calculations. The `ciu$explain` and [ciu.explain] methods return a `ciu.result` object.
 #'
 #' @param ci vector of CI values, one per output
 #' @param cu vector of CU values, one per output

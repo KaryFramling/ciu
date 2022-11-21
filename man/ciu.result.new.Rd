@@ -30,7 +30,7 @@ An object of class ciu.result, which is a data.frame with
 }
 \description{
 Create object of class \code{ciu.result}, which stores results of CIU
-calculations. The \code{\link[=explain]{explain()}} method returns a \code{ciu.result} object.
+calculations. The \code{ciu$explain} and \link{ciu.explain} methods return a \code{ciu.result} object.
 }
 \author{
 Kary Främling

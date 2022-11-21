@@ -56,13 +56,13 @@
 #' first get a `CIU` object by calling \code{\link{ciu.new}} as e.g.
 #' \code{ciu <- ciu.new(...)}, then call \code{ciu.res <- ciu$<method>(...)}.
 #' The methods that can be used in `<method>` are:
-#' - \code{\link{explain}}
+#' - `explain`, see [ciu.explain] (but omit first parameter `ciu`)
 #' - `meta.explain`, see [ciu.meta.explain] (but omit first parameter `ciu`).
-#' - \code{\link{barplot.ciu}}
-#' - \code{\link{ggplot.col.ciu}}
-#' - \code{\link{pie.ciu}}
-#' - \code{\link{plot.ciu}}
-#' - \code{\link{plot.ciu.3D}}
+#' - `barplot.ciu`, see [ciu.barplot] (but omit first parameter `ciu`)
+#' - `ggplot.col.ciu`, see [ciu.ggplot.col] (but omit first parameter `ciu`)
+#' - `pie.ciu`, see [ciu.pie] (but omit first parameter `ciu`)
+#' - `plot.ciu`, see [ciu.plot] (but omit first parameter `ciu`)
+#' - `plot.ciu.3D`, see [ciu.plot.3D] (but omit first parameter `ciu`)
 #' - `textual`, see [ciu.textual] (but omit first parameter `ciu`).
 #'
 #' \emph{"Usage" section is here in "Details" section because Roxygen etc.
@@ -75,7 +75,6 @@
 #' @references Främling, K. *Contextual Importance and Utility in R: the 'ciu' Package.*
 #' In: Proceedings of 1st Workshop on Explainable Agency in Artificial Intelligence,
 #' at 35th AAAI Conference on Artificial Intelligence. Virtual, Online. February 8-9, 2021. pp. 110-114.
-#' <https://www.researchgate.net/publication/349521362_Contextual_Importance_and_Utility_in_R_the_%27ciu%27_Package>.
 #' @references Främling, K. *Explainable AI without Interpretable Model*. 2020, <https://arxiv.org/abs/2009.13996>.
 #' @references Främling, K. *Decision Theory Meets Explainable AI*. 2020, <doi.org/10.1007/978-3-030-51924-7_4>.
 #' @references Främling, K. *Modélisation et apprentissage des préférences par réseaux de neurones pour l'aide à la décision multicritère*. 1996, <https://tel.archives-ouvertes.fr/tel-00825854/document> (title translation in English: *Learning and Explaining Preferences with Neural Networks for Multiple Criteria Decision Making*)

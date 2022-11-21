@@ -7,6 +7,7 @@ require(MASS)
 require(caret)
 require(ciu)
 require(randomForest)
+require(AmesHousing)
 
 scaleFUN <- function(x) as.character(round(x, digits = 2))
 
@@ -315,36 +316,52 @@ test.ames.housing <- function(caret.model="gbm") {
   }
 }
 
+# Read Främling car data from CSV and do the needed transformations.
+read.cars.framling <- function(file="https://raw.githubusercontent.com/KaryFramling/ciu/master/CarsFramling.csv") {
+  CarsFramling <- read.csv(file)
+  CarsFramling <- CarsFramling[,-1]
+  CarsFramling[CarsFramling$Transmission == 4, 'Transmission'] <- "manual"
+  CarsFramling[CarsFramling$Transmission == 2, 'Transmission'] <- "automatic"
+  CarsFramling[CarsFramling$Wheels.drive == 1, 'Wheels.drive'] <- "front"
+  CarsFramling[CarsFramling$Wheels.drive == 2, 'Wheels.drive'] <- "rear"
+  CarsFramling[CarsFramling$Wheels.drive == 3, 'Wheels.drive'] <- "four-wheel"
+  CarsFramling[,'Transmission'] <- factor(CarsFramling[,'Transmission'])
+  CarsFramling[,'Wheels.drive'] <- factor(CarsFramling[,'Wheels.drive'])
+  CarsFramling[,'Aesthetic.value'] <- factor(CarsFramling[,'Aesthetic.value'])
+  CarsFramling[,'Brand.value'] <- factor(CarsFramling[,'Brand.value'])
+  return(CarsFramling)
+}
+
 # Cars Framling data set with Gradient Boosting (default).
 # This is a regression task.
 test.cars.framling <- function(caret.model="gbm") {
-  data("CarsFramling")
+  CarsFramling <- read.cars.framling()
   data <- CarsFramling[,-1]
   rownames(data) <- CarsFramling[,1]
   # Training
-  target <- 'Preference value'
+  target <- 'Preference.value'
   trainIdx <- createDataPartition(data[,target], p=0.8, list=FALSE)
   trainData = data[trainIdx,]
   testData = data[-trainIdx,]
   # Train and show some performance indicators.
   kfoldcv <- trainControl(method="cv", number=10)
   exec.time <- system.time(
-    cars.framling.model <<- train(`Preference value`~., trainData, method=caret.model, trControl=kfoldcv))
+    cars.framling.model <<- train(Preference.value~., trainData, method=caret.model, trControl=kfoldcv))
   # Training set performance
   res <- predict(cars.framling.model, newdata=trainData)
-  train.err <- RMSE(trainData$`Preference value`, res)
+  train.err <- RMSE(trainData$`Preference.value`, res)
   # Test set performance
   res <- predict(cars.framling.model, newdata=testData)
-  test.err <- RMSE(testData$`Preference value`, res)
+  test.err <- RMSE(testData$`Preference.value`, res)
   # Display useful information
   cat("Execution times:", exec.time, "\n")
   cat("Training set RMSE:", train.err, "\n")
   cat("Test set RMSE:", test.err, "\n")
 
   # Most preferred instances
-  best <- which(testData$`Preference value`>70)
+  best <- which(testData$`Preference.value`>70)
   # Least preferred instances
-  worst <- which(testData$`Preference value`<55)
+  worst <- which(testData$`Preference.value`<55)
 
   # Vocabulary for Intermediate concepts
   performance<-c(2,7,8,9); driving.comfort<-c(3,13); price<-c(1); size<-c(5,6)
@@ -354,25 +371,24 @@ test.cars.framling <- function(caret.model="gbm") {
                             "Fuel consumption"=fuel.consumption, "Status"=status)
 
   # Explanations
-  ciu <- ciu.new(cars.framling.model, `Preference value`~., trainData, vocabulary = Cars.Framling.voc)
+  ciu <- ciu.new(cars.framling.model, `Preference.value`~., trainData, vocabulary = Cars.Framling.voc)
   for ( inst.ind in c(best,worst) ) {
-    instance <- subset(testData[inst.ind,], select=-`Preference value`)
+    instance <- subset(testData[inst.ind,], select=-`Preference.value`)
     print(ciu$ggplot.col.ciu(instance, sort="CI", plot.mode = "overlap"))
     print(ciu$ggplot.ciu(instance,1)) # which(names(trainData)=="Price")
     print(ciu$ggplot.ciu(instance,2))
+    # Intermediate Concept explanations
+    meta.top <- ciu$meta.explain(instance, concepts.to.explain=names(Cars.Framling.voc), n.samples = 1000)
+    cat(ciu$textual(instance, use.text.effects = TRUE, ind.output = 1, ciu.meta = meta.top))
+    cat(ciu$textual(instance, use.text.effects = TRUE, ind.inputs = Cars.Framling.voc$Performance,
+                    target.concept = "Performance", target.ciu = meta.top$ciuvals[["Performance"]], n.samples = 100))
   }
-
-  # Intermediate Concept explanations
-  meta.top <- ciu$meta.explain(instance, concepts.to.explain=names(Cars.Framling.voc), n.samples = 1000)
-  cat(ciu$textual(instance, use.text.effects = TRUE, ind.output = 1, ciu.meta = meta.top))
-  cat(ciu$textual(instance, use.text.effects = TRUE, ind.inputs = Cars.Framling.voc$Performance,
-                  target.concept = "Performance", target.ciu = meta.top$ciuvals[["Performance"]], n.samples = 100))
 }
 
 # Cars Framling data set with Gradient Boosting (default).
 # This is a regression task for predicting car price.
 test.cars.framling.price <- function(caret.model="gbm") {
-  data("CarsFramling")
+  CarsFramling <- read.cars.framling()
   data <- CarsFramling[,-c(1,15)]
   rownames(data) <- CarsFramling[,1]
   # Training

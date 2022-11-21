@@ -77,13 +77,13 @@ first get a \code{CIU} object by calling \code{\link{ciu.new}} as e.g.
 \code{ciu <- ciu.new(...)}, then call \code{ciu.res <- ciu$<method>(...)}.
 The methods that can be used in \verb{<method>} are:
 \itemize{
-\item \code{\link{explain}}
+\item \code{explain}, see \link{ciu.explain} (but omit first parameter \code{ciu})
 \item \code{meta.explain}, see \link{ciu.meta.explain} (but omit first parameter \code{ciu}).
-\item \code{\link{barplot.ciu}}
-\item \code{\link{ggplot.col.ciu}}
-\item \code{\link{pie.ciu}}
-\item \code{\link{plot.ciu}}
-\item \code{\link{plot.ciu.3D}}
+\item \code{barplot.ciu}, see \link{ciu.barplot} (but omit first parameter \code{ciu})
+\item \code{ggplot.col.ciu}, see \link{ciu.ggplot.col} (but omit first parameter \code{ciu})
+\item \code{pie.ciu}, see \link{ciu.pie} (but omit first parameter \code{ciu})
+\item \code{plot.ciu}, see \link{ciu.plot} (but omit first parameter \code{ciu})
+\item \code{plot.ciu.3D}, see \link{ciu.plot.3D} (but omit first parameter \code{ciu})
 \item \code{textual}, see \link{ciu.textual} (but omit first parameter \code{ciu}).
 }
 
@@ -146,7 +146,6 @@ ciu$plot.ciu(Boston[370,1:13],13)
 Främling, K. \emph{Contextual Importance and Utility in R: the 'ciu' Package.}
 In: Proceedings of 1st Workshop on Explainable Agency in Artificial Intelligence,
 at 35th AAAI Conference on Artificial Intelligence. Virtual, Online. February 8-9, 2021. pp. 110-114.
-\url{https://www.researchgate.net/publication/349521362_Contextual_Importance_and_Utility_in_R_the_\%27ciu\%27_Package}.
 
 Främling, K. \emph{Explainable AI without Interpretable Model}. 2020, \url{https://arxiv.org/abs/2009.13996}.
 
