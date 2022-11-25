@@ -155,6 +155,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
   o.last.instance <- NULL
   o.last.ciu <- NULL
   o.last.explained.inp.inds <- NULL
+  o.predict.function <- NULL
 
   # Deal with formula+data first. If one is missing, then ignore other.
   if ( !is.null(formula) && !is.null(data) ) {
@@ -186,8 +187,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
   }
 
   # Set prediction function according to parameter or to model type.
-  o.predict.function <- predict.function
-  if ( is.null(o.predict.function) ) {
+  if ( is.null(predict.function) ) {
     if ( inherits(o.model, "CIU.BlackBox") || inherits(o.model, "FunctionApproximator") ) {
       o.predict.function <- function(model, inputs) { model$eval(inputs) }
       # We have to do extra check here for RBF since support for formula was introduced
@@ -205,7 +205,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
         o.predict.function <- function(model, inputs) { predict(model, inputs, type="prob") }
     }
     else if ( inherits(o.model,"Learner") ) { #mlr3
-      o.predict.function <- function(model, newdata) { model$predict_newdata(newdata)$prob }
+      o.predict.function <- function(model, inputs) { model$predict_newdata(inputs)$prob }
     }
     else if ( inherits(o.model, "lm") ) { # lm
       o.predict.function <- function(model, inputs) { predict(model, inputs) }
@@ -217,6 +217,9 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
         return(pred$posterior)
       }
     }
+  }
+  else {
+    o.predict.function <- predict.function
   }
 
   # If no absmin/max matrix is given, then get it from data, if provided.
@@ -557,7 +560,6 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
     }
   }
 
-  # See 'ggplot.ciu'.
   # Set neutral.CU="" to avoid having a neutral, orange line.
   ggplot.ciu <- function(instance, ind.input=1, ind.output=1, in.min.max.limits=NULL,
                          n.points=40, main=NULL, xlab="x", ylab="y", ylim=NULL,

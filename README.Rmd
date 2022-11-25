@@ -371,6 +371,18 @@ ciu$pie.ciu(new_passenger, ind.output = 2)
 
 However, these functions can be considered deprecated and will presumably not be developed further.
 
+## About programming style
+
+This package and notably the CIU object implemented in ContextualImportanceUtility.R is programmed in an object-oriented manner that dates back to before 2010. It essentially uses the same object orientation principles as R6 classes and is used in quite a similar way but may look confusing to people who are not used to it. The principle is that the method `ciu.new()` first defines all the private instance variables and methods. Then, only those methods that are included in the [list] returned at the end are "public" and can be called using the `$` sign, *i.e.* in the same way as any list member.
+
+This signifies that all CIU objects have their own environment, which consumes more memory than it would do to only store the necessary data. Calling the method as.ciu() returns an object of class ciu that is actually a list with all the data of the underlying CIU object. Classical functions exist for all \`CIU\` methods that take a `ciu` object as their first parameter. The reasons for this are mainly:
+
+1.  Adding new functionality in a function-per-function manner, without having to touch and extend the core implementation in the CIU class.
+
+2.  Reduced memory consumption.
+
+All examples in this README are programmed using the `CIU` class and that is the recommended way to do if there's no particular reason to use `ciu` instead. However, the file "TestCases_NoObject.R" implements the same functionality as "TestCases.R" but using a `ciu` approach.
+
 # Related resources
 
 A Python version that (attempts to) provide similar functionality as this R package is available at <https://github.com/KaryFramling/py-ciu>. An older version is available at <https://github.com/TimKam/py-ciu> but it is not maintained nor updated anymore.
