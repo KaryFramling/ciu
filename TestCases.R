@@ -266,54 +266,97 @@ test.adult.rf <- function() {
 # Ames Housing dataset with Gradient Boosting.
 # This is a regression task.
 test.ames.housing <- function(caret.model="gbm") {
+  library(AmesHousing)
   data("AmesHousing")
-  # Remove all non-desired columns
-  data <- AmesHousing[,-c(1,2)] # Order, PID
-  data <- subset(data, select=-c(Lot.Frontage,Alley,Fireplace.Qu,Pool.QC,Fence,Misc.Feature)) # Columns that have far too many missing values.
-  # Replace NAs with something that makes sense for columns with only few NAs.
-  # But initially we just remove the columns...
-  data <- subset(data, select=-c(Mas.Vnr.Area,Bsmt.Qual,Bsmt.Cond,Bsmt.Exposure,
-                                 BsmtFin.Type.1,BsmtFin.SF.1,BsmtFin.Type.2,BsmtFin.SF.2,
-                                 Bsmt.Unf.SF,Total.Bsmt.SF,Bsmt.Full.Bath,Bsmt.Half.Bath,
-                                 Garage.Type,Garage.Yr.Blt,Garage.Finish,Garage.Cars,Garage.Area,
-                                 Garage.Qual,Garage.Cond))
-  # Character columns to factors before splitting so that we are sure to have same levels
-  # in both sets.
-  for ( i in 1:ncol(data) )
-    if ( is.character(data[,i]) )
-      data[,i] <- factor(data[,i])
+  data <- data.frame(make_ames())
+
   # Training
-  target <- 'SalePrice'
+  set.seed(25) # We want to make sure to always get valid indices.
+  target <- 'Sale_Price'
   trainIdx <- createDataPartition(data[,target], p=0.8, list=FALSE)
   trainData = data[trainIdx,]
   testData = data[-trainIdx,]
   # Train and show some performance indicators.
   kfoldcv <- trainControl(method="cv", number=10)
   exec.time <- system.time(
-    Ames.gbm.caret <<- train(SalePrice~., trainData, method=caret.model, trControl=kfoldcv))
+    Ames.gbm.caret <<- train(Sale_Price~., trainData, method=caret.model, trControl=kfoldcv))
   # Training set performance
   res <- predict(Ames.gbm.caret, newdata=trainData)
-  train.err <- RMSE(trainData$SalePrice, res)
+  train.err <- RMSE(trainData$Sale_Price, res)
   # Test set performance
   res <- predict(Ames.gbm.caret, newdata=testData)
-  test.err <- RMSE(testData$SalePrice, res)
+  test.err <- RMSE(testData$Sale_Price, res)
   # Display useful information
   cat("Execution times:", exec.time, "\n")
   cat("Training set RMSE:", train.err, "\n")
   cat("Test set RMSE:", test.err, "\n")
 
   # Most expensive instances
-  expensive <- which(testData$SalePrice>500000)
+  expensive <- which(testData$Sale_Price>500000)
   # Cheapest instances
-  cheap <- which(testData$SalePrice<50000)
+  cheap <- which(testData$Sale_Price<50000)
 
   # Explanations
   for ( inst.ind in c(expensive,cheap) ) {
-    instance <- subset(testData[inst.ind,], select=-SalePrice)
-    ciu.gbm <- ciu.new(Ames.gbm.caret, SalePrice~., trainData)
+    instance <- subset(testData[inst.ind,], select=-Sale_Price)
+    ciu.gbm <- ciu.new(Ames.gbm.caret, Sale_Price~., trainData)
     print(ciu.gbm$ggplot.col.ciu(instance, sort="CI", plot.mode="overlap"))
-    print(ciu.gbm$ggplot.ciu(instance,31)) # which(names(trainData)=="X1st.Flr.SF")
+    print(ciu.gbm$ggplot.ciu(instance,46))
   }
+
+  # Vocabularies
+  Ames.voc <- list(
+    "Garage"=c(58,59,60,61,62,63),
+    "Basement"=c(30,31,33,34,35,36,37,38,47,48),
+    "Lot"=c(3,4,7,8,9,10,11),
+    "Access"=c(13,14),
+    "House type"=c(1,15,16,21),
+    "House aesthetics"=c(22,23,24,25,26),
+    "House condition"=c(17,18,19,20,27,28),
+    "First floor surface"=c(43),
+    "Above ground living area"=which(names(data)=="Gr_Liv_Area"))
+  Ames.voc_ciu.gbm <- ciu.new(Ames.gbm.caret, Sale_Price~., trainData, vocabulary = Ames.voc)
+  instance <- subset(testData[expensive[1],], select=-Sale_Price)
+  Ames.voc_ciu.meta <- Ames.voc_ciu.gbm$meta.explain(instance)
+
+  # Basic textual explanations.
+  cat(Ames.voc_ciu.gbm$textual(instance, use.text.effects = TRUE,
+                               ciu.meta=Ames.voc_ciu.meta,
+                               CI.voc = data.frame(limits=c(0.015,0.04,0.09,0.1,1.0),
+                                                   texts=c("not important","little important", "important","very important",
+                                                           "extremely important")))
+  )
+
+  # Intermediate concepts
+  meta.top <- Ames.voc_ciu.gbm$meta.explain(instance, concepts.to.explain=names(Ames.voc), n.samples = 1000)
+  cat(Ames.voc_ciu.gbm$textual(instance, use.text.effects = TRUE, ciu.meta = meta.top,
+                               CI.voc = data.frame(limits=c(0.02,0.05,0.1,0.2,1.0),
+                                                   texts=c("not important","little important", "important","very important",
+                                                           "extremely important"))))
+  cat(Ames.voc_ciu.gbm$textual(instance, use.text.effects = TRUE, ind.inputs = Ames.voc$Basement,
+                               target.concept = "Basement", target.ciu = meta.top$ciuvals[["Basement"]], n.samples = 100))
+  cat(Ames.voc_ciu.gbm$textual(instance, use.text.effects = TRUE, ind.inputs = Ames.voc$`House type`,
+                               target.concept = "House type", target.ciu = meta.top$ciuvals[["House type"]], n.samples = 100))
+  cat(Ames.voc_ciu.gbm$textual(instance, use.text.effects = TRUE, ind.inputs = Ames.voc$Garage,
+                               target.concept = "Garage", target.ciu = meta.top$ciuvals[["Garage"]], n.samples = 100))
+
+  # Same with barplots
+  p <- Ames.voc_ciu.gbm$ggplot.col.ciu(instance, concepts.to.explain=names(Ames.voc),
+                                       plot.mode = "overlap"); print(p)
+  p <- Ames.voc_ciu.gbm$ggplot.col.ciu(instance, ind.inputs = Ames.voc$Basement, target.concept = "Basement", plot.mode = "overlap"); print(p)
+  p <- Ames.voc_ciu.gbm$ggplot.col.ciu(instance, ind.inputs = Ames.voc$`House type`, target.concept = "House type", plot.mode = "overlap"); print(p)
+  p <- Ames.voc_ciu.gbm$ggplot.col.ciu(instance, ind.inputs = Ames.voc$Garage, target.concept = "Garage", plot.mode = "overlap"); print(p)
+
+  # Contextual influence barplots
+  p <- Ames.voc_ciu.gbm$ggplot.col.ciu(instance, concepts.to.explain=names(Ames.voc),
+                                       use.influence = TRUE)
+  print(p)
+  p <- Ames.voc_ciu.gbm$ggplot.col.ciu(instance, ind.inputs = Ames.voc$Basement, target.concept = "Basement",
+                                       use.influence = TRUE)
+  print(p)
+  p <- Ames.voc_ciu.gbm$ggplot.col.ciu(instance, ind.inputs = Ames.voc$Garage, target.concept = "Garage",
+                                       use.influence = TRUE)
+  print(p)
 }
 
 # Read Främling car data from CSV and do the needed transformations.

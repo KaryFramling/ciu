@@ -87,6 +87,7 @@ ciu$ggplot.col.ciu(ciu.meta = ciu.meta)
 ciu$barplot.ciu(ind.output = 2, ciu.meta = ciu.meta)
 ciu$pie.ciu(ind.output = 2, ciu.meta = ciu.meta)
 
+\dontrun{
 # Same with Boston Housing data set.
 library(caret)
 gbm <- train(medv ~ ., Boston, method="gbm", trControl=trainControl(method="cv", number=10))
@@ -96,7 +97,7 @@ ciu.meta <- ciu$meta.explain(instance)
 ciu$barplot.ciu(ciu.meta = ciu.meta, sort = "CI")
 ciu$pie.ciu(ciu.meta = ciu.meta)
 ciu$ggplot.col.ciu(ciu.meta = ciu.meta)
-
+}
 }
 \author{
 Kary Främling

@@ -115,6 +115,7 @@ ciu <- ciu.new(model, Species~., iris)
 cat(ciu.textual(ciu, iris_test, ind.output = 2))
 cat(ciu.textual(ciu, iris_test, ind.output = 2, n.features = 2))
 
+\dontrun{
 # Boston housing, GBM model.
 library(caret)
 kfoldcv <- trainControl(method="cv", number=10)
@@ -146,4 +147,5 @@ cat(ciu.textual(ciu, boston.inst, use.text.effects = TRUE, ind.inputs = Boston.v
   target.concept = "SOCIAL", target.ciu = meta.top$ciuvals[["SOCIAL"]]))
 cat(ciu.textual(ciu, boston.inst, use.text.effects = TRUE, ind.inputs = Boston.voc$HOUSING,
   target.concept = "HOUSING", target.ciu = meta.top$ciuvals[["HOUSING"]]))
+}
 }

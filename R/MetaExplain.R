@@ -58,6 +58,7 @@ ciu.meta.result.new <- function(ciu, instance, ciuvals, ind.inputs=NULL, inp.nam
 #' ciu$barplot.ciu(ind.output = 2, ciu.meta = ciu.meta)
 #' ciu$pie.ciu(ind.output = 2, ciu.meta = ciu.meta)
 #'
+#' \dontrun{
 #' # Same with Boston Housing data set.
 #' library(caret)
 #' gbm <- train(medv ~ ., Boston, method="gbm", trControl=trainControl(method="cv", number=10))
@@ -67,7 +68,7 @@ ciu.meta.result.new <- function(ciu, instance, ciuvals, ind.inputs=NULL, inp.nam
 #' ciu$barplot.ciu(ciu.meta = ciu.meta, sort = "CI")
 #' ciu$pie.ciu(ciu.meta = ciu.meta)
 #' ciu$ggplot.col.ciu(ciu.meta = ciu.meta)
-#'
+#' }
 #' @author Kary Främling
 ciu.meta.explain <- function(ciu, instance, ind.inputs=NULL, in.min.max.limits=NULL,
                              n.samples=100, concepts.to.explain=NULL,

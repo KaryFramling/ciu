@@ -122,6 +122,7 @@ ciu$plot.ciu.3D(iris_test,c(3,4),1,main=levels(iris$Species)[1],)
 ciu$plot.ciu.3D(iris_test,c(3,4),2,main=levels(iris$Species)[2])
 ciu$plot.ciu.3D(iris_test,c(3,4),3,main=levels(iris$Species)[3])
 
+\dontrun{
 # Same thing with a regression task, the Boston Housing data set. Instance
 # #370 has the highest valuation (50k$). Model is gbm, which performs
 # decently here. Plotting with "standard" bar plot this time.
@@ -140,6 +141,7 @@ ciu$pie.ciu(Boston[370,1:13])
 
 # Method "plot" for studying the black-box behavior and CIU one input at a time.
 ciu$plot.ciu(Boston[370,1:13],13)
+}
 
 }
 \references{

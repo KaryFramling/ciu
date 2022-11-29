@@ -110,6 +110,7 @@
 #' ciu$plot.ciu.3D(iris_test,c(3,4),2,main=levels(iris$Species)[2])
 #' ciu$plot.ciu.3D(iris_test,c(3,4),3,main=levels(iris$Species)[3])
 #'
+#' \dontrun{
 #' # Same thing with a regression task, the Boston Housing data set. Instance
 #' # #370 has the highest valuation (50k$). Model is gbm, which performs
 #' # decently here. Plotting with "standard" bar plot this time.
@@ -128,6 +129,7 @@
 #'
 #' # Method "plot" for studying the black-box behavior and CIU one input at a time.
 #' ciu$plot.ciu(Boston[370,1:13],13)
+#' }
 #'
 #' @author Kary Främling
 # # Remark: "lm" is a really bad model for Boston Housing data set! It gives
@@ -564,6 +566,9 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
   ggplot.ciu <- function(instance, ind.input=1, ind.output=1, in.min.max.limits=NULL,
                          n.points=40, main=NULL, xlab="x", ylab="y", ylim=NULL,
                          illustrate.CIU=FALSE, neutral.CU=0.5, CIU.illustration.colours=c("red", "orange", "green", "blue")) {
+    # Bogus line just to get rid of strange NOTE i Check: "Undefined global functions or variables: x y"
+    x <- y <- 0
+
     # Treatment depends on if it's a factor or numeric input. If it's
     # "character", then convert to "factor" if possible.
     if ( is.character(instance[,ind.input]) ) {

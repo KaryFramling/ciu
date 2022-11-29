@@ -1,5 +1,9 @@
-# ciu 0.5.0.9000
+# ciu 0.6.0
 
+* Extensive tests on Intermediate Concepts, which are also integrated into the 
+  new README.Rmd file (and README) as well as in test scripts TestCases.R and 
+  TestCases_NoObject.R on Github. 
+* Fixed inverted axis bug in plot in ``plot.ciu.3D``.
 * Integrated support for mlr3. Only tested with "classif.rpart" model though 
   because other tested models (xgboost, nnet, ...) don't like R types and no
   need/time to dive into mlr3 for the moment. To fix in the future in case bugs 

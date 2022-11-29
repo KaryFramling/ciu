@@ -6,6 +6,8 @@ require(ggplot2)
 require(MASS)
 require(caret)
 require(ciu)
+require(randomForest)
+require(AmesHousing)
 
 scaleFUN <- function(x) as.character(round(x, digits = 2))
 
@@ -19,8 +21,8 @@ test.ws <- function() {
   linfunc <- function(m, inp) { 0.3*inp[,1] + 0.7*inp[,2] }
   z <- linfunc(NULL, pm)
   ciu <- ciu(NULL, in.min.max.limits = matrix(c(0,0,1,1), ncol=2), abs.min.max=matrix(c(0,1), ncol=2),
-                 input.names=c("x1","x2"), output.names = c("y"),
-                 predict.function = linfunc)
+             input.names=c("x1","x2"), output.names = c("y"),
+             predict.function = linfunc)
   p <- ciu.ggplot.col(ciu, c1) + labs(title="", x ="", y="CI", fill="CU"); print(p)
   p <- ciu.ggplot.col(ciu, c1, use.influence=TRUE, low.color = "firebrick", high.color = "steelblue")
   p <- p + labs(title="", x ="", y = expression(phi)) + scale_y_continuous(labels=scaleFUN)
@@ -209,7 +211,7 @@ test.ciu.titanic.rf <- function() {
 # very long to train, so we use randomForest library instead, which for the
 # moment requires providing a predict.function.
 # This data set also requires some pre-processing.
-test.adult.rf <- function() {
+test.ciu.adult.rf <- function() {
   adult <- read.table('https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data',
                       sep = ',', fill = F, strip.white = T, na.strings = c("?","NA"))
   colnames(adult) <- c('age', 'workclass', 'fnlwgt', 'education',
@@ -258,62 +260,213 @@ test.adult.rf <- function() {
 
 # Ames Housing dataset with Gradient Boosting.
 # This is a regression task.
-test.ames.housing <- function(caret.model="gbm") {
+test.ciu.ames.housing <- function(caret.model="gbm") {
+  library(AmesHousing)
   data("AmesHousing")
-  # Remove all non-desired columns
-  data <- AmesHousing[,-c(1,2)] # Order, PID
-  data <- subset(data, select=-c(Lot.Frontage,Alley,Fireplace.Qu,Pool.QC,Fence,Misc.Feature)) # Columns that have far too many missing values.
-  # Replace NAs with something that makes sense for columns with only few NAs.
-  # But initially we just remove the columns...
-  data <- subset(data, select=-c(Mas.Vnr.Area,Bsmt.Qual,Bsmt.Cond,Bsmt.Exposure,
-                                 BsmtFin.Type.1,BsmtFin.SF.1,BsmtFin.Type.2,BsmtFin.SF.2,
-                                 Bsmt.Unf.SF,Total.Bsmt.SF,Bsmt.Full.Bath,Bsmt.Half.Bath,
-                                 Garage.Type,Garage.Yr.Blt,Garage.Finish,Garage.Cars,Garage.Area,
-                                 Garage.Qual,Garage.Cond))
-  # Character columns to factors before splitting so that we are sure to have same levels
-  # in both sets.
-  for ( i in 1:ncol(data) )
-    if ( is.character(data[,i]) )
-      data[,i] <- factor(data[,i])
+  data <- data.frame(make_ames())
+
   # Training
-  target <- 'SalePrice'
+  set.seed(25) # We want to make sure to always get valid indices.
+  target <- 'Sale_Price'
   trainIdx <- createDataPartition(data[,target], p=0.8, list=FALSE)
   trainData = data[trainIdx,]
   testData = data[-trainIdx,]
   # Train and show some performance indicators.
   kfoldcv <- trainControl(method="cv", number=10)
   exec.time <- system.time(
-    Ames.gbm.caret <<- train(SalePrice~., trainData, method=caret.model, trControl=kfoldcv))
+    Ames.gbm.caret <<- train(Sale_Price~., trainData, method=caret.model, trControl=kfoldcv))
   # Training set performance
   res <- predict(Ames.gbm.caret, newdata=trainData)
-  train.err <- RMSE(trainData$SalePrice, res)
+  train.err <- RMSE(trainData$Sale_Price, res)
   # Test set performance
   res <- predict(Ames.gbm.caret, newdata=testData)
-  test.err <- RMSE(testData$SalePrice, res)
+  test.err <- RMSE(testData$Sale_Price, res)
   # Display useful information
   cat("Execution times:", exec.time, "\n")
   cat("Training set RMSE:", train.err, "\n")
   cat("Test set RMSE:", test.err, "\n")
 
   # Most expensive instances
-  expensive <- which(testData$SalePrice>500000)
+  expensive <- which(testData$Sale_Price>500000)
   # Cheapest instances
-  cheap <- which(testData$SalePrice<50000)
+  cheap <- which(testData$Sale_Price<50000)
 
   # Explanations
   for ( inst.ind in c(expensive,cheap) ) {
-    instance <- subset(testData[inst.ind,], select=-SalePrice)
-    ciu <- ciu(Ames.gbm.caret, SalePrice~., trainData)
+    instance <- subset(testData[inst.ind,], select=-Sale_Price)
+    ciu <- ciu.new(Ames.gbm.caret, Sale_Price~., trainData)
     print(ciu.ggplot.col(ciu, instance, sort="CI", plot.mode="overlap"))
-    print(ciu.ggplot(ciu, instance,31)) # which(names(trainData)=="X1st.Flr.SF")
+    print(ciu.ggplot(ciu, instance,46))
+  }
+
+  # Vocabularies
+  Ames.voc <- list(
+    "Garage"=c(58,59,60,61,62,63),
+    "Basement"=c(30,31,33,34,35,36,37,38,47,48),
+    "Lot"=c(3,4,7,8,9,10,11),
+    "Access"=c(13,14),
+    "House type"=c(1,15,16,21),
+    "House aesthetics"=c(22,23,24,25,26),
+    "House condition"=c(17,18,19,20,27,28),
+    "First floor surface"=c(43),
+    "Above ground living area"=which(names(data)=="Gr_Liv_Area"))
+  Ames.voc_ciu.gbm <- ciu.new(Ames.gbm.caret, Sale_Price~., trainData, vocabulary = Ames.voc)
+  instance <- subset(testData[expensive[1],], select=-Sale_Price)
+  Ames.voc_ciu.meta <- ciu.meta.explain(Ames.voc_ciu.gbm, instance)
+
+  # Basic textual explanations.
+  cat(ciu.textual(Ames.voc_ciu.gbm, instance, use.text.effects = TRUE,
+                  ciu.meta=Ames.voc_ciu.meta,
+                  CI.voc = data.frame(limits=c(0.015,0.04,0.09,0.1,1.0),
+                                      texts=c("not important","little important", "important","very important",
+                                              "extremely important")))
+  )
+
+  # Intermediate concepts
+  meta.top <- ciu.meta.explain(Ames.voc_ciu.gbm, instance, concepts.to.explain=names(Ames.voc), n.samples = 1000)
+  cat(ciu.textual(Ames.voc_ciu.gbm, instance, use.text.effects = TRUE, ciu.meta = meta.top,
+                  CI.voc = data.frame(limits=c(0.02,0.05,0.1,0.2,1.0),
+                                      texts=c("not important","little important", "important","very important",
+                                              "extremely important"))))
+  cat(ciu.textual(Ames.voc_ciu.gbm, instance, use.text.effects = TRUE, ind.inputs = Ames.voc$Basement,
+                  target.concept = "Basement", target.ciu = meta.top$ciuvals[["Basement"]], n.samples = 100))
+  cat(ciu.textual(Ames.voc_ciu.gbm, instance, use.text.effects = TRUE, ind.inputs = Ames.voc$`House type`,
+                  target.concept = "House type", target.ciu = meta.top$ciuvals[["House type"]], n.samples = 100))
+  cat(ciu.textual(Ames.voc_ciu.gbm, instance, use.text.effects = TRUE, ind.inputs = Ames.voc$Garage,
+                  target.concept = "Garage", target.ciu = meta.top$ciuvals[["Garage"]], n.samples = 100))
+
+  # Same with barplots
+  p <- ciu.ggplot.col(Ames.voc_ciu.gbm, instance, concepts.to.explain=names(Ames.voc),
+                      plot.mode = "overlap"); print(p)
+  p <- ciu.ggplot.col(Ames.voc_ciu.gbm, instance, ind.inputs = Ames.voc$Basement, target.concept = "Basement", plot.mode = "overlap"); print(p)
+  p <- ciu.ggplot.col(Ames.voc_ciu.gbm, instance, ind.inputs = Ames.voc$`House type`, target.concept = "House type", plot.mode = "overlap"); print(p)
+  p <- ciu.ggplot.col(Ames.voc_ciu.gbm, instance, ind.inputs = Ames.voc$Garage, target.concept = "Garage", plot.mode = "overlap"); print(p)
+
+  # Contextual influence barplots
+  p <- ciu.ggplot.col(Ames.voc_ciu.gbm, instance, concepts.to.explain=names(Ames.voc),
+                      use.influence = TRUE)
+  print(p)
+  p <- ciu.ggplot.col(Ames.voc_ciu.gbm, instance, ind.inputs = Ames.voc$Basement, target.concept = "Basement",
+                      use.influence = TRUE)
+  print(p)
+  p <- ciu.ggplot.col(Ames.voc_ciu.gbm, instance, ind.inputs = Ames.voc$Garage, target.concept = "Garage",
+                      use.influence = TRUE)
+  print(p)
+}
+
+# Read Främling car data from CSV and do the needed transformations.
+read.ciu.cars.framling <- function(file="https://raw.githubusercontent.com/KaryFramling/ciu/master/CarsFramling.csv") {
+  CarsFramling <- read.csv(file)
+  CarsFramling <- CarsFramling[,-1]
+  CarsFramling[CarsFramling$Transmission == 4, 'Transmission'] <- "manual"
+  CarsFramling[CarsFramling$Transmission == 2, 'Transmission'] <- "automatic"
+  CarsFramling[CarsFramling$Wheels.drive == 1, 'Wheels.drive'] <- "front"
+  CarsFramling[CarsFramling$Wheels.drive == 2, 'Wheels.drive'] <- "rear"
+  CarsFramling[CarsFramling$Wheels.drive == 3, 'Wheels.drive'] <- "four-wheel"
+  CarsFramling[,'Transmission'] <- factor(CarsFramling[,'Transmission'])
+  CarsFramling[,'Wheels.drive'] <- factor(CarsFramling[,'Wheels.drive'])
+  CarsFramling[,'Aesthetic.value'] <- factor(CarsFramling[,'Aesthetic.value'])
+  CarsFramling[,'Brand.value'] <- factor(CarsFramling[,'Brand.value'])
+  return(CarsFramling)
+}
+
+# Cars Framling data set with Gradient Boosting (default).
+# This is a regression task.
+test.ciu.cars.framling <- function(caret.model="gbm") {
+  CarsFramling <- read.ciu.cars.framling()
+  data <- CarsFramling[,-1]
+  rownames(data) <- CarsFramling[,1]
+  # Training
+  target <- 'Preference.value'
+  trainIdx <- createDataPartition(data[,target], p=0.8, list=FALSE)
+  trainData = data[trainIdx,]
+  testData = data[-trainIdx,]
+  # Train and show some performance indicators.
+  kfoldcv <- trainControl(method="cv", number=10)
+  exec.time <- system.time(
+    cars.framling.model <<- train(Preference.value~., trainData, method=caret.model, trControl=kfoldcv))
+  # Training set performance
+  res <- predict(cars.framling.model, newdata=trainData)
+  train.err <- RMSE(trainData$`Preference.value`, res)
+  # Test set performance
+  res <- predict(cars.framling.model, newdata=testData)
+  test.err <- RMSE(testData$`Preference.value`, res)
+  # Display useful information
+  cat("Execution times:", exec.time, "\n")
+  cat("Training set RMSE:", train.err, "\n")
+  cat("Test set RMSE:", test.err, "\n")
+
+  # Most preferred instances
+  best <- which(testData$`Preference.value`>70)
+  # Least preferred instances
+  worst <- which(testData$`Preference.value`<55)
+
+  # Vocabulary for Intermediate concepts
+  performance<-c(2,7,8,9); driving.comfort<-c(3,13); price<-c(1); size<-c(5,6)
+  fuel.consumption <- c(10); status=c(11,12)
+  Cars.Framling.voc <- list("Performance"=performance, "Driving comfort"=driving.comfort,
+                            "Price"=price, "Size"=size,
+                            "Fuel consumption"=fuel.consumption, "Status"=status)
+
+  # Explanations
+  ciu <- ciu.new(cars.framling.model, `Preference.value`~., trainData, vocabulary = Cars.Framling.voc)
+  for ( inst.ind in c(best,worst) ) {
+    instance <- subset(testData[inst.ind,], select=-`Preference.value`)
+    print(ciu.ggplot.col(ciu, instance, sort="CI", plot.mode = "overlap"))
+    print(ciu.ggplot(ciu, instance,1)) # which(names(trainData)=="Price")
+    print(ciu.ggplot(ciu, instance,2))
+    # Intermediate Concept explanations
+    meta.top <- ciu.meta.explain(ciu, instance, concepts.to.explain=names(Cars.Framling.voc), n.samples = 1000)
+    cat(ciu.textual(ciu, instance, use.text.effects = TRUE, ind.output = 1, ciu.meta = meta.top))
+    cat(ciu.textual(ciu, instance, use.text.effects = TRUE, ind.inputs = Cars.Framling.voc$Performance,
+                    target.concept = "Performance", target.ciu = meta.top$ciuvals[["Performance"]], n.samples = 100))
   }
 }
 
+# Cars Framling data set with Gradient Boosting (default).
+# This is a regression task for predicting car price.
+test.ciu.cars.framling.price <- function(caret.model="gbm") {
+  CarsFramling <- read.ciu.cars.framling()
+  data <- CarsFramling[,-c(1,15)]
+  rownames(data) <- CarsFramling[,1]
+  # Training
+  target <- 'Price'
+  trainIdx <- createDataPartition(data[,target], p=0.8, list=FALSE)
+  trainData = data[trainIdx,]
+  testData = data[-trainIdx,]
+  # Train and show some performance indicators.
+  kfoldcv <- trainControl(method="cv", number=10)
+  exec.time <- system.time(
+    cars.framling.model <<- train(Price~., trainData, method=caret.model, trControl=kfoldcv))
+  # Training set performance
+  res <- predict(cars.framling.model, newdata=trainData)
+  train.err <- RMSE(trainData$Price, res)
+  # Test set performance
+  res <- predict(cars.framling.model, newdata=testData)
+  test.err <- RMSE(testData$Price, res)
+  # Display useful information
+  cat("Execution times:", exec.time, "\n")
+  cat("Training set RMSE:", train.err, "\n")
+  cat("Test set RMSE:", test.err, "\n")
+
+  # Most expensive instances
+  expensive <- which(testData$Price>250000)
+  # Least preferred instances
+  cheap <- which(testData$Price<120000)
+
+  # Explanations
+  for ( inst.ind in c(expensive,cheap) ) {
+    instance <- subset(testData[inst.ind,], select=-Price)
+    ciu <- ciu.new(cars.framling.model, Price~., trainData)
+    print(ciu.ggplot.col(ciu, instance, sort="CI", plot.mode = "overlap"))
+    print(ciu.ggplot(ciu, instance,1)) # Power
+  }
+}
 
 # This can be useful at least for ordinary barplots.
 # par(mai=c(0.8,1.2,0.4,0.2))
 
-test.all<- function() {
+test.ciu.all <- function() {
   test.ws()
   test.ciu.iris.lda()
   test.ciu.boston.gbm()
@@ -321,10 +474,12 @@ test.all<- function() {
   test.ciu.cars.UCI.rf() # Takes about 15 seconds for RF to train
   test.ciu.diamonds.gbm() # Takes something like 2-3 minutes to train but GBM seems to be best by far here.
   test.ciu.titanic.rf() # Takes maybe half minute.
-  test.adult.rf() # Takes about half minute.
+  test.ciu.adult.rf() # Takes about half minute.
   # Takes about 40s with GBM. RF takes about 12 minutes, achieves lower error
   # for training set but similar for test set.
   # "lm" is very quick but despite similar error as the more complex ones, the
   # results don't really seem to make much sense.
-  test.ames.housing()
+  test.ciu.ames.housing()
+  test.ciu.cars.framling()
+  test.ciu.cars.framling.price()
 }

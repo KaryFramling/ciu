@@ -1,3 +1,20 @@
+# Version 0.6.0 submission comments
+
+## Test environments
+
+* local OS X install, R 4.2.2 (2022-10-31), x86_64-apple-darwin17.0 
+* devtools::check_win_devel()
+* devtools::check_win_release()
+* devtools::check_mac_release()
+* devtools::check_rhub()
+  - Ubuntu Linux 20.04.1 LTS, R-release, GCC
+  - Fedora Linux, R-devel, clang, gfortran
+
+## R CMD check results
+
+OK in all environments. 
+
+
 # Version 0.5.0 submission comments
 
 ## Test environments
