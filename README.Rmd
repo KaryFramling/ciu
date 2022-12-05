@@ -183,7 +183,7 @@ It might be worth mentioning also that the Shapley value explanation has a much 
 
 CIU can use named feature coalitions and structured vocabularies. Such vocabularies allow explanations at any abstraction level and can make explanations interactive.
 
-The following code snippet plots the joint effect of features $age$ and $parch$ for the studied Titanic case (applicable for numeric features). It therefore shows how the coalition of those two features affects the output vqlue and how CI and CU can be deduced in the same way as for a single feature.
+The following code snippet plots the joint effect of features $age$ and $parch$ for the studied Titanic case (applicable for numeric features). It therefore shows how the coalition of those two features affects the output value and how CI and CU can be deduced in the same way as for a single feature.
 
 ```{r}
 ciu$plot.ciu.3D(new_passenger, c(5,3), ind.output = 2, theta = 50, phi = 10, 

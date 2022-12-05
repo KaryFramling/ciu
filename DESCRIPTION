@@ -1,7 +1,7 @@
 Package: ciu
 Type: Package
 Title: Contextual Importance and Utility
-Version: 0.6.0
+Version: 0.7.9000
 Author: Kary Främling
 Maintainer: Kary Främling <Kary.Framling@umu.se>
 Description: Implementation of the Contextual Importance and Utility 
