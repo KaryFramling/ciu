@@ -14,7 +14,8 @@ Imports: graphics,
     Rcpp,
     grDevices, 
     crayon,
-    ggplot2 
+    ggplot2, 
+    ggbeeswarm
 Suggests: 
     MASS,
     caret,

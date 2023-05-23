@@ -990,10 +990,9 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
         main=main.title, ...)
   }
 
-  #' Create `ciu` object from this `CIU` object.
-  #'
-  #' @return `ciu` object
-  #' @export
+  # Create `ciu` object from this `CIU` object.
+  #
+  # @return `ciu` object
   as.ciu <- function() {
     ciu <- list(
       model = o.model,

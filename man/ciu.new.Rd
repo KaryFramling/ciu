@@ -61,8 +61,6 @@ two intermediate concepts and a higher-level one that combines them:
 }
 \value{
 Object of class \code{CIU}.
-
-\code{ciu} object
 }
 \description{
 Sets up a CIU object with the given parameters. CIU objects have "public"
@@ -157,5 +155,4 @@ Främling, K. \emph{Modélisation et apprentissage des préférences par réseau
 }
 \author{
 Kary Främling
-Create \code{ciu} object from this \code{CIU} object.
 }

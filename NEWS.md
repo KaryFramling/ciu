@@ -1,3 +1,12 @@
+# ciu 0.7.9000
+
+* Added new function ciu.contrastive that uses CU values of one 
+  class/instance/whatever as the baseline "normal.CU" values of the other. 
+* Added new function ciu.contextual.influence that calculates contextual influence 
+  value(s) from CI and CU value(s) and "baseline".
+* Added new file ContextualInfluence.R for functions related to contextual influence. 
+* Fixed x-axis label error for influence plot in ``ciu.ggplot.col``.
+
 # ciu 0.6.0
 
 * Extensive tests on Intermediate Concepts, which are also integrated into the 

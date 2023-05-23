@@ -9,7 +9,7 @@
 #' @param cmax vector of cmax values, one per output
 #' @param outval vector of black-box output values, one per output
 #'
-#' @return An object of class ciu.result, which is a data.frame with
+#' @return An object of class `ciu.result`, which is a [data.frame] with
 #' (at least) five columns:
 #' - `CI values`: one row per output of the black-box model
 #' - `CU values`: one row per output of the black-box model

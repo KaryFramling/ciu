@@ -18,7 +18,7 @@ ciu.result.new(ci, cu, cmin, cmax, outval)
 \item{outval}{vector of black-box output values, one per output}
 }
 \value{
-An object of class ciu.result, which is a data.frame with
+An object of class \code{ciu.result}, which is a \link{data.frame} with
 (at least) five columns:
 \itemize{
 \item \verb{CI values}: one row per output of the black-box model

@@ -108,60 +108,48 @@ ciu.ggplot.col <- function(ciu, instance=NULL, ind.inputs=NULL, output.names=NUL
   # Create the plot. Have to use some tricks here for avoiding warnings either
   # by devtools.check or during execution. Apparently devtools.check
   # doesn't understand attach() explicitly nor done by ggplot
-  fl <- ci.cu$feature.labels;
   ci <- ci.cu$CI; cu <- ci.cu$CU
+
+  # Include influence value too, in any case
+  influence <- ci*(cu - neutral.CU)
+  ci.cu$phi <- influence
+  ci.cu$Positive.Phi <- influence >= 0
 
   # Influence plot separated because needs more than trivial manipulations.
   p <- ggplot(ci.cu)
   if ( use.influence ) {
-    ci <- ci*(cu - neutral.CU)
-    cu <- sign(ci)/2 + 0.5
-    #ymin <- -1;
-    ymin <- min(ci); ymax <- max(ci)
-    # Have to do special treatment here for the case if we have only one "cu"
-    # value for all features.
-    cumin <- min(cu); cumax <- max(cu)
-    # Have to do special treatment here for the case if we have only one "cu"
-    # value for all features.
-    cumin <- min(cu); cumax <- max(cu)
-    if ( cumin == cumax ) {
-      if ( cumin == 0 ) cu_col <- low.color
-      else if ( cumin == 0.5 ) cu_col <- mid.color
-      else cu_col <- high.color
-      low.color <- mid.color <- high.color <- cu_col
-    }
-    else {
-      p <- p + ylim(ymin, ymax)
-    }
-    p <- p + labs(y = expression(phi)) + theme(legend.position="none") +
-      geom_col(aes(reorder(fl, ci), ci, fill=cu)) +
-      labs(y="CI", fill="CU") +
-      scale_fill_gradient2(low=low.color, mid=mid.color, high=high.color, limits=c(0,1), midpoint=neutral.CU)
+    ymin <- min(influence); ymax <- max(influence)
+    p <- p +
+      geom_col(aes(reorder(feature.labels, phi), phi, fill=Positive.Phi)) +
+      ylim(ymin, ymax) +
+      labs(y = expression(phi)) +
+      scale_fill_manual("legend", values = c("FALSE" = "firebrick", "TRUE" = "steelblue")) +
+      theme(legend.position="none")
   }
   else {
     ymin <- 0; ymax <- 1
     p <- p + ylim(ymin, ymax)
     if ( plot.mode == "colour_cu" ) {
       p <- p +
-        geom_col(aes(reorder(fl, ci), ci, fill=cu)) +
+        geom_col(aes(reorder(feature.labels, ci), ci, fill=cu)) +
         labs(y="CI", fill="CU") +
         scale_fill_gradient2(low=low.color, mid=mid.color, high=high.color, limits=c(0,1), midpoint=neutral.CU)
     }
     else {
       cu_scaled <- cu*ci
       p <- p +
-        geom_bar(aes(x=reorder(fl, ci), y=ci), stat="identity", position ="identity",
+        geom_bar(aes(x=reorder(feature.labels, ci), y=ci), stat="identity", position ="identity",
                  alpha=as.numeric(ci.colours[3]), fill=ci.colours[1], color=ci.colours[2])
       if ( is.null(cu.colours) ) {
         p <- p +
-          geom_bar(aes(x=reorder(fl, ci), y=cu_scaled, fill=cu), stat="identity", position="identity",
+          geom_bar(aes(x=reorder(feature.labels, ci), y=cu_scaled, fill=cu), stat="identity", position="identity",
                    alpha=1.0, color='black') +
-        scale_fill_gradient2(low=low.color, mid=mid.color, high=high.color, limits=c(0,1), midpoint=neutral.CU) +
-        labs(y="CI and relative CU", fill="CU")
+          scale_fill_gradient2(low=low.color, mid=mid.color, high=high.color, limits=c(0,1), midpoint=neutral.CU) +
+          labs(y="CI and relative CU", fill="CU")
       }
       else {
         p <- p +
-          geom_bar(aes(x=reorder(fl, ci), y=cu_scaled), stat="identity", position="identity",
+          geom_bar(aes(x=reorder(feature.labels, ci), y=cu_scaled), stat="identity", position="identity",
                    alpha=as.numeric(cu.colours[3]), fill=cu.colours[1], color=cu.colours[2]) +
           labs(y="CI and relative CU")
       }
