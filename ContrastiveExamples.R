@@ -1,4 +1,4 @@
-# Examples of how to create contrastivr explanations for different datasets.
+# Examples of how to create contrastive explanations for different datasets.
 #
 # Author: Kary främling
 

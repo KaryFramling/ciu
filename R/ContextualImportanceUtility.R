@@ -212,12 +212,14 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
     else if ( inherits(o.model, "lm") ) { # lm
       o.predict.function <- function(model, inputs) { predict(model, inputs) }
     }
-    else {
-      # This works at least with "lda" model, don't know with which other ones.
+    else if ( inherits(o.model, "lda") ) { # lm
       o.predict.function <- function(model, inputs) {
         pred <- predict(model,inputs)
         return(pred$posterior)
       }
+    }
+    else {
+      o.predict.function <- predict
     }
   }
   else {
@@ -469,7 +471,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
     rows <- sample(nrow(reps))
     reps <- reps[rows,]
 
-    # Have to restore "ordered" columsn if there are any
+    # Have to restore "ordered" columns if there are any
     for ( i in 1:length(ind.inputs) )
       if ( is.ordered(instance[,ind.inputs[i]]) )
         reps[,ind.inputs[i]] <- as.ordered(reps[,ind.inputs[i]])
@@ -565,7 +567,9 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
   # Set neutral.CU="" to avoid having a neutral, orange line.
   ggplot.ciu <- function(instance, ind.input=1, ind.output=1, in.min.max.limits=NULL,
                          n.points=40, main=NULL, xlab="x", ylab="y", ylim=NULL,
-                         illustrate.CIU=FALSE, neutral.CU=0.5, CIU.illustration.colours=c("red", "orange", "green", "blue")) {
+                         illustrate.CIU=FALSE, neutral.CU=0.5,
+                         CIU.illustration.colours=c("red", "orange", "green", "blue"),
+                         categorical_style=NULL) {
     # Bogus line just to get rid of strange NOTE i Check: "Undefined global functions or variables: x y"
     x <- y <- 0
 
@@ -578,15 +582,16 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
         instance[,ind.input] <- factor(instance[,ind.input], o.inp.levels[[ind.input]])
     }
 
+    # Check and set up minimum/maximum limits for inputs
+    if ( is.null(in.min.max.limits) )
+      in.min.max.limits <- o.in.minmax[ind.input,]
+    if ( is.null(in.min.max.limits) )
+      stop("No minimum/maximum limits provided to 'new' nor 'plot.ciu'")
+    in.min <- in.min.max.limits[1]
+    in.max <- in.min.max.limits[2]
+
     # First deal with "numeric" possibility.
     if ( is.numeric(instance[,ind.input]) ) {
-      # Check and set up minimum/maximum limits for inputs
-      if ( is.null(in.min.max.limits) )
-        in.min.max.limits <- o.in.minmax[ind.input,]
-      if ( is.null(in.min.max.limits) )
-        stop("No minimum/maximum limits provided to 'new' nor 'plot.ciu'")
-      in.min <- in.min.max.limits[1]
-      in.max <- in.min.max.limits[2]
       interv <- (in.max - in.min)/n.points
       xp <- seq(in.min,in.max,interv)
     }
@@ -640,15 +645,24 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
     # Create plot, show current value
     df <- data.frame(x=xp, y=yp[,ind.output])
     cdf <- data.frame(x=instance[,ind.input], y=as.numeric(cu.val[ind.output]))
-    p <- ggplot(df, aes(x=x, y=y)) +
-      labs(title=main, x=xlab, y=ylab)
     if ( is.numeric(instance[,ind.input]) ) {
-      p <- p + geom_line()
+      p <- ggplot(df, aes(x=x, y=y)) + geom_line() + ylim(ylim)
     }
     else { # factor
-      p <- p + geom_col()
+      if ( !is.null(categorical_style) && categorical_style == "segment" ) {
+        p <- ggplot(df, aes(x=as.numeric(x), y=y))
+        p <- p + geom_segment(aes(x = as.numeric(x) - 0.5, xend = as.numeric(x) + 0.5,
+                                  y = y, yend = y)) +  # Centered horizontal segments
+          geom_segment(aes(x = as.numeric(x) + 0.5, xend = as.numeric(x) + 0.5,
+                           y = y, yend = lead(y, 1, default = tail(y, 1)))) +  # Vertical segments between steps
+          scale_x_continuous(breaks = 1:length(df$x), labels = df$x) # Custom X-axis labels
+      }
+      else {
+        p <- ggplot(df, aes(x=x, y=y)) + geom_col() # This doesn't work anymore, for some reason. Or it works but somehow the "ylim" breaks it.
+      }
     }
-    p <- p + geom_point(data=cdf, colour = "red", size=4) + lims(y = ylim)
+    p <- p + geom_point(data=cdf, colour = "red", size=4) +
+      labs(title=main, x=xlab, y=ylab)
 
     # Illustrate CIU calculation?
     if ( illustrate.CIU ) {
@@ -672,6 +686,8 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
       if ( cmax - cdf$y > cdf$y - cmin ) vjust <- "bottom" else vjust <- "top"
       p <- p + annotate("text", x=in.max, y=cdf$y, label="y", colour=CIU.illustration.colours[4],
                         vjust = vjust, hjust = "inward", fontface="italic")
+
+      # is.numeric() mainly checks if neutral.cu==NULL or similar.
       if ( is.numeric(neutral.CU)) {
         neutral <- cmin + neutral.CU*(cmax - cmin)
         if ( cmax - neutral > neutral - cmin ) vjust <- "bottom" else vjust <- "top"
@@ -1035,8 +1051,11 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
       plot.ciu(instance, ind.input, ind.output, in.min.max.limits, n.points, main, xlab, ylab, ylim, ...)
     },
     ggplot.ciu = function(instance, ind.input=1, ind.output=1, in.min.max.limits=NULL, n.points=40, main=NULL, xlab=NULL, ylab=NULL,
-                          ylim=NULL, illustrate.CIU=FALSE, neutral.CU=0.5, CIU.illustration.colours=c("red", "orange", "green", "blue")) {
-      ggplot.ciu(instance, ind.input, ind.output, in.min.max.limits, n.points, main, xlab, ylab, ylim, illustrate.CIU, neutral.CU, CIU.illustration.colours)
+                          ylim=NULL, illustrate.CIU=FALSE, neutral.CU=0.5, CIU.illustration.colours=c("red", "orange", "green", "blue"),
+                          categorical_style=NULL) {
+      ggplot.ciu(instance, ind.input, ind.output, in.min.max.limits, n.points, main,
+                 xlab, ylab, ylim, illustrate.CIU, neutral.CU, CIU.illustration.colours,
+                 categorical_style)
     },
     plot.ciu.3D = function(instance, ind.inputs, ind.output, in.min.max.limits=NULL, n.points=40,
                            main=NULL, xlab=NULL, ylab=NULL, zlab=NULL, zlim=NULL, ...) {

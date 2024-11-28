@@ -3,6 +3,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^docs
+^data
 ^manual_docs
 ^README.Rmd
 ^README_files
@@ -16,4 +17,5 @@
 ^old
 ^TestsMlr3.R
 ^CarsFramling.csv
+^VersionNotes.txt
 ^CRAN-SUBMISSION$

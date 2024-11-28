@@ -8,6 +8,14 @@ require(caret)
 require(ciu)
 require(randomForest)
 require(AmesHousing)
+require(readr)
+require(gbm)
+require(data.table)
+
+# # Install required packages if they are not installed
+# if (!require("gbm")) install.packages("gbm")
+# if (!require("data.table")) install.packages("data.table")
+# if (!require("readr")) install.packages("readr")
 
 scaleFUN <- function(x) as.character(round(x, digits = 2))
 
@@ -267,7 +275,7 @@ test.adult.rf <- function() {
 # This is a regression task.
 test.ames.housing <- function(caret.model="gbm") {
   library(AmesHousing)
-  data("AmesHousing")
+  #data("AmesHousing")
   data <- data.frame(make_ames())
 
   # Training
@@ -297,9 +305,9 @@ test.ames.housing <- function(caret.model="gbm") {
   cheap <- which(testData$Sale_Price<50000)
 
   # Explanations
+  ciu.gbm <- ciu.new(Ames.gbm.caret, Sale_Price~., trainData)
   for ( inst.ind in c(expensive,cheap) ) {
     instance <- subset(testData[inst.ind,], select=-Sale_Price)
-    ciu.gbm <- ciu.new(Ames.gbm.caret, Sale_Price~., trainData)
     print(ciu.gbm$ggplot.col.ciu(instance, sort="CI", plot.mode="overlap"))
     print(ciu.gbm$ggplot.ciu(instance,46))
   }
@@ -468,6 +476,70 @@ test.cars.framling.price <- function(caret.model="gbm") {
   }
 }
 
+test.california.housing <- function(use.averages=TRUE) {
+
+  # Download the California housing dataset
+  url <- "https://raw.githubusercontent.com/ageron/handson-ml/master/datasets/housing/housing.csv"
+  california_data <- fread(url)
+
+  # Rename columns for compatibility (no spaces or special characters)
+  colnames(california_data) <- make.names(colnames(california_data))
+
+  # data.table class messes things up...
+  class(california_data) <- "data.frame"
+
+  # Convert 'ocean_proximity' to a factor
+  california_data$ocean_proximity <- as.factor(california_data$ocean_proximity)
+
+  # sklearn and, by consequence, SHAP use average numbers rather than the totals.
+  if ( use.averages ) {
+    california_data$ave_rooms <- california_data$total_rooms/california_data$households
+    california_data$ave_occupation <- california_data$population/california_data$households
+    california_data$ave_bedrooms <- california_data$total_bedrooms/california_data$households
+    california_data <- subset(california_data, select= -c(total_rooms, population, total_bedrooms))
+  }
+
+  # Split the data into training and testing sets
+  set.seed(25)
+  target <- 'median_house_value'
+  trainIdx <- createDataPartition(california_data[,target], p=0.8, list=FALSE)
+  trainData = california_data[trainIdx,]
+  testData = california_data[-trainIdx,]
+
+  # Train a GBM model
+  gbm_model <- gbm(
+    median_house_value ~ .,  # formula: median house value as the response variable
+    data = trainData,  # training data
+    distribution = "gaussian",  # for regression
+    n.trees = 1000,  # number of trees
+    interaction.depth = 3,  # tree depth
+    shrinkage = 0.01,  # learning rate
+    cv.folds = 5,  # 5-fold cross-validation
+    verbose = FALSE
+  )
+
+  # Check the best number of trees based on cross-validation
+  best_iter <- gbm.perf(gbm_model, method = "cv")
+
+  # Summarize the model
+  #summary(gbm_model)
+
+  # Predict on the test set
+  predictions <- predict(gbm_model, newdata = testData, n.trees = best_iter)
+
+  # Evaluate model performance using RMSE
+  rmse <- sqrt(mean((testData$median_house_value - predictions)^2))
+  cat("Test RMSE:", rmse, "\n")
+
+  # CIU
+  ciu.california.gbm <- ciu.new(gbm_model, median_house_value~., trainData)
+  instance <- subset(testData[1,], select=-median_house_value)
+  print(ciu.california.gbm$ggplot.col.ciu(instance, sort="CI", plot.mode="overlap"))
+  print(ciu.california.gbm$ggplot.col.ciu(instance, use.influence=TRUE)) #, low.color = "firebrick", high.color = "steelblue"
+  print(ciu.california.gbm$ggplot.ciu(instance,1))
+  print(ciu.california.gbm$ggplot.ciu(instance,6,illustrate.CIU=TRUE))
+}
+
 # par(mai=c(0.8,1.2,0.4,0.2)) # Good parameters for barplot so that labels fit in.
 # par(mai=c(0.8,1.2,0.4,0.2))
 
@@ -487,5 +559,6 @@ test.all<- function() {
   test.ames.housing()
   test.cars.framling()
   test.cars.framling.price()
+  test.california.housing()
 }
 

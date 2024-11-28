@@ -12,7 +12,7 @@ ciu.contextual.influence(
 )
 }
 \arguments{
-\item{ciu.result}{\link{ciu.result} object. If NULL, then CI and CU values must be
+\item{ciu.result}{\link{data.frame} with CI and CU columns. If NULL, then CI and CU values must be
 provided.}
 
 \item{CI}{CI value(s).}

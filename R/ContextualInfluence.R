@@ -63,7 +63,6 @@ ciu.contextual.influence <- function(ciu.result = NULL, CI=NULL, CU=NULL, neutra
 ciu.contrastive <- function(ciu.result1, ciu.result2, neutral.CU=0.5) {
   infl2 <- ciu.contextual.influence(ciu.result2, neutral.CU=neutral.CU)
   contrastive.influences <- ciu.contextual.influence(ciu.result1, neutral.CU=(infl2 + neutral.CU))
-  #res <- ciu.contrastive.result.new(contrastive.influences, ciu.result1,ciu.result2, neutral.CU)
   return(contrastive.influences)
 }
 

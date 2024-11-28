@@ -165,16 +165,20 @@ ciu.plot <- function(ciu, instance, ind.input, ind.output, in.min.max.limits=NUL
 #' @param neutral.CU Value of neutral.CU. Default is 0.5.
 #' @param CIU.illustration.colours Colours to use for illustrating CIU.
 #' Default is red, orange, green.
+#' @param categorical_style Use line segments or histogram plot for categorical
+#' features. Possible values are "segment" or "hist", default is NULL, which
+#' corresponds to "hist".
 #'
 #' @return ggplot object.
 #' @export
 #' @author Kary Främling
 ciu.ggplot <- function(ciu, instance, ind.input=1, ind.output=1, in.min.max.limits=NULL, n.points=40, main=NULL, xlab=NULL, ylab=NULL,
-                       ylim=NULL, illustrate.CIU=FALSE, neutral.CU=0.5, CIU.illustration.colours=c("red", "orange", "green", "blue")) {
+                       ylim=NULL, illustrate.CIU=FALSE, neutral.CU=0.5, CIU.illustration.colours=c("red", "orange", "green", "blue"),
+                       categorical_style=NULL) {
   if ( inherits(ciu, "ciu") )
     ciu <- ciu.to.CIU(ciu)
   ciu$ggplot.ciu(instance, ind.input, ind.output, in.min.max.limits, n.points, main, xlab, ylab,
-                 ylim, illustrate.CIU, neutral.CU, CIU.illustration.colours)
+                 ylim, illustrate.CIU, neutral.CU, CIU.illustration.colours, categorical_style)
 }
 
 #' ciu.plot.3D
