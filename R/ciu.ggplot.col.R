@@ -20,6 +20,7 @@
 #' @param low.color Colour to use for CU=0
 #' @param mid.color Colour to use for CU=Neutral.CU
 #' @param high.color Colour to use for CU=1
+#' @param scale.CI Scale x-axis according to maximal CI value.
 #'
 #' @return ggplot object.
 #' @export
@@ -37,6 +38,7 @@ ciu.ggplot.col <- function(ciu, instance=NULL, ind.inputs=NULL, output.names=NUL
                            low.color="red", mid.color="yellow",
                            high.color="darkgreen",
                            use.influence=FALSE,
+                           scale.CI=FALSE,
                            sort=NULL, decreasing=FALSE, # These are not used yet.
                            main=NULL) {
   # Allow using already existing result.
@@ -127,7 +129,8 @@ ciu.ggplot.col <- function(ciu, instance=NULL, ind.inputs=NULL, output.names=NUL
       theme(legend.position="none")
   }
   else {
-    ymin <- 0; ymax <- 1
+    ymin <- 0
+    ymax <- ifelse(scale.CI, max(ci), 1)
     p <- p + ylim(ymin, ymax)
     if ( plot.mode == "colour_cu" ) {
       p <- p +

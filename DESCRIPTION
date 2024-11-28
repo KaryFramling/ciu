@@ -15,11 +15,12 @@ Imports: graphics,
     grDevices, 
     crayon,
     ggplot2, 
+    dplyr,
     ggbeeswarm
 Suggests: 
     MASS,
     caret,
     gbm
 LazyData: true
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)

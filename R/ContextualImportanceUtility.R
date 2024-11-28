@@ -655,10 +655,16 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
                                   y = y, yend = y)) +  # Centered horizontal segments
           geom_segment(aes(x = as.numeric(x) + 0.5, xend = as.numeric(x) + 0.5,
                            y = y, yend = lead(y, 1, default = tail(y, 1)))) +  # Vertical segments between steps
-          scale_x_continuous(breaks = 1:length(df$x), labels = df$x) # Custom X-axis labels
+          scale_x_continuous(breaks = 1:length(df$x), labels = df$x) + # Custom X-axis labels
+          ylim(ylim)
       }
       else {
-        p <- ggplot(df, aes(x=x, y=y)) + geom_col() # This doesn't work anymore, for some reason. Or it works but somehow the "ylim" breaks it.
+        # This doesn't work anymore, for some reason. Or it works but somehow the "ylim" breaks it.
+        # Still OK to do ylim on the return ggplot. Strange!!!???
+        p <- ggplot(df, aes(x=x, y=y)) +
+          geom_col() #+
+          #scale_y_continuous() +
+          #ylim(ylim)
       }
     }
     p <- p + geom_point(data=cdf, colour = "red", size=4) +
@@ -1093,7 +1099,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
                               cu.colours = c("darkgreen", "darkgreen", "0.8"),
                               low.color="red", mid.color="yellow",
                               high.color="darkgreen",
-                              use.influence=FALSE,
+                              use.influence=FALSE, scale.CI=FALSE,
                               sort=NULL, decreasing=FALSE, # These are not used yet.
                               main=NULL) {
       ciu.ggplot.col(as.ciu(), instance, ind.inputs, output.names, in.min.max.limits,
@@ -1101,7 +1107,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
                      show.input.values, concepts.to.explain,
                      target.concept, target.ciu, ciu.meta, plot.mode, ci.colours, cu.colours,
                      low.color, mid.color, high.color,
-                     use.influence,
+                     use.influence, scale.CI,
                      sort, decreasing, main)
     },
     textual = function(instance=NULL, ind.inputs=NULL, ind.output=1,
