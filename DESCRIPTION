@@ -15,7 +15,6 @@ Imports: graphics,
     grDevices, 
     crayon,
     ggplot2, 
-    dplyr,
     ggbeeswarm
 Suggests: 
     MASS,

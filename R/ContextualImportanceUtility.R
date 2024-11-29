@@ -569,7 +569,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
                          n.points=40, main=NULL, xlab="x", ylab="y", ylim=NULL,
                          illustrate.CIU=FALSE, neutral.CU=0.5,
                          CIU.illustration.colours=c("red", "orange", "green", "blue"),
-                         categorical_style=NULL) {
+                         categorical_style="segment") {
     # Bogus line just to get rid of strange NOTE i Check: "Undefined global functions or variables: x y"
     x <- y <- 0
 
@@ -653,8 +653,10 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
         p <- ggplot(df, aes(x=as.numeric(x), y=y))
         p <- p + geom_segment(aes(x = as.numeric(x) - 0.5, xend = as.numeric(x) + 0.5,
                                   y = y, yend = y)) +  # Centered horizontal segments
+          # geom_segment(aes(x = as.numeric(x) + 0.5, xend = as.numeric(x) + 0.5,
+          #                  y = y, yend = lead(y, 1, default = tail(y, 1)))) +  # Vertical segments between steps
           geom_segment(aes(x = as.numeric(x) + 0.5, xend = as.numeric(x) + 0.5,
-                           y = y, yend = lead(y, 1, default = tail(y, 1)))) +  # Vertical segments between steps
+                           y = y, yend = c(y[-1], tail(y, 1)))) +
           scale_x_continuous(breaks = 1:length(df$x), labels = df$x) + # Custom X-axis labels
           ylim(ylim)
       }
@@ -663,8 +665,8 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
         # Still OK to do ylim on the return ggplot. Strange!!!???
         p <- ggplot(df, aes(x=x, y=y)) +
           geom_col() #+
-          #scale_y_continuous() +
-          #ylim(ylim)
+        #scale_y_continuous() +
+        #ylim(ylim)
       }
     }
     p <- p + geom_point(data=cdf, colour = "red", size=4) +
@@ -1058,7 +1060,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
     },
     ggplot.ciu = function(instance, ind.input=1, ind.output=1, in.min.max.limits=NULL, n.points=40, main=NULL, xlab=NULL, ylab=NULL,
                           ylim=NULL, illustrate.CIU=FALSE, neutral.CU=0.5, CIU.illustration.colours=c("red", "orange", "green", "blue"),
-                          categorical_style=NULL) {
+                          categorical_style="segment") {
       ggplot.ciu(instance, ind.input, ind.output, in.min.max.limits, n.points, main,
                  xlab, ylab, ylim, illustrate.CIU, neutral.CU, CIU.illustration.colours,
                  categorical_style)

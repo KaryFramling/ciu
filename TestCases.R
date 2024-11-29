@@ -310,6 +310,7 @@ test.ames.housing <- function(caret.model="gbm") {
     instance <- subset(testData[inst.ind,], select=-Sale_Price)
     print(ciu.gbm$ggplot.col.ciu(instance, sort="CI", plot.mode="overlap"))
     print(ciu.gbm$ggplot.ciu(instance,46))
+    print(ciu.gbm$ggplot.ciu(instance,30))
   }
 
   # Vocabularies
