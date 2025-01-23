@@ -18,7 +18,7 @@ ciu.ggplot(
   illustrate.CIU = FALSE,
   neutral.CU = 0.5,
   CIU.illustration.colours = c("red", "orange", "green", "blue"),
-  categorical_style = NULL
+  categorical_style = "segment"
 )
 }
 \arguments{
@@ -58,8 +58,7 @@ specific instance than the default ones.}
 Default is red, orange, green.}
 
 \item{categorical_style}{Use line segments or histogram plot for categorical
-features. Possible values are "segment" or "hist", default is NULL, which
-corresponds to "hist".}
+features. Possible values are "segment" or "hist".}
 }
 \value{
 ggplot object.

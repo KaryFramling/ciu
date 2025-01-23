@@ -4,15 +4,12 @@
 \alias{ciu.contrastive}
 \title{Create a contrastive explanation between two instances}
 \usage{
-ciu.contrastive(ciu.result1, ciu.result2, neutral.CU = 0.5)
+ciu.contrastive(ciu.result1, ciu.result2)
 }
 \arguments{
 \item{ciu.result1}{\link{ciu.result} of first instance.}
 
 \item{ciu.result2}{\link{ciu.result} of second instance.}
-
-\item{neutral.CU}{Baseline value(s) \code{phi0} to use for calculating Contextual
-influence.}
 }
 \value{
 Contrastive influence values, where CU values of second instance are used as
@@ -35,13 +32,8 @@ ciu <- ciu.new(model, Species~., iris)
 meta <- ciu$meta.explain(iris_test)
 ciuvals.versicolor <- ciu.list.to.frame(meta$ciuvals, out.ind = 2)
 ciuvals.virginica <- ciu.list.to.frame(meta$ciuvals, out.ind = 3)
-# Show contextual influence values for both output classes.
-cinfl.versicolor <- ciu.contextual.influence(ciuvals.versicolor) # Default neutral.CU=0.5
-ciu.contextual.influence(CI = ciuvals.versicolor$CI, CU = ciuvals.versicolor$CU,
-neutral.CU = 0)
-cinfl.virginica <- ciu.contextual.influence(ciuvals.virginica)
 # Now the contrastive part:
-why.versicolor.not.virginica <- ciu.contextual.influence(ciuvals.versicolor, neutral.CU=(cinfl.virginica+0.5))
+why.versicolor.not.virginica <- ciu.contrastive(ciuvals.versicolor, ciuvals.virginica)
 }
 \author{
 Kary Främling

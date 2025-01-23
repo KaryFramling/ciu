@@ -104,7 +104,7 @@ If it is set to NULL, then the same colour palette is used as for "colour_cu".}
 \item{use.influence}{Plot using "influence" rather than CIU, i.e. a
 LIME-like barplot. Default is FALSE.}
 
-\item{scale.CI}{Scale x-axis according to maximal CI value. Default: FALSE.}
+\item{scale.CI}{Scale x-axis according to maximal CI value.}
 
 \item{sort}{NULL, "CI" or "CU".}
 

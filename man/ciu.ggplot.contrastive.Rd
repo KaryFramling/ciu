@@ -9,8 +9,8 @@ ciu.ggplot.contrastive(
   contrastive.influences,
   instance.names = NULL,
   question = "Why?",
-  negative.color = "red",
-  positive.color = "darkgreen"
+  negative.color = "firebrick",
+  positive.color = "steelblue"
 )
 }
 \arguments{
@@ -26,9 +26,9 @@ classes/instances. If NULL, then we use \code{c("instance One", "instance Two")}
 \item{question}{What kind of explanation do we answer. Can be "Why?" and
 "Why not?". Default is "Why?".}
 
-\item{negative.color}{Color to use for negative influence. Default is red.}
+\item{negative.color}{Color to use for negative influence. Default is firebrick.}
 
-\item{positive.color}{Color to use for positive influence. Default is darkgreen.}
+\item{positive.color}{Color to use for positive influence. Default is steelblue.}
 }
 \value{
 \link{ggplot} object.

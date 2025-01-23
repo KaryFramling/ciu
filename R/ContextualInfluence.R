@@ -32,8 +32,6 @@ ciu.contextual.influence <- function(ciu.result = NULL, CI=NULL, CU=NULL, neutra
 #'
 #' @param ciu.result1 [ciu.result] of first instance.
 #' @param ciu.result2 [ciu.result] of second instance.
-#' @param neutral.CU Baseline value(s) `phi0` to use for calculating Contextual
-#' influence.
 #'
 #' @return Contrastive influence values, where CU values of second instance are used as
 #' baseline for first instance.
@@ -52,41 +50,13 @@ ciu.contextual.influence <- function(ciu.result = NULL, CI=NULL, CU=NULL, neutra
 #' meta <- ciu$meta.explain(iris_test)
 #' ciuvals.versicolor <- ciu.list.to.frame(meta$ciuvals, out.ind = 2)
 #' ciuvals.virginica <- ciu.list.to.frame(meta$ciuvals, out.ind = 3)
-#' # Show contextual influence values for both output classes.
-#' cinfl.versicolor <- ciu.contextual.influence(ciuvals.versicolor) # Default neutral.CU=0.5
-#' ciu.contextual.influence(CI = ciuvals.versicolor$CI, CU = ciuvals.versicolor$CU,
-#' neutral.CU = 0)
-#' cinfl.virginica <- ciu.contextual.influence(ciuvals.virginica)
 #' # Now the contrastive part:
-#' why.versicolor.not.virginica <- ciu.contextual.influence(ciuvals.versicolor, neutral.CU=(cinfl.virginica+0.5))
+#' why.versicolor.not.virginica <- ciu.contrastive(ciuvals.versicolor, ciuvals.virginica)
 #' @author Kary Främling
-ciu.contrastive <- function(ciu.result1, ciu.result2, neutral.CU=0.5) {
-  infl2 <- ciu.contextual.influence(ciu.result2, neutral.CU=neutral.CU)
-  contrastive.influences <- ciu.contextual.influence(ciu.result1, neutral.CU=(infl2 + neutral.CU))
-  return(contrastive.influences)
+ciu.contrastive <- function(ciu.result1, ciu.result2) {
+  contrastive = ciu.result1$CI*(ciu.result1$CU - ciu.result2$CU)
+  return(contrastive)
 }
-
-# #' Return ciu.contrastive.result object
-# #'
-# #' @param contrastive.influences [data.frame] with one column for contrastive influence
-# #' values.
-# #' @param ciu.result1 ciu.result object as returned by [ciu.result.new] of explained instance.
-# #' @param ciu.result2  ciu.result object as returned by [ciu.result.new] of instance
-# #' compared with.
-# #' @param neutral.CU neutral.CU value(s) used for calculating influence values of
-# #' instance compared with.
-# #'
-# #' @return An object of class `ciu.contrastive.result` (which is of class [list])
-# #' that has elements that correspond to the parameters.
-# #' @export
-# #' @author Kary Främling
-# ciu.contrastive.result.new <- function(contrastive.influences, ciu.result1, ciu.result2, neutral.CU) {
-#   ciu.contrastive.result <- list(contrastive.influences=contrastive.influences,
-#                                  ciu.result1=ciu.result1, ciu.result2=ciu.result2,
-#                                  neutral.CU=neutral.CU)
-#   class(ciu.contrastive.result)<-c("ciu.contrastive.result","list")
-#   return(ciu.contrastive.result)
-# }
 
 #' Create contrastive ggplot
 #'
@@ -98,8 +68,8 @@ ciu.contrastive <- function(ciu.result1, ciu.result2, neutral.CU=0.5) {
 #' classes/instances. If NULL, then we use `c("instance One", "instance Two")`.
 #' @param question What kind of explanation do we answer. Can be "Why?" and
 #' "Why not?". Default is "Why?".
-#' @param negative.color Color to use for negative influence. Default is red.
-#' @param positive.color Color to use for positive influence. Default is darkgreen.
+#' @param negative.color Color to use for negative influence. Default is firebrick.
+#' @param positive.color Color to use for positive influence. Default is steelblue.
 #'
 #' @return [ggplot] object.
 #' @export
@@ -125,8 +95,8 @@ ciu.contrastive <- function(ciu.result1, ciu.result2, neutral.CU=0.5) {
 #' contrastive.neg <- ciu.contrastive(ciuvals.virginica, ciuvals.versicolor)
 #' print(ciu.ggplot.contrastive(meta, contrastive.neg, question = "Why not?", c("Virginica", "Versicolor")))
 ciu.ggplot.contrastive <- function(ciu.meta.result, contrastive.influences,
-                                   instance.names = NULL, question="Why?", negative.color="red",
-                                   positive.color="darkgreen") {
+                                   instance.names = NULL, question="Why?", negative.color="firebrick",
+                                   positive.color="steelblue") {
   if ( is.null(instance.names) ) {
     instance.names <- c("instance One", "instance Two")
   }
