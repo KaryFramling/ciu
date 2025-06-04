@@ -19,3 +19,6 @@
 ^CarsFramling.csv
 ^VersionNotes.txt
 ^CRAN-SUBMISSION$
+^ContrastiveExamples.R
+^multipage.pdf
+^cran-comments\.md$

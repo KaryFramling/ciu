@@ -27,6 +27,7 @@ set given as parameter to \link{ciu.new} or given as the \code{data} parameter.
 \examples{
 # Boston data set with GBM model.
 library(MASS)
+library(caret)
 kfoldcv <- trainControl(method="cv", number=10)
 gbm <- caret::train(medv ~ ., Boston, method="gbm", trControl=kfoldcv)
 ciu <- ciu.new(gbm, medv~., Boston)

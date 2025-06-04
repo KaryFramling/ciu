@@ -1,4 +1,4 @@
-citHeader("To cite ciu in publications, please use:")
+citHeader("To cite this R implementation of CIU in publications, please use:")
 
 bibentry(bibtype = "InProceedings",
   author = "Kary Främling",

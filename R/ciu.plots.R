@@ -17,6 +17,7 @@
 #' @examples
 #' # Boston data set with GBM model.
 #' library(MASS)
+#' library(caret)
 #' kfoldcv <- trainControl(method="cv", number=10)
 #' gbm <- caret::train(medv ~ ., Boston, method="gbm", trControl=kfoldcv)
 #' ciu <- ciu.new(gbm, medv~., Boston)
@@ -72,12 +73,13 @@ ciu.explain.long.data.frame <- function(CIU, data=NULL, out.ind=1, neutral.CU = 
 #'   the plot is produced without the colours.
 #' Default: c("Feature", "CI", "Norm.Value").
 #'
-#' @return [ggplot] object
+#' @return `ggplot` object
 #' @export
 #'
 #' @examples
 #' # Boston data set with GBM model.
 #' library(MASS)
+#' library(caret)
 #' library(ggbeeswarm)
 #' kfoldcv <- trainControl(method="cv", number=10)
 #' gbm <- caret::train(medv ~ ., Boston, method="gbm", trControl=kfoldcv)
@@ -107,7 +109,7 @@ ciu.plots.beeswarm <- function(data, target.columns=c("Feature", "CI", "Norm.Val
     p <- ggplot(data, aes(x=.data[[target.columns[1]]], y=.data[[target.columns[2]]]))
   }
   p <- p +
-    geom_quasirandom() +
+    ggbeeswarm::geom_quasirandom() +
     coord_flip()
   return(p)
 }

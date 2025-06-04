@@ -30,8 +30,8 @@ ciu.contextual.influence <- function(ciu.result = NULL, CI=NULL, CU=NULL, neutra
 
 #' Create a contrastive explanation between two instances
 #'
-#' @param ciu.result1 [ciu.result] of first instance.
-#' @param ciu.result2 [ciu.result] of second instance.
+#' @param ciu.result1 First instance as `ciu.result` object.
+#' @param ciu.result2 Second instance as `ciu.result` object.
 #'
 #' @return Contrastive influence values, where CU values of second instance are used as
 #' baseline for first instance.
@@ -60,7 +60,7 @@ ciu.contrastive <- function(ciu.result1, ciu.result2) {
 
 #' Create contrastive ggplot
 #'
-#' @param ciu.meta.result [ciu.meta.result] object for the instance to be explained,
+#' @param ciu.meta.result `ciu.meta.result` object for the instance to be explained,
 #' i.e. the first instance parameter of [ciu.contrastive].
 #' @param contrastive.influences Contrastive influence values, as normally returned
 #' by [ciu.contrastive].
@@ -71,7 +71,7 @@ ciu.contrastive <- function(ciu.result1, ciu.result2) {
 #' @param negative.color Color to use for negative influence. Default is firebrick.
 #' @param positive.color Color to use for positive influence. Default is steelblue.
 #'
-#' @return [ggplot] object.
+#' @return `ggplot` object.
 #' @export
 #' @author Kary Främling
 #' @examples
@@ -93,7 +93,8 @@ ciu.contrastive <- function(ciu.result1, ciu.result2) {
 #' print(ciu.ggplot.contrastive(meta, contrastive, c("Versicolor", "Virginica")))
 #' # Then a "Why not?" explanation
 #' contrastive.neg <- ciu.contrastive(ciuvals.virginica, ciuvals.versicolor)
-#' print(ciu.ggplot.contrastive(meta, contrastive.neg, question = "Why not?", c("Virginica", "Versicolor")))
+#' print(ciu.ggplot.contrastive(meta, contrastive.neg,
+#'   question = "Why not?", c("Virginica", "Versicolor")))
 ciu.ggplot.contrastive <- function(ciu.meta.result, contrastive.influences,
                                    instance.names = NULL, question="Why?", negative.color="firebrick",
                                    positive.color="steelblue") {

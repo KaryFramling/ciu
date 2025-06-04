@@ -14,7 +14,7 @@ ciu.ggplot.contrastive(
 )
 }
 \arguments{
-\item{ciu.meta.result}{\link{ciu.meta.result} object for the instance to be explained,
+\item{ciu.meta.result}{\code{ciu.meta.result} object for the instance to be explained,
 i.e. the first instance parameter of \link{ciu.contrastive}.}
 
 \item{contrastive.influences}{Contrastive influence values, as normally returned
@@ -31,7 +31,7 @@ classes/instances. If NULL, then we use \code{c("instance One", "instance Two")}
 \item{positive.color}{Color to use for positive influence. Default is steelblue.}
 }
 \value{
-\link{ggplot} object.
+\code{ggplot} object.
 }
 \description{
 Create contrastive ggplot
@@ -55,7 +55,8 @@ contrastive <- ciu.contrastive(ciuvals.versicolor, ciuvals.virginica)
 print(ciu.ggplot.contrastive(meta, contrastive, c("Versicolor", "Virginica")))
 # Then a "Why not?" explanation
 contrastive.neg <- ciu.contrastive(ciuvals.virginica, ciuvals.versicolor)
-print(ciu.ggplot.contrastive(meta, contrastive.neg, question = "Why not?", c("Virginica", "Versicolor")))
+print(ciu.ggplot.contrastive(meta, contrastive.neg,
+  question = "Why not?", c("Virginica", "Versicolor")))
 }
 \author{
 Kary Främling

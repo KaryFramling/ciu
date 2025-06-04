@@ -1,20 +1,22 @@
 Package: ciu
 Type: Package
 Title: Contextual Importance and Utility
-Version: 0.7.9000
+Version: 0.8
+Date: 2025-06-04
 Author: Kary Främling
 Maintainer: Kary Främling <Kary.Framling@umu.se>
 Description: Implementation of the Contextual Importance and Utility 
-    (CIU) concepts for Explainable AI (XAI). A recent description of CIU
+    (CIU) concepts for Explainable AI (XAI). A description of CIU
     can be found in e.g. Främling (2020) <arXiv:2009.13996>.
 License: MIT + file LICENSE
 Encoding: UTF-8
-Imports: graphics, 
+Imports: 
+    graphics, 
     stats,
     Rcpp,
     grDevices, 
     crayon,
-    ggplot2, 
+    ggplot2,
     ggbeeswarm
 Suggests: 
     MASS,

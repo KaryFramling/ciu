@@ -5,7 +5,7 @@
 \alias{ciu-package}
 \title{ciu: Contextual Importance and Utility}
 \description{
-Implementation of the Contextual Importance and Utility (CIU) concepts for Explainable AI (XAI). A recent description of CIU can be found in e.g. Främling (2020) \href{https://arxiv.org/abs/2009.13996}{arXiv:2009.13996}.
+Implementation of the Contextual Importance and Utility (CIU) concepts for Explainable AI (XAI). A description of CIU can be found in e.g. Främling (2020) \href{https://arxiv.org/abs/2009.13996}{arXiv:2009.13996}.
 }
 \details{
 This package implements the Contextual Importance and Utility (CIU)

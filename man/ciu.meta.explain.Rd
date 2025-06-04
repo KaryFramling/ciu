@@ -24,7 +24,7 @@ with \code{CIU} object as created by \link{ciu.new}).}
 names and other needed metadata can be deduced from the dataset or other
 parameters given to \code{\link{ciu.new}}.}
 
-\item{ind.inputs}{Indices of input features to explain (the set {i} in CIU
+\item{ind.inputs}{Indices of input features to explain (the set \{i\} in CIU
 formulae)}
 
 \item{in.min.max.limits}{\link{data.frame} or \link{matrix} with one row per output

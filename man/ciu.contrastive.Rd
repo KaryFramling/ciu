@@ -7,9 +7,9 @@
 ciu.contrastive(ciu.result1, ciu.result2)
 }
 \arguments{
-\item{ciu.result1}{\link{ciu.result} of first instance.}
+\item{ciu.result1}{First instance as \code{ciu.result} object.}
 
-\item{ciu.result2}{\link{ciu.result} of second instance.}
+\item{ciu.result2}{Second instance as \code{ciu.result} object.}
 }
 \value{
 Contrastive influence values, where CU values of second instance are used as

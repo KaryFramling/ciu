@@ -27,7 +27,7 @@ parameters given to \code{\link{ciu.new}}.}
 
 \item{ciuvals}{List of \code{ciu.result} objects, one per input feature.}
 
-\item{ind.inputs}{Indices of input features to explain (the set {i} in CIU
+\item{ind.inputs}{Indices of input features to explain (the set \{i\} in CIU
 formulae)}
 
 \item{inp.names}{Names of the input features.}

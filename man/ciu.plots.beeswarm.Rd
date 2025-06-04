@@ -27,7 +27,7 @@ Default: c("Feature", "CI", "Norm.Value").
 }}
 }
 \value{
-\link{ggplot} object
+\code{ggplot} object
 }
 \description{
 Create beeswarm-type visualisation.
@@ -35,6 +35,7 @@ Create beeswarm-type visualisation.
 \examples{
 # Boston data set with GBM model.
 library(MASS)
+library(caret)
 library(ggbeeswarm)
 kfoldcv <- trainControl(method="cv", number=10)
 gbm <- caret::train(medv ~ ., Boston, method="gbm", trControl=kfoldcv)

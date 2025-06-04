@@ -28,7 +28,7 @@ ciu.meta.result.new <- function(ciu, instance, ciuvals, ind.inputs=NULL, inp.nam
 #' ciu.meta.explain
 #'
 #' @inheritParams ciu.explain
-#' @param ind.inputs Indices of input features to explain (the set {i} in CIU
+#' @param ind.inputs Indices of input features to explain (the set \{i\} in CIU
 #' formulae)
 #' @param concepts.to.explain List of input feature concepts to explain, as defined
 #' by vocabulary provided as argument to [ciu.new]. If `ind.inputs=NULL`,

@@ -656,7 +656,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
           # geom_segment(aes(x = as.numeric(x) + 0.5, xend = as.numeric(x) + 0.5,
           #                  y = y, yend = lead(y, 1, default = tail(y, 1)))) +  # Vertical segments between steps
           geom_segment(aes(x = as.numeric(x) + 0.5, xend = as.numeric(x) + 0.5,
-                           y = y, yend = c(y[-1], tail(y, 1)))) +
+                           y = y, yend = c(y[-1], utils::tail(y, 1)))) +
           scale_x_continuous(breaks = 1:length(df$x), labels = df$x) + # Custom X-axis labels
           ylim(ylim)
       }
