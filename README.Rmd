@@ -157,7 +157,6 @@ where $\phi_{0}$ is the *baseline/reference* value ($y(u(0))$ in the plot). For 
 
 ```{r contextual_influence_titanic, message=FALSE, warning=FALSE}
 print(ciu$ggplot.col.ciu(new_passenger, output.names = "yes", use.influence = TRUE) +
-        scale_fill_gradient(low="firebrick", high="steelblue") + 
         labs(x ="", y = expression(phi)))
 ```
 

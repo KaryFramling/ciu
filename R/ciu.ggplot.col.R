@@ -2,6 +2,9 @@
 # for all facets, now they are all sorted according to mean value of all CI
 # (which might actually be a good choice).
 
+# This is to get the CRAN check to go through. Thanks ChatGPT.
+utils::globalVariables(c("feature.labels", "phi", "Positive.Phi", "feature.name"))
+
 #' CIU feature importance/utility plot using ggplot.
 #'
 #' Create a barplot showing CI as the length of the bar and CU on color scale from
