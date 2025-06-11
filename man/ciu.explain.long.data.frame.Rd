@@ -25,6 +25,7 @@ This function takes a CIU object and calculates CIU values for the whole data
 set given as parameter to \link{ciu.new} or given as the \code{data} parameter.
 }
 \examples{
+\dontrun{
 # Boston data set with GBM model.
 library(MASS)
 library(caret)
@@ -35,4 +36,5 @@ df <- ciu.explain.long.data.frame(ciu)
 head(df)
 # Only get results for a part of the data set.
 ciu.explain.long.data.frame(ciu, data=subset(Boston[1:10,], select=-medv))
+}
 }

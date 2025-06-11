@@ -15,6 +15,7 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Boston data set with GBM model.
 #' library(MASS)
 #' library(caret)
@@ -25,6 +26,7 @@
 #' head(df)
 #' # Only get results for a part of the data set.
 #' ciu.explain.long.data.frame(ciu, data=subset(Boston[1:10,], select=-medv))
+#' }
 ciu.explain.long.data.frame <- function(CIU, data=NULL, out.ind=1, neutral.CU = 0.5) {
   # Get everything that we need from CIU object
   ciu <- CIU$as.ciu()
@@ -77,6 +79,7 @@ ciu.explain.long.data.frame <- function(CIU, data=NULL, out.ind=1, neutral.CU = 
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Boston data set with GBM model.
 #' library(MASS)
 #' library(caret)
@@ -96,6 +99,7 @@ ciu.explain.long.data.frame <- function(CIU, data=NULL, out.ind=1, neutral.CU = 
 #' mean.utility <- (mean(Boston$medv)-min(Boston$medv))/(max(Boston$medv)-min(Boston$medv))
 #' df <- ciu.explain.long.data.frame(ciu, neutral.CU=mean.utility)
 #' p <- ciu.plots.beeswarm(df, c("Feature","Influence","Norm.Value")); print(p)
+#' }
 ciu.plots.beeswarm <- function(data, target.columns=c("Feature", "CI", "Norm.Value")) {
   if ( length(target.columns) > 2 ) {
     p <- ggplot(data, aes(x=.data[[target.columns[1]]], y=.data[[target.columns[2]]],

@@ -33,6 +33,7 @@ Default: c("Feature", "CI", "Norm.Value").
 Create beeswarm-type visualisation.
 }
 \examples{
+\dontrun{
 # Boston data set with GBM model.
 library(MASS)
 library(caret)
@@ -52,4 +53,5 @@ p <- ciu.plots.beeswarm(df, c("Feature","Influence")); print(p)
 mean.utility <- (mean(Boston$medv)-min(Boston$medv))/(max(Boston$medv)-min(Boston$medv))
 df <- ciu.explain.long.data.frame(ciu, neutral.CU=mean.utility)
 p <- ciu.plots.beeswarm(df, c("Feature","Influence","Norm.Value")); print(p)
+}
 }
