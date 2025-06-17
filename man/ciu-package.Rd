@@ -5,7 +5,7 @@
 \alias{ciu-package}
 \title{ciu: Contextual Importance and Utility}
 \description{
-Implementation of the Contextual Importance and Utility (CIU) concepts for Explainable AI (XAI). A description of CIU can be found in e.g. Främling (2020) \href{https://arxiv.org/abs/2009.13996}{arXiv:2009.13996}.
+Implementation of the Contextual Importance and Utility (CIU) concepts for Explainable AI (XAI). A description of CIU can be found in e.g. Främling (2020) \doi{10.1007/978-3-030-51924-7_4}.
 }
 \details{
 This package implements the Contextual Importance and Utility (CIU)
@@ -52,9 +52,9 @@ avoid unnecessary conversions back and forth. However, the difference is
 presumably not very significant.
 }
 \references{
-Främling, K. \emph{Explainable AI without Interpretable Model}. 2020, \url{https://arxiv.org/abs/2009.13996}.
+Främling, K. \emph{Decision Theory Meets Explainable AI}. 2020, \url{doi:/10.1007/978-3-030-51924-7_4}.
+}
+\author{
+\strong{Maintainer}: Kary Främling \email{kary.framling@umu.se}
 
-Främling, K. \emph{Decision Theory Meets Explainable AI}. 2020, <doi.org/10.1007/978-3-030-51924-7_4>.
-
-Främling, K. \emph{Modélisation et apprentissage des préférences par réseaux de neurones pour l'aide à la décision multicritère}. 1996, \url{https://tel.archives-ouvertes.fr/tel-00825854/document} (title translation in English: \emph{Learning and Explaining Preferences with Neural Networks for Multiple Criteria Decision Making})
 }
