@@ -1,7 +1,7 @@
 Package: ciu
 Type: Package
 Title: Contextual Importance and Utility
-Version: 0.8
+Version: 0.8.0.9000
 Date: 2025-06-04
 Maintainer: Kary Främling <Kary.Framling@umu.se>
 Authors@R: person(given = "Kary",
