@@ -541,6 +541,37 @@ test.california.housing <- function(use.averages=TRUE) {
   print(ciu.california.gbm$ggplot.ciu(instance,6,illustrate.CIU=TRUE))
 }
 
+# See https://mlr-org.com/gallery/basic/2020-03-11-basics-german-credit/
+# for instance.
+# For mlr3:
+# install.packages("mlr3")
+# library(mlr3)
+test.german.credit <- function(caret.model="gbm") {
+
+  # To get consistent results
+  set.seed(25)
+
+  # Split the data into training and testing sets
+  data("GermanCredit")
+  target <- "Class"
+  trainIdx <- createDataPartition(GermanCredit[,target], p=0.8, list=FALSE)
+  trainData = GermanCredit[trainIdx,]
+  testData = GermanCredit[-trainIdx,]
+
+  # Train and show some performance indicators.
+  caret::kfoldcv <- trainControl(method="cv", number=10)
+  exec.time <- system.time(
+    GermanCredit.gbm.caret <<- caret::train(Class~., trainData, method=caret.model, trControl=kfoldcv))
+  print(GermanCredit.gbm.caret$finalModel$importance)
+  print(varImp(GermanCredit.gbm.caret, scale = FALSE))
+
+  # Alternative: ranger Random Forest
+  learner_rf <- ranger(credit_risk ~ ., data = trainData, importance = "permutation")
+  print(learner_rf$variable.importance)
+  pred_ranger <- predict(learner_rf, data = testData)
+  print(pred_ranger$predictions)
+}
+
 # par(mai=c(0.8,1.2,0.4,0.2)) # Good parameters for barplot so that labels fit in.
 # par(mai=c(0.8,1.2,0.4,0.2))
 
