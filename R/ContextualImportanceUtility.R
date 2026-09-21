@@ -38,16 +38,15 @@
 #'     pred <- predict(model,inputs)
 #'         return(pred$posterior)
 #' \}}
-# @param train.inputs if some other parameters are missing, then some
-# information might be extracted from this parameter, such as
-# \code{in.min.max.limits} and \code{input.names}.
-# @param train.targets if some other parameters are missing, then some
-# information might be extracted from this, such as \code{abs.min.max} and
-# \code{output.names}.
+#' @param neutral.CU Default baseline/reference CU value to use in `influence`
+#' calculations.
 #' @param vocabulary list of labels/concepts to be used when producing
 #' explanations and what combination of inputs they correspond to. Example of
 #' two intermediate concepts and a higher-level one that combines them:
 #' \code{list(intermediate.concept1=c(1,2,3), intermediate.concept2=c(4,5), higher.level.concept=c(1,2,3,4,5))}
+#' @param knowledge.graph [igraph::igraph] that defines the intermediate concepts and
+#' other metadata to use for explanations. If this parameter is given, then the
+#' `vocabulary` is automatically extracted from there.
 #'
 #' @return Object of class \code{CIU}.
 #' @details CIU is implemented in an object-oriented manner, where a CIU
@@ -137,7 +136,8 @@
 # ciu$barplot.ciu(Boston[370,1:13])
 ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min.max=NULL,
                     input.names=NULL, output.names=NULL, predict.function=NULL,
-                    vocabulary=NULL) {
+                    neutral.CU = 0.5,
+                    vocabulary=NULL, knowledge.graph=NULL) {
 
   # Initialize default values and "instance variables"
   o.model <- bb
@@ -151,7 +151,9 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
   o.outputnames <- output.names
   o.last.n.samples <- NULL
   o.in.minmax <- in.min.max.limits
+  o.neutral.CU <- neutral.CU
   o.vocabulary <- vocabulary
+  o.knowledge.graph <- knowledge.graph
   o.last.instance <- NULL
   o.last.ciu <- NULL
   o.last.explained.inp.inds <- NULL
@@ -257,6 +259,15 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
     else
       o.outputnames <- names(o.data.outp) # Shouldn't give worse result than NULL
   }
+
+  # If no vocabulary, see if we can get it from Knowledge Graph
+  if ( is.null(o.vocabulary) && !is.null(o.knowledge.graph) )
+    o.vocabulary <- ciu.voc.from.graph(o.knowledge.graph, o.input.names)
+
+
+  #========================================
+  # End of initialization, functions follow
+  #========================================
 
   # See 'ciu.explain()'
   explain <- function(instance, ind.inputs.to.explain, in.min.max.limits=NULL, n.samples=100,
@@ -1028,7 +1039,9 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
       output.names = o.outputnames,
       in.min.max.limits = o.in.minmax,
       predict.function = o.predict.function,
-      vocabulary = o.vocabulary
+      neutral.CU = o.neutral.CU,
+      vocabulary = o.vocabulary,
+      knowledge.graph = o.knowledge.graph
     )
     class(ciu) <- c("ciu", class(ciu))
     return(ciu)
@@ -1041,9 +1054,11 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
                        target.concept=NULL, target.ciu=NULL) {
       explain(instance, ind.inputs.to.explain, in.min.max.limits, n.samples, target.concept, target.ciu)
     },
-    influence = function(ciu.result=NULL, neutral.CU=0.5) {
+    influence = function(ciu.result=NULL, neutral.CU=NULL) {
       if ( is.null(ciu.result) )
         ciu.result <- o.last.ciu
+      if ( is.null(neutral.CU) )
+        neutral.CU <- o.neutral.CU
       ci <- ciu.result$CI*(ciu.result$CU - neutral.CU)
     },
     meta.explain = function(instance, ind.inputs=NULL, in.min.max.limits=NULL,

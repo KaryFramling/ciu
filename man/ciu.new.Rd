@@ -13,7 +13,9 @@ ciu.new(
   input.names = NULL,
   output.names = NULL,
   predict.function = NULL,
-  vocabulary = NULL
+  neutral.CU = 0.5,
+  vocabulary = NULL,
+  knowledge.graph = NULL
 )
 }
 \arguments{
@@ -54,10 +56,17 @@ o.predict.function <- function(model, inputs) \{
         return(pred$posterior)
 \}}}
 
+\item{neutral.CU}{Default baseline/reference CU value to use in \code{influence}
+calculations.}
+
 \item{vocabulary}{list of labels/concepts to be used when producing
 explanations and what combination of inputs they correspond to. Example of
 two intermediate concepts and a higher-level one that combines them:
 \code{list(intermediate.concept1=c(1,2,3), intermediate.concept2=c(4,5), higher.level.concept=c(1,2,3,4,5))}}
+
+\item{knowledge.graph}{\link[igraph:igraph]{igraph::igraph} that defines the intermediate concepts and
+other metadata to use for explanations. If this parameter is given, then the
+\code{vocabulary} is automatically extracted from there.}
 }
 \value{
 Object of class \code{CIU}.

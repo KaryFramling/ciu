@@ -18,13 +18,21 @@ Imports:
     stats,
     Rcpp,
     grDevices, 
+    scales,
     crayon,
     ggplot2,
-    ggbeeswarm
+    magrittr
 Suggests: 
+    igraph, 
+    ggbeeswarm, 
+    visNetwork,
+    shiny, 
+    shinyBS,
+    htmltools,
     MASS,
     caret,
-    gbm
+    gbm,
+    plotrix
 LazyData: true
-RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
+Config/roxygen2/version: 8.1.0

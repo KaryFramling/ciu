@@ -55,6 +55,11 @@ presumably not very significant.
 Främling, K. \emph{Decision Theory Meets Explainable AI}. 2020, \url{doi:/10.1007/978-3-030-51924-7_4}.
 }
 \author{
-\strong{Maintainer}: Kary Främling \email{kary.framling@umu.se}
+\strong{Maintainer}: Kary Främling \email{Kary.Framling@umu.se}
+
+Authors:
+\itemize{
+  \item Kary Främling \email{Kary.Framling@umu.se}
+}
 
 }

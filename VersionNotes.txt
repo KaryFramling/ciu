@@ -5,6 +5,9 @@ passing from v0.6 to v0.7
 Unpublished
 ===========
 
+- Integrated Knowledge Graph functionality for explanations, including the
+  interactive Shiny app. It is now generic and should work with any model.
+
 Version 0.7
 ===========
 - Changed the default colours if influence/contrastive plots to the brick red

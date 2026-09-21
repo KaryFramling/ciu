@@ -1,5 +1,16 @@
 # ciu (development version)
 
+* Implemented a function `ciu.igraph.additive_attribution_to_ICs` that makes it 
+  possible to also use Shapley values for Intermediate Concepts and therefore 
+  also with graph visualisations. 
+* Moved the Knowledge Graph code from the EXTRAAMAS'25 paper into the `ciu` 
+  package, which required some serious rewriting for making it generic to 
+  any data set/model, instead of being specific for Ames Housing. This includes 
+  the interactive Shiny app too, with support for "partner models" etc.
+  Source files are included in the top directory for using the Ames Housing and 
+  German Credit data sets with Knowledges Graphs and Intermediate Concepts. This
+  is a major update and will presumably lead to a version update to 0.9. 
+
 # ciu 0.8
 
 * Changed the default colours if influence/contrastive plots to the brick red

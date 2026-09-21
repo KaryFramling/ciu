@@ -42,7 +42,9 @@ kfoldcv <- trainControl(method="cv", number=10)
 gbm <- caret::train(medv ~ ., Boston, method="gbm", trControl=kfoldcv)
 ciu <- ciu.new(gbm, medv~., Boston)
 df <- ciu.explain.long.data.frame(ciu)
-p <- ciu.plots.beeswarm(df); print(p)
+# The quasirandom layout of beeswarm may cause warnings that don't matter.
+# You can use "suppressWarnings" to just not see them, if you get some.
+p <- ciu.plots.beeswarm(df); suppressWarnings(print(p))
 p <- ciu.plots.beeswarm(df, c("Feature","CU","Norm.Value")); print(p)
 p <- ciu.plots.beeswarm(df, c("Feature","Influence","Norm.Value")); print(p)
 

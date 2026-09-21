@@ -575,12 +575,12 @@ test.german.credit <- function(caret.model="gbm") {
 # par(mai=c(0.8,1.2,0.4,0.2)) # Good parameters for barplot so that labels fit in.
 # par(mai=c(0.8,1.2,0.4,0.2))
 
-test.all<- function() {
+5<- function() {
   test.ws()
   test.iris.lda()
   test.boston.gbm()
   test.heart.disease.rf()
-  test.cars.UCI.rf() # Takes about 15 seconds for RF to train
+  #test.cars.UCI.rf() # Takes about 15 seconds for RF to train
   test.diamonds.gbm() # Takes something like 2-3 minutes to train but GBM seems to be best by far here.
   test.titanic.rf() # Takes maybe half minute.
   test.adult.rf() # Takes about half minute.

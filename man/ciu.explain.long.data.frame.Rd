@@ -4,7 +4,7 @@
 \alias{ciu.explain.long.data.frame}
 \title{Produce CIU explanations as "long" \link{data.frame}}
 \usage{
-ciu.explain.long.data.frame(CIU, data = NULL, out.ind = 1, neutral.CU = 0.5)
+ciu.explain.long.data.frame(CIU, data = NULL, out.ind = 1, neutral.CU = NULL)
 }
 \arguments{
 \item{CIU}{CIU object, as created by \link{ciu.new}.}

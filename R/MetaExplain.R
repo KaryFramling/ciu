@@ -127,7 +127,8 @@ ciu.meta.explain <- function(ciu, instance, ind.inputs=NULL, in.min.max.limits=N
 #' ciu.list.to.frame
 #'
 #' Convert [list] of ciu.result objects into corresponding [data.frame] for
-#' given output.
+#' given output. This makes it easier to manipulate and display the
+#' result returned by `meta.explain`.
 #'
 #' @param ciu.list [list] of ciu.result objects.
 #' @param out.ind Index of output to extract.

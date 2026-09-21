@@ -3,7 +3,10 @@
 # (which might actually be a good choice).
 
 # This is to get the CRAN check to go through. Thanks ChatGPT.
-utils::globalVariables(c("feature.labels", "phi", "Positive.Phi", "feature.name"))
+# These are variables used in ggplot internally that are apparently not
+# understood correctly by rcheck.
+utils::globalVariables(c("CI", "CU", "cu_scaled", "feature.labels", "phi",
+                         "Positive.Phi", "feature.name"))
 
 #' CIU feature importance/utility plot using ggplot.
 #'
@@ -91,17 +94,21 @@ ciu.ggplot.col <- function(ciu, instance=NULL, ind.inputs=NULL, output.names=NUL
     }
     ci.cu <- rbind(ci.cu, data.frame(Label=rownames(ciu.res), Output.Value=ciu.res$outval,
                                      in.names=inp.names[i], CI=ciu.res$CI, CU=ciu.res$CU,
+                                     phi=ciu.res$CI*(ciu.res$CU - neutral.CU),
+                                     cu_scaled=ciu.res$CI*ciu.res$CU,
                                      Output=paste0(rownames(ciu.res), " (",
                                                    format(ciu.res$outval, digits=3), ")"),
                                      feature.labels=f.label)
     )
   }
+  # Sort facets according to output value. Sorting factor levels correctly does the job.
+  ci.cu$Output <- factor(ci.cu$Output, unique(ci.cu$Output[order(ci.cu$Output.Value, decreasing = TRUE)]))
+
+  # Only needed for influence bar coloring.
+  ci.cu$Positive.Phi <- ci.cu$phi >= 0
 
   # "instance" has to be a data.frame so this can't be NULL.
   inst.name <- rownames(instance)
-
-  # Sort facets according to output value. Sorting factor levels correctly does the job.
-  ci.cu$Output <- factor(ci.cu$Output, unique(ci.cu$Output[order(ci.cu$Output.Value, decreasing = TRUE)]))
 
   # Check if main plot title has been given as parameter, otherwise use default one
   if ( is.null(main) ) {
@@ -110,58 +117,43 @@ ciu.ggplot.col <- function(ciu, instance=NULL, ind.inputs=NULL, output.names=NUL
       main <- paste0(main, "\nTarget concept is \"", target.concept, "\"")
   }
 
-  # Create the plot. Have to use some tricks here for avoiding warnings either
-  # by devtools.check or during execution. Apparently devtools.check
-  # doesn't understand attach() explicitly nor done by ggplot
-  ci <- ci.cu$CI; cu <- ci.cu$CU
-
-  # Include influence value too, in any case
-  influence <- ci*(cu - neutral.CU)
-  ci.cu$phi <- influence
-  ci.cu$Positive.Phi <- influence >= 0
-
   # Influence plot separated because needs more than trivial manipulations.
   p <- ggplot(ci.cu)
   if ( use.influence ) {
-    ymin <- min(influence); ymax <- max(influence)
     p <- p +
-      geom_col(aes(reorder(feature.labels, phi), phi, fill=Positive.Phi)) +
-      ylim(ymin, ymax) +
+      geom_bar(aes(x=reorder(feature.labels, phi), y=phi, fill=Positive.Phi),
+               stat="identity", position ="identity") +
       labs(y = expression(phi)) +
       scale_fill_manual("legend", values = c("FALSE" = "firebrick", "TRUE" = "steelblue")) +
       theme(legend.position="none")
   }
   else {
     ymin <- 0
-    ymax <- ifelse(scale.CI, max(ci), 1)
+    ymax <- ifelse(scale.CI, max(ci.cu$CI), 1)
     p <- p + ylim(ymin, ymax)
     if ( plot.mode == "colour_cu" ) {
       p <- p +
-        geom_col(aes(reorder(feature.labels, ci), ci, fill=cu)) +
+        geom_col(aes(reorder(feature.labels, CI), CI, fill=CU)) +
         labs(y="CI", fill="CU") +
         scale_fill_gradient2(low=low.color, mid=mid.color, high=high.color, limits=c(0,1), midpoint=neutral.CU)
     }
     else {
-      cu_scaled <- cu*ci
       p <- p +
-        geom_bar(aes(x=reorder(feature.labels, ci), y=ci), stat="identity", position ="identity",
+        geom_bar(aes(x=reorder(feature.labels, CI), y=CI), stat="identity", position ="identity",
                  alpha=as.numeric(ci.colours[3]), fill=ci.colours[1], color=ci.colours[2])
       if ( is.null(cu.colours) ) {
         p <- p +
-          geom_bar(aes(x=reorder(feature.labels, ci), y=cu_scaled, fill=cu), stat="identity", position="identity",
+          geom_bar(aes(x=reorder(feature.labels, CI), y=cu_scaled, fill=CU), stat="identity", position="identity",
                    alpha=1.0, color='black') +
           scale_fill_gradient2(low=low.color, mid=mid.color, high=high.color, limits=c(0,1), midpoint=neutral.CU) +
           labs(y="CI and relative CU", fill="CU")
       }
       else {
         p <- p +
-          geom_bar(aes(x=reorder(feature.labels, ci), y=cu_scaled), stat="identity", position="identity",
+          geom_bar(aes(x=reorder(feature.labels, CI), y=cu_scaled), stat="identity", position="identity",
                    alpha=as.numeric(cu.colours[3]), fill=cu.colours[1], color=cu.colours[2]) +
           labs(y="CI and relative CU")
       }
-      #   scale_colour_manual(values=c("lightblue4", "red")) +
-      #   scale_fill_manual(values=c("lightblue", "pink")) +
-      #   scale_alpha_manual(values=c(.3, .8))
     }
   }
   p <- p + coord_flip() +

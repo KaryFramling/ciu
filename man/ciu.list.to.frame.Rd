@@ -17,7 +17,8 @@ per input feature.
 }
 \description{
 Convert \link{list} of ciu.result objects into corresponding \link{data.frame} for
-given output.
+given output. This makes it easier to manipulate and display the
+result returned by \code{meta.explain}.
 }
 \examples{
 library(MASS)
