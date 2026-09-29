@@ -29,3 +29,4 @@
 ^ciu\.Rcheck
 ^\.Rprofile$
 ^paper
+^ciu-todo-fixes.patch
