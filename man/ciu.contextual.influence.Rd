@@ -19,14 +19,30 @@ provided.}
 
 \item{CU}{CU value(s).}
 
-\item{neutral.CU}{Neutral CU value(s). Default is 0.5}
+\item{neutral.CU}{Reference CU value(s). Either a single value used for all
+features, or a vector of the same length as the number of features. Default is 0.5.}
 }
 \value{
 Contextual influence value(s). Value or vector.
 }
 \description{
-Contextual influence is calculated from CI and CU values, using a baseline
-that is considered a "neutral" CU value.
+Contextual influence is calculated from CI and CU values, using a reference
+("neutral") CU value:
+\deqn{\phi = CI \times (CU - CU_{ref})}
+}
+\details{
+\code{neutral.CU} may be a single value used for all features, or a vector with
+one reference value per feature. The scalar case (default 0.5) is the
+recommended one for explanation purposes: CI has a known range and meaning,
+so mid-utility is a well-defined neutral point that is straightforward to
+convey to an explainee. A per-feature vector is what makes contrastive
+explanations a special case of this function rather than a separate
+mechanism; see \link{ciu.contrastive}. It is also what is needed to reproduce the
+baseline convention of additive feature attribution methods such as Shapley
+values, where the reference is an expectation over a background set.
+}
+\seealso{
+\link{ciu.contrastive}
 }
 \author{
 Kary Främling

@@ -27,6 +27,7 @@ ciu.ggplot.col(
   scale.CI = FALSE,
   sort = NULL,
   decreasing = FALSE,
+  row.order = NULL,
   main = NULL
 )
 }
@@ -106,9 +107,21 @@ LIME-like barplot. Default is FALSE.}
 
 \item{scale.CI}{Scale x-axis according to maximal CI value.}
 
-\item{sort}{NULL, "CI" or "CU".}
+\item{sort}{Ordering of the feature rows. NULL (default) orders by CI for
+CI/CU plots and by signed influence for influence plots, which reproduces the
+historical behaviour. Otherwise one of "CI", "CU", "phi" (signed influence) or
+"absphi" (absolute influence). Note that "phi" places a feature with large
+negative influence at the opposite end from one with large positive influence,
+regardless of importance; "absphi" orders by magnitude instead.}
 
-\item{decreasing}{Set to TRUE for decreasing sort.}
+\item{decreasing}{If FALSE (default), the largest value is at the top of the
+plot. TRUE puts the smallest at the top.}
+
+\item{row.order}{Explicit row order as a character vector of feature labels,
+bottom to top. Overrides \code{sort} and \code{decreasing}. Useful for showing two
+panels (e.g. CI/CU and influence) with rows aligned, so that a feature can be
+tracked across them. Labels must match those used in the plot, i.e. they
+include the input value when \code{show.input.values=TRUE}.}
 
 \item{main}{Text to use as main title.}
 }

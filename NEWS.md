@@ -1,5 +1,33 @@
 # ciu (development version)
 
+* `ciu.contrastive` is now implemented as a call to `ciu.contextual.influence`
+  with a per-feature reference CU, making contrastive explanations the general
+  case and `neutral.CU = 0.5` the special case of one and the same
+  factorisation, rather than two separate mechanisms. Both functions now reject
+  a reference vector whose length is neither 1 nor the number of features,
+  instead of silently recycling it.
+* `ciu.ggplot.col` (and the `ggplot.col.ciu` method): `sort` and `decreasing`
+  are now implemented rather than merely declared, and accept "CI", "CU", "phi"
+  and "absphi". The new `row.order` parameter takes an explicit vector of
+  feature labels, which allows two panels (e.g. CI/CU and influence) to be shown
+  with rows aligned so that a feature can be tracked across them.
+* `ciu.ggplot.col` now accepts a per-feature `neutral.CU` vector. It previously
+  computed influence inside a per-input loop, where a vector recycled over
+  outputs rather than features.
+* `ggplot.col.ciu` gained a default of `NULL` for `instance`, which was
+  previously required even when passing `ciu.meta`.
+* `ciu.explain.long.data.frame` now returns an `Instance` column.
+* Added `ciu.kg.feature.of.edges`, `ciu.kg.orphan.nodes` and
+  `ciu.kg.lookup.by.name`, generic knowledge-graph vocabulary helpers that were
+  previously duplicated in the data-set-specific test scripts. The two test
+  scripts now look labels and descriptions up by column name (German Credit) or
+  check them against the data columns (Ames), so a change in column order can no
+  longer silently attach labels to the wrong features.
+* Removed dead code from `TestGermanCreditKnowledgeGraph.R`: the
+  `categorical_values` mappings and their helpers (keyed on column names that do
+  not exist, and using UCI codes that `rchallenge::german` has already decoded)
+  and three hierarchy definitions referencing non-existent columns.
+
 * Implemented a function `ciu.igraph.additive_attribution_to_ICs` that makes it 
   possible to also use Shapley values for Intermediate Concepts and therefore 
   also with graph visualisations. 

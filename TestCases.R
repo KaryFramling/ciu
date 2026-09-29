@@ -575,7 +575,7 @@ test.german.credit <- function(caret.model="gbm") {
 # par(mai=c(0.8,1.2,0.4,0.2)) # Good parameters for barplot so that labels fit in.
 # par(mai=c(0.8,1.2,0.4,0.2))
 
-5<- function() {
+test.all <- function() {
   test.ws()
   test.iris.lda()
   test.boston.gbm()

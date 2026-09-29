@@ -1103,7 +1103,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
               color.ramp.below.neutral, color.ramp.above.neutral,
               sort, decreasing, main, ...)
     },
-    ggplot.col.ciu = function(instance, ind.inputs=NULL, output.names=NULL,
+    ggplot.col.ciu = function(instance=NULL, ind.inputs=NULL, output.names=NULL,
                               in.min.max.limits=NULL,
                               n.samples=100, neutral.CU=0.5,
                               show.input.values=TRUE, concepts.to.explain=NULL,
@@ -1115,7 +1115,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
                               low.color="red", mid.color="yellow",
                               high.color="darkgreen",
                               use.influence=FALSE, scale.CI=FALSE,
-                              sort=NULL, decreasing=FALSE, # These are not used yet.
+                              sort=NULL, decreasing=FALSE, row.order=NULL,
                               main=NULL) {
       ciu.ggplot.col(as.ciu(), instance, ind.inputs, output.names, in.min.max.limits,
                      n.samples, neutral.CU,
@@ -1123,7 +1123,7 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
                      target.concept, target.ciu, ciu.meta, plot.mode, ci.colours, cu.colours,
                      low.color, mid.color, high.color,
                      use.influence, scale.CI,
-                     sort, decreasing, main)
+                     sort, decreasing, row.order, main)
     },
     textual = function(instance=NULL, ind.inputs=NULL, ind.output=1,
                        in.min.max.limits=NULL,

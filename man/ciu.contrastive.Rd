@@ -16,7 +16,11 @@ Contrastive influence values, where CU values of second instance are used as
 baseline for first instance.
 }
 \description{
-Create a contrastive explanation between two instances
+Contrastive influence is ordinary contextual influence with a per-feature
+reference: the CU values of the second instance are used as the reference CU
+values of the first. It is therefore the general case of
+\link{ciu.contextual.influence}, of which \code{neutral.CU = 0.5} is the special case
+where the reference is "every feature at mid-utility".
 }
 \examples{
 library(ciu)
@@ -34,6 +38,9 @@ ciuvals.versicolor <- ciu.list.to.frame(meta$ciuvals, out.ind = 2)
 ciuvals.virginica <- ciu.list.to.frame(meta$ciuvals, out.ind = 3)
 # Now the contrastive part:
 why.versicolor.not.virginica <- ciu.contrastive(ciuvals.versicolor, ciuvals.virginica)
+}
+\seealso{
+\link{ciu.contextual.influence}
 }
 \author{
 Kary Främling

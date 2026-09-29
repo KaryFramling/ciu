@@ -4,18 +4,31 @@
 
 #' Get Contextual influence values
 #'
-#' Contextual influence is calculated from CI and CU values, using a baseline
-#' that is considered a "neutral" CU value.
+#' Contextual influence is calculated from CI and CU values, using a reference
+#' ("neutral") CU value:
+#' \deqn{\phi = CI \times (CU - CU_{ref})}
+#'
+#' `neutral.CU` may be a single value used for all features, or a vector with
+#' one reference value per feature. The scalar case (default 0.5) is the
+#' recommended one for explanation purposes: CI has a known range and meaning,
+#' so mid-utility is a well-defined neutral point that is straightforward to
+#' convey to an explainee. A per-feature vector is what makes contrastive
+#' explanations a special case of this function rather than a separate
+#' mechanism; see [ciu.contrastive]. It is also what is needed to reproduce the
+#' baseline convention of additive feature attribution methods such as Shapley
+#' values, where the reference is an expectation over a background set.
 #'
 #' @param ciu.result [data.frame] with CI and CU columns. If NULL, then CI and CU values must be
 #' provided.
 #' @param CI CI value(s).
 #' @param CU CU value(s).
-#' @param neutral.CU Neutral CU value(s). Default is 0.5
+#' @param neutral.CU Reference CU value(s). Either a single value used for all
+#' features, or a vector of the same length as the number of features. Default is 0.5.
 #'
 #' @return Contextual influence value(s). Value or vector.
 #' @export
 #' @author Kary Främling
+#' @seealso [ciu.contrastive]
 ciu.contextual.influence <- function(ciu.result = NULL, CI=NULL, CU=NULL, neutral.CU=0.5) {
   if ( is.null(ciu.result) ) {
     ci <- CI
@@ -25,10 +38,21 @@ ciu.contextual.influence <- function(ciu.result = NULL, CI=NULL, CU=NULL, neutra
     ci <- ciu.result$CI
     cu <- ciu.result$CU
   }
+  # Guard against silent recycling: a reference vector of the "wrong" length
+  # would otherwise produce plausible-looking but meaningless influence values.
+  if ( length(neutral.CU) != 1 && length(neutral.CU) != length(cu) )
+    stop("neutral.CU must have length 1 or the same length as the number of ",
+         "features (", length(cu), "), not ", length(neutral.CU), ".")
   return(ci*(cu - neutral.CU))
 }
 
 #' Create a contrastive explanation between two instances
+#'
+#' Contrastive influence is ordinary contextual influence with a per-feature
+#' reference: the CU values of the second instance are used as the reference CU
+#' values of the first. It is therefore the general case of
+#' [ciu.contextual.influence], of which `neutral.CU = 0.5` is the special case
+#' where the reference is "every feature at mid-utility".
 #'
 #' @param ciu.result1 First instance as `ciu.result` object.
 #' @param ciu.result2 Second instance as `ciu.result` object.
@@ -36,6 +60,7 @@ ciu.contextual.influence <- function(ciu.result = NULL, CI=NULL, CU=NULL, neutra
 #' @return Contrastive influence values, where CU values of second instance are used as
 #' baseline for first instance.
 #' @export
+#' @seealso [ciu.contextual.influence]
 #' @examples
 #' library(ciu)
 #' library(MASS)
@@ -54,8 +79,11 @@ ciu.contextual.influence <- function(ciu.result = NULL, CI=NULL, CU=NULL, neutra
 #' why.versicolor.not.virginica <- ciu.contrastive(ciuvals.versicolor, ciuvals.virginica)
 #' @author Kary Främling
 ciu.contrastive <- function(ciu.result1, ciu.result2) {
-  contrastive = ciu.result1$CI*(ciu.result1$CU - ciu.result2$CU)
-  return(contrastive)
+  if ( nrow(ciu.result1) != nrow(ciu.result2) )
+    stop("ciu.result1 and ciu.result2 must cover the same features: got ",
+         nrow(ciu.result1), " and ", nrow(ciu.result2), " rows.")
+  # Same factorisation as ciu.contextual.influence, with a per-feature reference.
+  ciu.contextual.influence(ciu.result1, neutral.CU = ciu.result2$CU)
 }
 
 #' Create contrastive ggplot

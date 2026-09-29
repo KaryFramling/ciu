@@ -172,6 +172,35 @@ create.Ames.KGs <- function(ames_data, target_variable = "Sale_Price") {
 
   # Add Intermediate Concept vertices first, better for UI
   g <- add_vertices(g, length(IC_names), name = IC_names, label = IC_labels, type = "Intermediate concept")
+
+  # `feature_names` and `feature_descriptions` are POSITIONAL: they are matched to
+  # colnames(ames_data) by order, because they are written as plain vectors rather
+  # than keyed on column names. add_vertices() assigns attributes positionally
+  # too, so if make_ames() ever changes its column order or count, every label
+  # shifts and the resulting plots are wrong without anything visibly failing.
+  # Until these are rewritten as named vectors (and passed through
+  # ciu.kg.lookup.by.name(), as in TestGermanCreditKnowledgeGraph.R), the checks
+  # below turn that silent failure into a loud one.
+  stopifnot(
+    "feature_names length does not match the Ames columns" =
+      length(feature_names) == length(data_names),
+    "feature_descriptions length does not match the Ames columns" =
+      length(feature_descriptions) == length(data_names)
+  )
+  # Canaries: a handful of positions whose label and column name must correspond.
+  ames_label_canaries <- c("Sale price" = "Sale_Price",
+                           "Longitude"  = "Longitude",
+                           "Latitude"   = "Latitude",
+                           "Lot area"   = "Lot_Area")
+  for ( canary_label in names(ames_label_canaries) ) {
+    pos <- match(canary_label, feature_names)
+    if ( is.na(pos) || data_names[pos] != ames_label_canaries[[canary_label]] )
+      stop("Ames feature labels appear to be out of step with the data columns: ",
+           "label \"", canary_label, "\" does not line up with column \"",
+           ames_label_canaries[[canary_label]], "\". Check the order of ",
+           "feature_names against colnames(ames_data).")
+  }
+
   g <- add_vertices(g, length(data_names), label = feature_names,
                     name = data_names, description = feature_descriptions,
                     type = "Feature")
@@ -180,21 +209,21 @@ create.Ames.KGs <- function(ames_data, target_variable = "Sale_Price") {
   house_features <- c("Garage","Basement", "Lot", "Access", "House type",
                       "House aesthetics", "House condition", "Porch", "First_Flr_SF",
                       "Gr_Liv_Area") #, "Miscellaneous")
-  house_feature_edges <- interleave.value.in.array(def_voc_root_concept_name, house_features)
+  house_feature_edges <- ciu.kg.feature.of.edges(def_voc_root_concept_name, house_features)
   garage_features <- c("Garage_Type", "Garage_Finish", "Garage_Cars",
                        "Garage_Area", "Garage_Qual", "Garage_Cond")
-  garage_feature_edges <- interleave.value.in.array("Garage", garage_features)
+  garage_feature_edges <- ciu.kg.feature.of.edges("Garage", garage_features)
   house_condition_features <- c("Overall_Qual", "Year_Built", "Overall_Cond",
                                 "Year_Remod_Add", "Exter_Qual",
                                 "Exter_Cond")
-  house_condition_edges <- interleave.value.in.array("House condition", house_condition_features)
+  house_condition_edges <- ciu.kg.feature.of.edges("House condition", house_condition_features)
   basement_features <-
     c("Total_Bsmt_SF", "Bsmt_Unf_SF",
       "BsmtFin_SF_1", "BsmtFin_SF_2",
       "BsmtFin_Type_1", "BsmtFin_Type_2",
       "Bsmt_Qual", "Bsmt_Cond", "Bsmt_Full_Bath",
       "Bsmt_Half_Bath", "Bsmt_Exposure")
-  basement_edges <- interleave.value.in.array("Basement", basement_features)
+  basement_edges <- ciu.kg.feature.of.edges("Basement", basement_features)
   lot_features <-
     c("Lot_Frontage",
       "Lot_Area",
@@ -203,24 +232,24 @@ create.Ames.KGs <- function(ames_data, target_variable = "Sale_Price") {
       "Utilities",
       "Lot_Config",
       "Land_Slope")
-  lot_edges <- interleave.value.in.array("Lot", lot_features)
+  lot_edges <- ciu.kg.feature.of.edges("Lot", lot_features)
   access_features <-
     c("Condition_1",
       "Condition_2")
-  access_edges <- interleave.value.in.array("Access", access_features)
+  access_edges <- ciu.kg.feature.of.edges("Access", access_features)
   house_type_features <-
     c("MS_SubClass",
       "Bldg_Type",
       "House_Style",
       "Roof_Style")
-  house_type_edges <- interleave.value.in.array("House type", house_type_features)
+  house_type_edges <- ciu.kg.feature.of.edges("House type", house_type_features)
   house_aesthetics_features <-
     c("Roof_Matl", "Exterior_1st", "Exterior_2nd", "Mas_Vnr_Type", "Mas_Vnr_Area")
-  house_aesthetics_edges <- interleave.value.in.array("House aesthetics",
+  house_aesthetics_edges <- ciu.kg.feature.of.edges("House aesthetics",
                                                       house_aesthetics_features)
   porch_features <- c("Open_Porch_SF", "Enclosed_Porch", "Three_season_porch",
                       "Screen_Porch")
-  porch_edges <- interleave.value.in.array("Porch", porch_features)
+  porch_edges <- ciu.kg.feature.of.edges("Porch", porch_features)
 
   # Create all "feature-of" edges
   g <- add_edges(g, c(house_feature_edges, house_condition_edges, basement_edges,
@@ -229,9 +258,9 @@ create.Ames.KGs <- function(ames_data, target_variable = "Sale_Price") {
                  relation="feature-of")
 
   # Add all remaining features to "Miscellaneous"
-  miscellaneous_features <- get_orphan_nodes(g)
+  miscellaneous_features <- ciu.kg.orphan.nodes(g)
   miscellaneous_features <- miscellaneous_features[miscellaneous_features != target_variable]
-  miscellaneous_edges <- interleave.value.in.array("Miscellaneous", miscellaneous_features)
+  miscellaneous_edges <- ciu.kg.feature.of.edges("Miscellaneous", miscellaneous_features)
   g <- add_edges(g, miscellaneous_edges, relation="feature-of")
 
   # Remove potential orphans. Normally there's only the target_variable node left.
@@ -279,9 +308,9 @@ create.Ames.Bob.pmodel <- function(g) {
 
   # Add "feature_of" edges
   bob_house_features <- c("Surfaces")
-  bob_house_feature_edges <- interleave.value.in.array(bob_voc_root_name, bob_house_features)
+  bob_house_feature_edges <- ciu.kg.feature.of.edges(bob_voc_root_name, bob_house_features)
   bob_surfaces_features <- c("Garage_Area", "Total_Bsmt_SF", "Lot_Area")
-  bob_surfaces_feature_edges <- interleave.value.in.array("Surfaces", bob_surfaces_features)
+  bob_surfaces_feature_edges <- ciu.kg.feature.of.edges("Surfaces", bob_surfaces_features)
 
   # Create all "feature-of" edges
   g <- add_edges(g, c(bob_house_feature_edges, bob_surfaces_feature_edges),
@@ -300,23 +329,6 @@ create.Ames.Bob.pmodel <- function(g) {
   return(pmodel)
 }
 
-# Create a new array with `value` interleaved at every second position.
-interleave.value.in.array <- function(value, array, value_first = TRUE) {
-  if ( value_first )
-    inds <- c(2,1)
-  else
-    inds <- c(1,2)
-  new_array <- rep(NA, length(array) * 2)  # Allocate space
-  new_array[seq(inds[1], length(new_array), by = 2)] <- array  # Fill original values
-  new_array[seq(inds[2], length(new_array), by = 2)] <- value  # Fill inserted values
-  return(new_array)
-}
-
-# Get names of nodes/vertices of a certain type that are orphans
-get_orphan_nodes <- function(g, type_value = "Feature") {
-  feature_vertices <- which(V(g)$type == type_value)
-  orphan_vertices <- which(degree(g) == 0)
-  nodes <- intersect(feature_vertices, orphan_vertices)
-  return(V(g)$name[nodes])
-}
-
+# NOTE: the former local helpers `interleave.value.in.array()` and
+# `get_orphan_nodes()` now live in the package as `ciu.kg.feature.of.edges()`
+# and `ciu.kg.orphan.nodes()`.

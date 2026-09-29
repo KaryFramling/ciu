@@ -78,7 +78,11 @@ ciu.explain.long.data.frame <- function(CIU, data=NULL, out.ind=1, neutral.CU = 
     m[start.i:end.i,8] <- as.numeric(ciuvals$outval)
     start.i <- start.i + ncol(data); end.i <- end.i + ncol(data)
   }
-  df <- data.frame(Feature=vars, CI=m[,1], CU=m[,2], Influence=m[,3], Value=m[,4],
+  # The loop emits ncol(data) consecutive rows per instance, so the instance each
+  # row belongs to is recoverable. Included explicitly because callers otherwise
+  # have to reconstruct it, which matters when `data` is a subset of the full set.
+  df <- data.frame(Instance=rep(rownames(data), each=ncol(data)),
+                   Feature=vars, CI=m[,1], CU=m[,2], Influence=m[,3], Value=m[,4],
                    Norm.Value=m[,5], Cmin=m[,6], Cmax=m[,7], Outvalue=m[,8])
 
   # Eliminate the potential NaN values that might have come by zero division.

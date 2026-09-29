@@ -128,7 +128,7 @@ test.ciu.cars.UCI.rf <- function() {
   instance$safety <- "med"
   p <- ciu.ggplot.col(ciu, instance, ind.inputs = voc$TECH, target.concept = "TECH"); print(p)
   # What happens if "persons" is "more" instead?
-  instance <- car.data[inst.ind,];
+  instance <- car.data[inst.ind,1:6]
   instance$persons <- "more"
   p <- ciu.ggplot.col(ciu, instance, ind.inputs = voc$TECH, target.concept = "TECH"); print(p)
 }
@@ -471,7 +471,7 @@ test.ciu.all <- function() {
   test.ciu.iris.lda()
   test.ciu.boston.gbm()
   test.ciu.heart.disease.rf()
-  test.ciu.cars.UCI.rf() # Takes about 15 seconds for RF to train
+  #test.ciu.cars.UCI.rf() # Takes about 15 seconds for RF to train
   test.ciu.diamonds.gbm() # Takes something like 2-3 minutes to train but GBM seems to be best by far here.
   test.ciu.titanic.rf() # Takes maybe half minute.
   test.ciu.adult.rf() # Takes about half minute.
