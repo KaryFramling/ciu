@@ -8,8 +8,8 @@
   any data set/model, instead of being specific for Ames Housing. This includes 
   the interactive Shiny app too, with support for "partner models" etc.
   Source files are included in the top directory for using the Ames Housing and 
-  German Credit data sets with Knowledges Graphs and Intermediate Concepts. This
-  is a major update and will presumably lead to a version update to 0.9. 
+  German Credit data sets with Knowledge Graphs and Intermediate Concepts. This
+  is a major update. 
 
 # ciu 0.8
 
