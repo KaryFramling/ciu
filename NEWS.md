@@ -1,5 +1,9 @@
-# ciu (development version)
+# ciu 0.9.0
 
+* Fixed CU values outside [0,1] for feature sets that mix continuous and
+  discrete inputs: the explained instance was overwritten when the two sample
+  sets were combined. The current output is now also always included in the
+  estimated [min, max] range. Added a regression test (`tests/test-cu-range.R`).
 * `ciu.contrastive` is now implemented as a call to `ciu.contextual.influence`
   with a per-feature reference CU, making contrastive explanations the general
   case and `neutral.CU = 0.5` the special case of one and the same
@@ -27,7 +31,6 @@
   `categorical_values` mappings and their helpers (keyed on column names that do
   not exist, and using UCI codes that `rchallenge::german` has already decoded)
   and three hierarchy definitions referencing non-existent columns.
-
 * Implemented a function `ciu.igraph.additive_attribution_to_ICs` that makes it 
   possible to also use Shapley values for Intermediate Concepts and therefore 
   also with graph visualisations. 

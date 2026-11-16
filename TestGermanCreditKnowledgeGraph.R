@@ -152,6 +152,9 @@ create.GermanCredit.partner_models <- function(data, target_variable = "credit_r
   #   "Personal Stability" = c("age", "present_residence_since", "housing",
   #                            "telephone", "foreign_worker")
   # )
+  # The Traditional Banking vocabulary covers all 20 features: status is part
+  # of Financial Capacity, people_liable of Existing Obligations and
+  # personal_status_sex of Personal Stability.
   root_concept_name <- "Credit Worthiness"
   root_concept_label <- "Credit Worthiness (i.e. for it being 'good')"
   IC_names <- c(root_concept_name, "Financial Capacity", "Existing Obligations",
@@ -167,17 +170,17 @@ create.GermanCredit.partner_models <- function(data, target_variable = "credit_r
                              "Collateral & Assets", "Credit History",
                              "Personal Stability")
   credit_worth_feature_edges <- ciu.kg.feature.of.edges(root_concept_name, credit_worth_features)
-  financial_features <- c("job", "employment_duration")
+  financial_features <- c("job", "employment_duration", "status")
   financial_feature_edges <- ciu.kg.feature.of.edges("Financial Capacity", financial_features)
   obligations_features <- c("other_installment_plans", "number_credits",
-                            "installment_rate", "amount")
+                            "installment_rate", "amount", "people_liable")
   obligations_feature_edges <- ciu.kg.feature.of.edges("Existing Obligations", obligations_features)
   assets_features <- c("property", "savings", "other_debtors")
   assets_feature_edges <- ciu.kg.feature.of.edges("Collateral & Assets", assets_features)
   history_features <- c("credit_history", "duration", "purpose")
   history_feature_edges <- ciu.kg.feature.of.edges("Credit History", history_features)
   stability_features <- c("age", "present_residence", "housing",
-                          "telephone", "foreign_worker")
+                          "telephone", "foreign_worker", "personal_status_sex")
   stability_feature_edges <- ciu.kg.feature.of.edges("Personal Stability", stability_features)
 
   # Create all "feature-of" edges

@@ -301,8 +301,11 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
     # Evaluate output for all random values, as well as current output.
     mcout <- as.matrix(o.predict.function(o.model, ciu.eval.set)) # as.matrix for dealing with case of only one output.
     cu.val <- o.predict.function(o.model, instance)
-    minvals <- apply(mcout,2,min)
-    maxvals <- apply(mcout,2,max)
+    # Safety net: the current output is by definition achievable in this
+    # context, so it must lie within [minvals, maxvals] (keeps CU in [0,1]).
+    cu.vec <- as.numeric(unlist(cu.val))
+    minvals <- pmin(apply(mcout,2,min), cu.vec)
+    maxvals <- pmax(apply(mcout,2,max), cu.vec)
     range <- maxvals - minvals
     output_ranges <- matrix(absminmax[,2] - absminmax[,1], ncol=1)
     CI <- range/output_ranges
@@ -368,6 +371,11 @@ ciu.new <- function(bb, formula=NULL, data=NULL, in.min.max.limits=NULL, abs.min
       discr <- discrete.ciu.input.set
     }
     res[1:nrow(res),ind.discrete.to.explain] <- discr[1:nrow(res),ind.discrete.to.explain]
+    # The line above also overwrites the discrete values of row 1, which is
+    # the explained instance itself (see create.continuous.ciu.input.set).
+    # Put the instance back, so that its output always lies within
+    # [cmin, cmax] and CU stays within [0,1] for mixed discrete/continuous sets.
+    res[1, ] <- instance[1, ]
     return(res)
   }
 

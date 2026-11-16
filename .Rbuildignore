@@ -15,7 +15,6 @@
 ^TestCases_NoObject.R
 ^TestAmesKnowledgeGraph.R
 ^TestGermanCreditKnowledgeGraph.R
-^NMIFigures.R
 ^cran-comments.md
 ^CRAN-RELEASE$
 ^old
@@ -28,5 +27,4 @@
 ^cran-comments\.md$
 ^ciu\.Rcheck
 ^\.Rprofile$
-^paper
 ^ciu-todo-fixes.patch
